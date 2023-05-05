@@ -1,7 +1,7 @@
 @import url("./tailwind.css");
 
 body {
-  @apply font-sans;
+  @apply font-sans bg-background-100 flex min-h-screen flex-col;
 }
 
 h1,
