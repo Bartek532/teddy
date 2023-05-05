@@ -55,11 +55,12 @@
     },
     "windows": [
       {
+        "decorations": true,
         "fullscreen": false,
-        "height": 600,
         "resizable": true,
-        "title": "bear",
-        "width": 800
+        "title": "B.E.A.R.",
+        "width": 650,
+        "height": 800
       }
     ]
   }
