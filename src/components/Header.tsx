@@ -11,7 +11,6 @@ export const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  console.log(router);
   return (
     <header className="flex w-full justify-between py-5 px-7 h-20">
       {pathname === "/" ? (
