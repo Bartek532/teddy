@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
-import GearIcon from "@/public/svg/gear.svg";
-import SunIcon from "@/public/svg/sun.svg";
-import ArrowLeftIcon from "@/public/svg/arrow-left.svg";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+
+import ArrowLeftIcon from "@/public/svg/arrow-left.svg";
+import GearIcon from "@/public/svg/gear.svg";
+import SunIcon from "@/public/svg/sun.svg";
 
 export const Header = () => {
   const router = useRouter();
