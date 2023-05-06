@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createSafeContext } from "../lib/createSafeContext";
 import { get, save, store } from "../lib/store";
 import { DEFAULT_SETTINGS } from "../utils/constants";
+import { isSettings } from "../utils/validation/validator";
 
 import type { Message, Settings } from "../utils/types";
 import type { ReactNode, Dispatch, SetStateAction } from "react";
@@ -27,9 +28,9 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
 
   useEffect(() => {
     const loadSettings = async () => {
-      const settings = (await get(store.chat, "settings")) as Settings; // TODO: add zod validation
+      const settings = await get(store.chat, "settings");
 
-      if (settings) {
+      if (isSettings(settings)) {
         setSettings(settings);
       }
     };

@@ -24,10 +24,4 @@ export interface Message {
   readonly sender: MESSAGE_SENDER;
 }
 
-export interface Settings {
-  readonly model: AI_MODEL;
-  readonly apiKey: string;
-  readonly maxTokens: number;
-  readonly temperature: number;
-  readonly stream: boolean;
-}
+export * from "./validation/types";
