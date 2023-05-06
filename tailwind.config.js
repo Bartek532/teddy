@@ -29,6 +29,9 @@ module.exports = {
           200: "#4432ff",
           300: "#e2e9fa",
         },
+        red: {
+          100: "#EF476F",
+        },
         "scrollbar-thumb": "#919191",
         "scrollbar-thumb-hover": "#b7b7b7",
         "selection-background": "#4432ff",

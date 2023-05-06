@@ -1,6 +1,6 @@
 "use client";
 
-import { SettingsProvider } from "./SettingsProvider";
+import { ChatProvider } from "./ChatProvider";
 import { SnippetsProvider } from "./SnippetsProvider";
 
 import type { ReactNode } from "react";
@@ -10,7 +10,7 @@ type AppProvidersProps = Readonly<{
 }>;
 
 export const AppProviders = ({ children }: AppProvidersProps) => (
-  <SettingsProvider>
+  <ChatProvider>
     <SnippetsProvider>{children}</SnippetsProvider>
-  </SettingsProvider>
+  </ChatProvider>
 );
