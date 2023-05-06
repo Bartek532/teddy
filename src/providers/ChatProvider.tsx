@@ -6,13 +6,14 @@ import { get, save, store } from "../lib/store";
 import { DEFAULT_SETTINGS } from "../utils/constants";
 import { isSettings } from "../utils/validation/validator";
 
-import type { Message, Settings } from "../utils/types";
-import type { ReactNode, Dispatch, SetStateAction } from "react";
+import type { AI_MODEL, Message, Settings } from "../utils/types";
+import type { ReactNode } from "react";
 
 interface ChatContextValue {
   readonly settings: Settings;
   readonly messages: Message[];
-  readonly setSettings: Dispatch<SetStateAction<Settings>>;
+  readonly changeApiKey: (apiKey: string) => void;
+  readonly changeModel: (model: AI_MODEL) => void;
 }
 
 const [useChatContext, ChatContextProvider] =
@@ -25,6 +26,14 @@ const syncSettings = debounce(async (settings: Settings) => {
 const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+
+  const changeApiKey = (apiKey: string) => {
+    setSettings((prev) => ({ ...prev, apiKey }));
+  };
+
+  const changeModel = (model: AI_MODEL) => {
+    setSettings((prev) => ({ ...prev, model }));
+  };
 
   useEffect(() => {
     const loadSettings = async () => {
@@ -46,7 +55,8 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
     () => ({
       messages,
       settings,
-      setSettings,
+      changeApiKey,
+      changeModel,
     }),
     [settings, messages],
   );

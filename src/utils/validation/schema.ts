@@ -9,3 +9,19 @@ export const settingsSchema = z.object({
   temperature: z.number(),
   stream: z.boolean(),
 });
+
+export const createSnippetSchema = z.object({
+  title: z.string().nonempty("Title cannot be empty."),
+  icon: z.string().nonempty("Icon cannot be empty."),
+  prompt: z.string().nonempty("Prompt cannot be empty."),
+  color: z.string().nonempty("Color cannot be empty."),
+});
+
+export const snippetSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  icon: z.string(),
+  prompt: z.string(),
+  color: z.string(),
+  shortcut: z.string().optional(),
+});

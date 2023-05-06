@@ -1,11 +1,15 @@
+"use client";
 import PaperPlaneIcon from "@/public/svg/paper-plane.svg";
 import { Snippets } from "@/src/components/snippets/Snippets";
 import { Textarea } from "@/src/components/Textarea";
+import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
 
 const Home = () => {
+  const { snippets } = useSnippetsContext();
+
   return (
     <main className="px-7 h-full flex flex-col justify-between grow">
-      <Snippets />
+      <Snippets snippets={snippets} />
       <form className="relative">
         <Textarea className="pr-12" placeholder="Ask me anything..." />
 

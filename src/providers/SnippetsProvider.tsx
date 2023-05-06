@@ -1,25 +1,58 @@
-import { useMemo, useState } from "react";
+"use client";
+import { useEffect, useMemo, useState } from "react";
 
 import { createSafeContext } from "../lib/createSafeContext";
+import { get, save, store } from "../lib/store";
+import { isSnippet } from "../utils/validation/validator";
 
 import type { Snippet } from "../utils/types";
-import type { ReactNode, Dispatch, SetStateAction } from "react";
+import type { ReactNode } from "react";
 
 interface SnippetsContextValue {
   readonly snippets: Snippet[];
-  readonly setSnippets: Dispatch<SetStateAction<Snippet[]>>;
+  readonly addSnippet: (snippet: Snippet) => void;
+  readonly removeSnippet: (snippetId: string) => void;
 }
 
 const [useSnippetsContext, SnippetsContextProvider] =
   createSafeContext<SnippetsContextValue>();
 
+const syncSnippets = async (snippets: Snippet[]) => {
+  await save(store.snippets, "settings", snippets);
+};
+
 const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
   const [snippets, setSnippets] = useState<Snippet[]>([]);
+
+  const addSnippet = (snippet: Snippet) => {
+    setSnippets((prev) => [...prev, snippet]);
+  };
+
+  const removeSnippet = (snippetId: string) => {
+    setSnippets((prev) => prev.filter((snippet) => snippet.id !== snippetId));
+  };
+
+  useEffect(() => {
+    void syncSnippets(snippets);
+  }, [snippets]);
+
+  useEffect(() => {
+    const loadSnippets = async () => {
+      const snippets = await get(store.snippets, "snippets");
+
+      if (Array.isArray(snippets) && snippets.every(isSnippet)) {
+        setSnippets(snippets);
+      }
+    };
+
+    void loadSnippets();
+  }, []);
 
   const value = useMemo(
     () => ({
       snippets,
-      setSnippets,
+      addSnippet,
+      removeSnippet,
     }),
     [snippets],
   );
