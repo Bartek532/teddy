@@ -12,3 +12,19 @@ h5,
 h6 {
   @apply font-serif;
 }
+
+*::-webkit-scrollbar {
+  @apply w-1.5;
+}
+
+*::-webkit-scrollbar-track {
+  @apply bg-background-100;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply rounded-lg bg-scrollbar-thumb;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  @apply bg-scrollbar-thumb-hover;
+}

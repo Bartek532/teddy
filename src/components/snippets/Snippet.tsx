@@ -9,6 +9,10 @@ interface SnippetProps {
   readonly snippet: SnippetType;
 }
 
+const iconProps = {
+  size: 22,
+};
+
 export const Snippet = memo<SnippetProps>(({ snippet }) => {
   const [isHovering, setIsHovering] = useState(false);
 
@@ -30,7 +34,7 @@ export const Snippet = memo<SnippetProps>(({ snippet }) => {
           backgroundColor: isHovering ? snippet.color : "transparent",
         }}
       >
-        <Icon name={snippet.icon} />
+        <Icon name={snippet.icon} props={iconProps} />
         {snippet.title}
       </button>
     </li>

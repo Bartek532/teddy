@@ -24,6 +24,15 @@ module.exports = {
           400: "#fcfcfc",
           500: "#ece8eb",
         },
+        blue: {
+          100: "#94ccff",
+          200: "#4432ff",
+          300: "#e2e9fa",
+        },
+        "scrollbar-thumb": "#919191",
+        "scrollbar-thumb-hover": "#b7b7b7",
+        "selection-background": "#4432ff",
+        "selection-color": "#FFFFFF",
       },
       fontFamily: {
         sans: ["var(--font-walsheim)", ...defaultTheme.fontFamily.sans],

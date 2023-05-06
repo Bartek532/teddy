@@ -12,7 +12,7 @@ export const Header = () => {
   const pathname = usePathname();
 
   return (
-    <header className="flex w-full justify-between py-5 px-7 h-20">
+    <header className="flex w-full justify-between items-center py-5 px-7 h-20">
       {pathname === "/" ? (
         <Image
           src="/img/logo.png"
@@ -21,9 +21,12 @@ export const Header = () => {
           height="40"
         />
       ) : (
-        <button onClick={() => router.back()}>
-          <ArrowLeftIcon className="w-6" />
-        </button>
+        <>
+          <button onClick={() => router.back()}>
+            <ArrowLeftIcon className="w-6" />
+          </button>
+          <h1>Settings</h1>
+        </>
       )}
 
       <div className="flex gap-6 items-center">

@@ -12,6 +12,11 @@ enum MESSAGE_SENDER {
   ASSISTANT = "ASSISTANT",
 }
 
+export enum AI_MODEL {
+  "GPT_4" = "GPT-4",
+  "GPT_3_5" = "GPT-3.5",
+}
+
 export interface Message {
   readonly id: string;
   readonly text: string;

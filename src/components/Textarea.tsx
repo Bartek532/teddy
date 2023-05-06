@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { twMerge } from "tailwind-merge";
 
 export const Textarea = forwardRef<
   HTMLTextAreaElement,
@@ -10,7 +11,10 @@ export const Textarea = forwardRef<
       <textarea
         ref={ref}
         {...props}
-        className="rounded-2xl h-auto pl-5 py-3 pr-12 bg-gray-400 w-full outline-none border-gray-100 border focus:border-gray-300"
+        className={twMerge(
+          "rounded-2xl resize-none h-auto pl-5 py-3 pr-12 bg-gray-400 w-full outline-none border-gray-100 border focus:border-gray-300",
+          props.className,
+        )}
       ></textarea>
     </label>
   );

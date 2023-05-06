@@ -1,5 +1,6 @@
 import localFont from "next/font/local";
 
+import { AppProviders } from "../providers/AppProviders";
 import "../styles/globals.css";
 
 const walsheim = localFont({
@@ -40,7 +41,7 @@ export default function RootLayout({
       <body
         className={`${walsheim.variable} ${leagueMono.variable} ${kenfolg.variable}`}
       >
-        {children}
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );
