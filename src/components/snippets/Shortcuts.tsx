@@ -1,6 +1,7 @@
 import { memo } from "react";
 
 import BinIcon from "@/public/svg/bin.svg";
+import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
 
 import { Icon } from "../Icon";
 import { Input } from "../Input";
@@ -12,6 +13,7 @@ interface ShortcutsProps {
 }
 
 export const Shortcuts = memo<ShortcutsProps>(({ snippets }) => {
+  const { removeSnippet } = useSnippetsContext();
   return (
     <ul className="w-full flex flex-col gap-2">
       {snippets.map((snippet) => {
@@ -31,7 +33,10 @@ export const Shortcuts = memo<ShortcutsProps>(({ snippets }) => {
             <Input className="h-full text-center">
               <span className="sr-only">Shortcut</span>
             </Input>
-            <button className="group border-2 border-red-100 bg-red-100 transition hover:bg-transparent rounded-2xl flex items-center justify-center">
+            <button
+              className="group border-2 border-red-100 bg-red-100 transition hover:bg-transparent rounded-2xl flex items-center justify-center"
+              onClick={() => removeSnippet(snippet.id)}
+            >
               <span className="sr-only">Delete</span>
               <BinIcon className="w-5 stroke-white-100 group-hover:stroke-red-100" />
             </button>

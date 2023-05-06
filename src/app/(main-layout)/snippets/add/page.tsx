@@ -1,25 +1,32 @@
 "use client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import { Input } from "@/src/components/Input";
 import { Textarea } from "@/src/components/Textarea";
-import { snippetSchema } from "@/src/utils/validation/schema";
+import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
+import { createSnippetSchema } from "@/src/utils/validation/schema";
 
 import type { CreateSnippetInput } from "@/src/utils/types";
 
 const AddSnippet = () => {
+  const { addSnippet } = useSnippetsContext();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<CreateSnippetInput>({
-    resolver: zodResolver(snippetSchema),
+    resolver: zodResolver(createSnippetSchema),
   });
 
   const createSnippet = (data: CreateSnippetInput) => {
-    console.log(data);
+    addSnippet(data);
+    reset();
+    return router.back();
   };
 
   return (

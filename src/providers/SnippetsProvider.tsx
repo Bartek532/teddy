@@ -10,7 +10,7 @@ import type { ReactNode } from "react";
 
 interface SnippetsContextValue {
   readonly snippets: Snippet[];
-  readonly addSnippet: (snippet: Snippet) => void;
+  readonly addSnippet: (snippet: Omit<Snippet, "id">) => void;
   readonly removeSnippet: (snippetId: string) => void;
 }
 
@@ -18,14 +18,15 @@ const [useSnippetsContext, SnippetsContextProvider] =
   createSafeContext<SnippetsContextValue>();
 
 const syncSnippets = async (snippets: Snippet[]) => {
-  await save(store.snippets, "settings", snippets);
+  await save(store.snippets, "snippets", snippets);
 };
 
 const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
   const [snippets, setSnippets] = useState<Snippet[]>([]);
 
-  const addSnippet = (snippet: Snippet) => {
-    setSnippets((prev) => [...prev, snippet]);
+  const addSnippet = (snippet: Omit<Snippet, "id">) => {
+    const id = crypto.randomUUID();
+    setSnippets((prev) => [...prev, { ...snippet, id }]);
   };
 
   const removeSnippet = (snippetId: string) => {
