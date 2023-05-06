@@ -1,32 +1,53 @@
-import { useMemo, useState } from "react";
+import { debounce } from "lodash";
+import { useEffect, useMemo, useState } from "react";
 
 import { createSafeContext } from "../lib/createSafeContext";
-import { AI_MODEL } from "../utils/types";
+import { get, save, store } from "../lib/store";
+import { DEFAULT_SETTINGS } from "../utils/constants";
 
+import type { Message, Settings } from "../utils/types";
 import type { ReactNode, Dispatch, SetStateAction } from "react";
 
 interface ChatContextValue {
-  readonly model: AI_MODEL;
-  readonly setModel: Dispatch<SetStateAction<AI_MODEL>>;
-  readonly apiKey: string;
-  readonly setApiKey: Dispatch<SetStateAction<string>>;
+  readonly settings: Settings;
+  readonly messages: Message[];
+  readonly setSettings: Dispatch<SetStateAction<Settings>>;
 }
 
 const [useChatContext, ChatContextProvider] =
   createSafeContext<ChatContextValue>();
 
+const syncSettings = debounce(async (settings: Settings) => {
+  await save(store.chat, "settings", settings);
+}, 1000);
+
 const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
-  const [model, setModel] = useState<AI_MODEL>(AI_MODEL.GPT_3_5);
-  const [apiKey, setApiKey] = useState<string>("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      const settings = (await get(store.chat, "settings")) as Settings; // TODO: add zod validation
+
+      if (settings) {
+        setSettings(settings);
+      }
+    };
+
+    void loadSettings();
+  }, []);
+
+  useEffect(() => {
+    void syncSettings(settings);
+  }, [settings]);
 
   const value = useMemo(
     () => ({
-      model,
-      setModel,
-      apiKey,
-      setApiKey,
+      messages,
+      settings,
+      setSettings,
     }),
-    [model, apiKey],
+    [settings, messages],
   );
 
   return <ChatContextProvider value={value}>{children}</ChatContextProvider>;

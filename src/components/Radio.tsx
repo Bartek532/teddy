@@ -6,21 +6,22 @@ export const Radio = forwardRef<
   JSX.IntrinsicElements["input"]
 >(({ children, ...props }, ref) => {
   return (
-    <label
-      className={twMerge(
-        "relative cursor-pointer text-sm rounded-2xl border-2 p-2 border-gray-100 w-full flex justify-center items-center",
-        props.checked ? "bg-gray-100" : "",
-        props.disabled ? "opacity-50 cursor-default" : "",
-        props.className,
-      )}
-    >
-      {children}
+    <label className="w-full">
       <input
         ref={ref}
         {...props}
-        className="absolute w-0 h-0 cursor-pointer opacity-0"
+        className="peer absolute w-0 h-0 cursor-pointer opacity-0"
         type="radio"
       />
+      <div
+        className={twMerge(
+          "relative cursor-pointer text-sm rounded-2xl border-2 p-2 border-gray-100 w-full flex justify-center items-center peer-checked:bg-gray-100",
+          props.disabled ? "opacity-50 cursor-default" : "",
+          props.className,
+        )}
+      >
+        {children}
+      </div>
     </label>
   );
 });

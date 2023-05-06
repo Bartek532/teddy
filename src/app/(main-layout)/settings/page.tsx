@@ -1,45 +1,71 @@
 "use client";
+import { use, useEffect } from "react";
+import { useForm } from "react-hook-form";
+
 import PlusIcon from "@/public/svg/plus.svg";
 import { Input } from "@/src/components/Input";
 import { Radio } from "@/src/components/Radio";
 import { Shortcuts } from "@/src/components/snippets/Shortcuts";
+import { useChatContext } from "@/src/providers/ChatProvider";
+import { AI_MODEL } from "@/src/utils/types";
 
 const Settings = () => {
+  const { settings, setSettings } = useChatContext();
+  const { register, watch } = useForm({
+    defaultValues: {
+      model: settings.model,
+      apiKey: settings.apiKey,
+    },
+  });
+
+  const watchModel = watch("model");
+  const watchApiKey = watch("apiKey");
+
+  useEffect(() => {
+    setSettings((prev) => ({ ...prev, model: watchModel }));
+  }, [watchModel]);
+
+  useEffect(() => {
+    watchApiKey && setSettings((prev) => ({ ...prev, apiKey: watchApiKey }));
+  }, [watchApiKey]);
+
   return (
     <main className="px-7 flex flex-col justify-start gap-4 h-full grow">
-      <h2 className="text-sm">General</h2>
+      <h2 className="text-sm">Chat</h2>
 
-      <div>
-        <span className="text-sm block mb-1.5">
-          API model, you could check details{" "}
-          <a
-            href="https://platform.openai.com/docs/models"
-            className="text-blue-200"
-          >
-            here
-          </a>
-        </span>
-        <div className="flex justify-center gap-2">
-          <Radio name="model" checked>
-            GPT 3.5 Turbo
-          </Radio>
-          <Radio name="model" disabled>
-            GPT 4
-          </Radio>
+      <form className="flex flex-col justify-start gap-4">
+        <div>
+          <span className="text-sm block mb-1.5">
+            API model, you could check details{" "}
+            <a
+              href="https://platform.openai.com/docs/models"
+              className="text-blue-200"
+            >
+              here
+            </a>
+          </span>
+          <div className="flex justify-center gap-2">
+            <Radio value={AI_MODEL.GPT_3_5} {...register("model")}>
+              GPT 3.5 Turbo
+            </Radio>
+            <Radio value={AI_MODEL.GPT_4} {...register("model")} disabled>
+              GPT 4
+            </Radio>
+          </div>
         </div>
-      </div>
 
-      <Input>
-        <span className="text-sm block mb-1.5">
-          OpenAI API key, you could receive it from your{" "}
-          <a
-            href="https://platform.openai.com/account/api-keys"
-            className="text-blue-200"
-          >
-            account
-          </a>
-        </span>
-      </Input>
+        <Input {...register("apiKey")}>
+          <span className="text-sm block mb-1.5">
+            OpenAI API key, you could receive it from your{" "}
+            <a
+              href="https://platform.openai.com/account/api-keys"
+              className="text-blue-200"
+            >
+              account
+            </a>
+          </span>
+        </Input>
+      </form>
 
       <h2 className="text-sm mt-4">Snippets</h2>
       <button className="text-sm rounded-2xl border-2 p-2.5 border-gray-100 bg-gray-100 w-full flex justify-center gap-3 items-center">
