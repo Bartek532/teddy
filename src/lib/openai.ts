@@ -1,11 +1,18 @@
-import { OPENAI_API_URL } from "../utils/constants";
+import { Configuration, OpenAIApi } from "openai";
+
 import { MESSAGE_VARIANT } from "../utils/types";
 
-import type {
-  Message,
-  Settings,
-  GptChatCompletionResponse,
-} from "../utils/types";
+import type { Message, Settings } from "../utils/types";
+
+export const getApi = (apiKey: string) => {
+  const configuration = new Configuration({
+    apiKey,
+  });
+
+  const openai = new OpenAIApi(configuration);
+
+  return { openai };
+};
 
 export const getCompletion = async (
   messages: Message[],
@@ -17,53 +24,41 @@ export const getCompletion = async (
       arr[index + 1]?.variant !== MESSAGE_VARIANT.ERROR,
   );
 
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      Authorization: `Bearer ${settings.apiKey}`,
-    },
-    body: JSON.stringify({
-      model: settings.model,
-      max_tokens: settings.maxTokens,
-      temperature: settings.temperature,
-      messages: filteredMessages.map(({ sender, text }) => ({
-        role: sender,
-        content: text,
-      })),
-      stream: false,
-      stop: ["---"],
-    }),
-  };
+  const { openai } = getApi(settings.apiKey);
 
-  console.log(options);
+  const completion = await openai.createChatCompletion({
+    model: "text-davinci-003", //settings.model,
+    max_tokens: settings.maxTokens,
+    temperature: settings.temperature,
+    messages: filteredMessages.map(({ sender, text }) => ({
+      role: sender,
+      content: text,
+    })),
+    stream: settings.stream,
+    stop: ["---"],
+  });
 
-  const response = await fetch(OPENAI_API_URL, options);
-  return response;
-};
+  //   const options = {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json; charset=utf-8",
+  //       Authorization: `Bearer ${settings.apiKey}`,
+  //     },
+  //     body: JSON.stringify({
+  //       model: "text-davinci-003", //settings.model,
+  //       max_tokens: settings.maxTokens,
+  //       temperature: settings.temperature,
+  //       messages: filteredMessages.map(({ sender, text }) => ({
+  //         role: sender,
+  //         content: text,
+  //       })),
+  //       stream: settings.stream,
+  //       stop: ["---"],
+  //     }),
+  //   };
 
-export const getAiAnswer = async (messages: Message[], settings: Settings) => {
-  try {
-    const response = await getCompletion(messages, settings);
-    const completion = (await response.json()) as GptChatCompletionResponse;
+  //   const response = await fetch(OPENAI_API_URL, options);
+  //   return response;
 
-    console.log(completion);
-
-    return {
-      variant: MESSAGE_VARIANT.DEFAULT,
-      message: completion.choices[0].message.content,
-    };
-  } catch (err) {
-    if (err instanceof Error) {
-      return {
-        variant: MESSAGE_VARIANT.ERROR,
-        message: err.message,
-      };
-    }
-
-    return {
-      variant: MESSAGE_VARIANT.ERROR,
-      message: "Something went wrong. Check your settings and try again.",
-    };
-  }
+  return completion;
 };
