@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createSafeContext } from "../lib/createSafeContext";
 import { getState, saveState } from "../lib/store";
 import { DEFAULT_SETTINGS } from "../utils/constants";
+import { MESSAGE_SENDER } from "../utils/types";
 import { isSettings } from "../utils/validation/validator";
 
 import type { AI_MODEL, Message, Settings } from "../utils/types";
@@ -25,7 +26,69 @@ const syncSettings = debounce(async (settings: Settings) => {
 }, 1000);
 
 const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: "12",
+      text: "Hello, I'm a chatbot. How can I help you?",
+      timestamp: new Date().toString(),
+      sender: MESSAGE_SENDER.USER,
+    },
+    {
+      id: "2",
+      text: "The Windows Registry is a hierarchical database that stores configuration settings and options on Microsoft Windows operating systems. The tauri-plugin-store plugin uses the Registry API provided by Windows to read and write data to the Registry.      ",
+      timestamp: new Date().toString(),
+      sender: MESSAGE_SENDER.ASSISTANT,
+    },
+    {
+      id: "12",
+      text: "Hello, I'm a chatbot. How can I help you?",
+      timestamp: new Date().toString(),
+      sender: MESSAGE_SENDER.USER,
+    },
+    {
+      id: "2",
+      text: "The Windows Registry is a hierarchical database that stores configuration settings and options on Microsoft Windows operating systems. The tauri-plugin-store plugin uses the Registry API provided by Windows to read and write data to the Registry.      ",
+      timestamp: new Date().toString(),
+      sender: MESSAGE_SENDER.ASSISTANT,
+    },
+
+    {
+      id: "12",
+      text: "Hello, I'm a chatbot. How can I help you?",
+      timestamp: new Date().toString(),
+      sender: MESSAGE_SENDER.USER,
+    },
+    {
+      id: "2",
+      text: "The Windows Registry is a hierarchical database that stores configuration settings and options on Microsoft Windows operating systems. The tauri-plugin-store plugin uses the Registry API provided by Windows to read and write data to the Registry.      ",
+      timestamp: new Date().toString(),
+      sender: MESSAGE_SENDER.ASSISTANT,
+    },
+    {
+      id: "12",
+      text: "Hello, I'm a chatbot. How can I help you?",
+      timestamp: new Date().toString(),
+      sender: MESSAGE_SENDER.USER,
+    },
+    {
+      id: "2",
+      text: "The Windows Registry is a hierarchical database that stores configuration settings and options on Microsoft Windows operating systems. The tauri-plugin-store plugin uses the Registry API provided by Windows to read and write data to the Registry.      ",
+      timestamp: new Date().toString(),
+      sender: MESSAGE_SENDER.ASSISTANT,
+    },
+    {
+      id: "12",
+      text: "Hello, I'm a chatbot. How can I help you?",
+      timestamp: new Date().toString(),
+      sender: MESSAGE_SENDER.USER,
+    },
+    {
+      id: "2",
+      text: "The Windows Registry is a hierarchical database that stores configuration settings and options on Microsoft Windows operating systems. The tauri-plugin-store plugin uses the Registry API provided by Windows to read and write data to the Registry.      ",
+      timestamp: new Date().toString(),
+      sender: MESSAGE_SENDER.ASSISTANT,
+    },
+  ]);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
   const changeApiKey = (apiKey: string) => {

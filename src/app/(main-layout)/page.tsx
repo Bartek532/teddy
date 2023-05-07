@@ -1,22 +1,27 @@
 "use client";
 
 import PaperPlaneIcon from "@/public/svg/paper-plane.svg";
+import { MessagesList } from "@/src/components/messages/MessagesList";
 import { Snippets } from "@/src/components/snippets/Snippets";
 import { Textarea } from "@/src/components/Textarea";
+import { useChatContext } from "@/src/providers/ChatProvider";
 import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
 
 const Home = () => {
   const { snippets, activeSnippet, activateSnippet, deactivateSnippet } =
     useSnippetsContext();
+  const { messages } = useChatContext();
 
   return (
-    <main className="px-7 h-full flex flex-col justify-between grow">
+    <main className="px-7 pr-5.5 h-full flex flex-col justify-between grow">
       <Snippets
         snippets={snippets}
         active={activeSnippet}
         onActivate={activateSnippet}
         onDeactivate={deactivateSnippet}
       />
+
+      <MessagesList messages={messages} />
 
       <form className="relative">
         <Textarea className="pr-12" placeholder="Ask me anything..." />

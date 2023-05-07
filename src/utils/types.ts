@@ -1,4 +1,4 @@
-enum MESSAGE_SENDER {
+export enum MESSAGE_SENDER {
   USER = "USER",
   ASSISTANT = "ASSISTANT",
 }

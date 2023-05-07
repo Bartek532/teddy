@@ -9,6 +9,7 @@ module.exports = {
   ],
   theme: {
     extend: {
+      shadow: "rgba(0, 0, 0, 0.08) 0px 1px 4px;",
       colors: {
         background: {
           100: "#F7f1f3",
@@ -16,6 +17,9 @@ module.exports = {
         white: {
           100: "#ffffff",
           200: "#f0f6fc",
+        },
+        yellow: {
+          100: "#fcd53b",
         },
         gray: {
           100: "#ece8eb",
@@ -31,6 +35,9 @@ module.exports = {
         },
         red: {
           100: "#EF476F",
+        },
+        green: {
+          100: "#59cbc0",
         },
         "scrollbar-thumb": "#919191",
         "scrollbar-thumb-hover": "#b7b7b7",
