@@ -1,10 +1,11 @@
 import { debounce } from "lodash";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { createSafeContext } from "../lib/createSafeContext";
+import { getAiAnswer } from "../lib/openai";
 import { getState, saveState } from "../lib/store";
 import { DEFAULT_SETTINGS } from "../utils/constants";
-import { MESSAGE_SENDER } from "../utils/types";
+import { MESSAGE_SENDER, MESSAGE_VARIANT } from "../utils/types";
 import { isSettings } from "../utils/validation/validator";
 
 import type { AI_MODEL, Message, Settings } from "../utils/types";
@@ -15,6 +16,8 @@ interface ChatContextValue {
   readonly messages: Message[];
   readonly changeApiKey: (apiKey: string) => void;
   readonly changeModel: (model: AI_MODEL) => void;
+  readonly sendMessage: (message: string) => void;
+  readonly clearMessages: () => void;
 }
 
 const [useChatContext, ChatContextProvider] =
@@ -26,69 +29,7 @@ const syncSettings = debounce(async (settings: Settings) => {
 }, 1000);
 
 const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "12",
-      text: "Hello, I'm a chatbot. How can I help you?",
-      timestamp: new Date().toString(),
-      sender: MESSAGE_SENDER.USER,
-    },
-    {
-      id: "2",
-      text: "The Windows Registry is a hierarchical database that stores configuration settings and options on Microsoft Windows operating systems. The tauri-plugin-store plugin uses the Registry API provided by Windows to read and write data to the Registry.      ",
-      timestamp: new Date().toString(),
-      sender: MESSAGE_SENDER.ASSISTANT,
-    },
-    {
-      id: "12",
-      text: "Hello, I'm a chatbot. How can I help you?",
-      timestamp: new Date().toString(),
-      sender: MESSAGE_SENDER.USER,
-    },
-    {
-      id: "2",
-      text: "The Windows Registry is a hierarchical database that stores configuration settings and options on Microsoft Windows operating systems. The tauri-plugin-store plugin uses the Registry API provided by Windows to read and write data to the Registry.      ",
-      timestamp: new Date().toString(),
-      sender: MESSAGE_SENDER.ASSISTANT,
-    },
-
-    {
-      id: "12",
-      text: "Hello, I'm a chatbot. How can I help you?",
-      timestamp: new Date().toString(),
-      sender: MESSAGE_SENDER.USER,
-    },
-    {
-      id: "2",
-      text: "The Windows Registry is a hierarchical database that stores configuration settings and options on Microsoft Windows operating systems. The tauri-plugin-store plugin uses the Registry API provided by Windows to read and write data to the Registry.      ",
-      timestamp: new Date().toString(),
-      sender: MESSAGE_SENDER.ASSISTANT,
-    },
-    {
-      id: "12",
-      text: "Hello, I'm a chatbot. How can I help you?",
-      timestamp: new Date().toString(),
-      sender: MESSAGE_SENDER.USER,
-    },
-    {
-      id: "2",
-      text: "The Windows Registry is a hierarchical database that stores configuration settings and options on Microsoft Windows operating systems. The tauri-plugin-store plugin uses the Registry API provided by Windows to read and write data to the Registry.      ",
-      timestamp: new Date().toString(),
-      sender: MESSAGE_SENDER.ASSISTANT,
-    },
-    {
-      id: "12",
-      text: "Hello, I'm a chatbot. How can I help you?",
-      timestamp: new Date().toString(),
-      sender: MESSAGE_SENDER.USER,
-    },
-    {
-      id: "2",
-      text: "The Windows Registry is a hierarchical database that stores configuration settings and options on Microsoft Windows operating systems. The tauri-plugin-store plugin uses the Registry API provided by Windows to read and write data to the Registry.      ",
-      timestamp: new Date().toString(),
-      sender: MESSAGE_SENDER.ASSISTANT,
-    },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
   const changeApiKey = (apiKey: string) => {
@@ -97,6 +38,38 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
 
   const changeModel = (model: AI_MODEL) => {
     setSettings((prev) => ({ ...prev, model }));
+  };
+
+  const sendMessage = useCallback(
+    async (message: string) => {
+      const newMessage = {
+        id: crypto.randomUUID(),
+        text: message,
+        timestamp: new Date().toString(),
+        sender: MESSAGE_SENDER.USER,
+        variant: MESSAGE_VARIANT.DEFAULT,
+      };
+
+      setMessages((prev) => [...prev, newMessage]);
+
+      const answer = await getAiAnswer([...messages, newMessage], settings);
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: crypto.randomUUID(),
+          text: answer.message,
+          timestamp: new Date().toString(),
+          sender: MESSAGE_SENDER.ASSISTANT,
+          variant: answer.variant,
+        },
+      ]);
+    },
+    [messages, settings],
+  );
+
+  const clearMessages = () => {
+    setMessages([]);
   };
 
   useEffect(() => {
@@ -121,8 +94,10 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
       settings,
       changeApiKey,
       changeModel,
+      sendMessage,
+      clearMessages,
     }),
-    [settings, messages],
+    [settings, messages, sendMessage],
   );
 
   return <ChatContextProvider value={value}>{children}</ChatContextProvider>;

@@ -2,6 +2,8 @@ import { AI_MODEL } from "./types";
 
 import type { Settings } from "./types";
 
+export const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+
 export const DEFAULT_SETTINGS: Settings = {
   model: AI_MODEL.GPT_3_5,
   apiKey: "",

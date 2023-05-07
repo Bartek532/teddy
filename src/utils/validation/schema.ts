@@ -25,3 +25,7 @@ export const snippetSchema = z.object({
   color: z.string(),
   shortcut: z.string().optional(),
 });
+
+export const messageSchema = z.object({
+  prompt: z.string(),
+});

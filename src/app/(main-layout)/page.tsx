@@ -1,16 +1,31 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
 import PaperPlaneIcon from "@/public/svg/paper-plane.svg";
 import { MessagesList } from "@/src/components/messages/MessagesList";
 import { Snippets } from "@/src/components/snippets/Snippets";
 import { Textarea } from "@/src/components/Textarea";
 import { useChatContext } from "@/src/providers/ChatProvider";
 import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
+import { onPromise } from "@/src/utils/functions";
+import { messageSchema } from "@/src/utils/validation/schema";
+
+import type { SubmitPromptInput } from "@/src/utils/types";
 
 const Home = () => {
+  const { register, handleSubmit, reset } = useForm<SubmitPromptInput>({
+    resolver: zodResolver(messageSchema),
+  });
   const { snippets, activeSnippet, activateSnippet, deactivateSnippet } =
     useSnippetsContext();
-  const { messages } = useChatContext();
+  const { messages, sendMessage, clearMessages } = useChatContext();
+
+  const onPromptSubmit = ({ prompt }: SubmitPromptInput) => {
+    reset();
+    return sendMessage(prompt);
+  };
 
   return (
     <main className="px-7 pr-5.5 h-full flex flex-col justify-between grow">
@@ -20,11 +35,18 @@ const Home = () => {
         onActivate={activateSnippet}
         onDeactivate={deactivateSnippet}
       />
-
       <MessagesList messages={messages} />
 
-      <form className="relative">
-        <Textarea className="pr-12" placeholder="Ask me anything..." />
+      <button onClick={() => clearMessages()}>Clear</button>
+      <form
+        className="relative"
+        onSubmit={onPromise(handleSubmit(onPromptSubmit))}
+      >
+        <Textarea
+          className="pr-12"
+          placeholder="Ask me anything..."
+          {...register("prompt")}
+        />
 
         <button className="absolute bottom-6 right-6">
           <PaperPlaneIcon className="w-4" />
