@@ -1,4 +1,5 @@
 "use client";
+
 import PaperPlaneIcon from "@/public/svg/paper-plane.svg";
 import { Snippets } from "@/src/components/snippets/Snippets";
 import { Textarea } from "@/src/components/Textarea";

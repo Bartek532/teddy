@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import { createSafeContext } from "../lib/createSafeContext";
-import { get, save } from "../lib/store";
+import { getState, saveState } from "../lib/store";
 import { isSnippet } from "../utils/validation/validator";
 
 import type { Snippet } from "../utils/types";
@@ -20,7 +20,8 @@ const [useSnippetsContext, SnippetsContextProvider] =
   createSafeContext<SnippetsContextValue>();
 
 const syncSnippets = async (snippets: Snippet[]) => {
-  await save("snippets", snippets);
+  const prev = await getState();
+  await saveState({ ...prev, snippets });
 };
 
 const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
@@ -55,15 +56,10 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
 
   useEffect(() => {
     const loadSnippets = async () => {
-      const snippets = await get("snippets");
+      const state = await getState();
 
-      console.log(
-        snippets,
-        Array.isArray(snippets) && snippets.every(isSnippet),
-      );
-
-      if (Array.isArray(snippets) && snippets.every(isSnippet)) {
-        setSnippets(snippets);
+      if (Array.isArray(state?.snippets) && state?.snippets.every(isSnippet)) {
+        setSnippets(state.snippets);
       }
     };
 
