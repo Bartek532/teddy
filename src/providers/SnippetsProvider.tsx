@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { createSafeContext } from "../lib/createSafeContext";
 import { getState, saveState } from "../lib/store";
@@ -9,6 +9,9 @@ import type { Snippet } from "../utils/types";
 import type { ReactNode } from "react";
 
 interface SnippetsContextValue {
+  readonly activeSnippet: Snippet | null;
+  readonly activateSnippet: (snippetId: string) => void;
+  readonly deactivateSnippet: (snippetId: string) => void;
   readonly snippets: Snippet[];
   readonly addSnippet: (snippet: Omit<Snippet, "id">) => void;
   readonly removeSnippet: (snippetId: string) => void;
@@ -26,6 +29,7 @@ const syncSnippets = async (snippets: Snippet[]) => {
 
 const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
   const [snippets, setSnippets] = useState<Snippet[]>([]);
+  const [activeSnippet, setActiveSnippet] = useState<Snippet | null>(null);
 
   const addSnippet = (snippet: Omit<Snippet, "id">) => {
     const id = crypto.randomUUID();
@@ -36,9 +40,12 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
     setSnippets((prev) => prev.filter((snippet) => snippet.id !== snippetId));
   };
 
-  const getSnippet = (snippetId: string) => {
-    return snippets.find((snippet) => snippet.id === snippetId);
-  };
+  const getSnippet = useCallback(
+    (snippetId: string) => {
+      return snippets.find((snippet) => snippet.id === snippetId);
+    },
+    [snippets],
+  );
 
   const editSnippet = (snippetId: string, snippet: Omit<Snippet, "id">) => {
     setSnippets((prev) =>
@@ -49,6 +56,28 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
       ),
     );
   };
+
+  const activateSnippet = useCallback(
+    (snippetId: string) => {
+      const snippet = getSnippet(snippetId);
+
+      if (snippet) {
+        setActiveSnippet(snippet);
+      }
+    },
+    [getSnippet],
+  );
+
+  const deactivateSnippet = useCallback(
+    (snippetId: string) => {
+      const snippet = getSnippet(snippetId);
+
+      if (snippet) {
+        setActiveSnippet(null);
+      }
+    },
+    [getSnippet],
+  );
 
   useEffect(() => {
     void syncSnippets(snippets);
@@ -68,13 +97,16 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
 
   const value = useMemo(
     () => ({
+      activeSnippet,
+      activateSnippet,
+      deactivateSnippet,
       snippets,
       addSnippet,
       removeSnippet,
       getSnippet,
       editSnippet,
     }),
-    [snippets],
+    [snippets, activeSnippet, activateSnippet, getSnippet],
   );
 
   return (

@@ -1,4 +1,5 @@
 "use client";
+import { capitalize } from "lodash";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -10,6 +11,8 @@ import SunIcon from "@/public/svg/sun.svg";
 export const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
+
+  const page = pathname.split("/")[1];
 
   return (
     <header className="flex w-full justify-between items-center py-5 px-7 h-20">
@@ -25,7 +28,7 @@ export const Header = () => {
           <button onClick={() => router.back()}>
             <ArrowLeftIcon className="w-6" />
           </button>
-          <h1>Settings</h1>
+          <h1>{capitalize(page)}</h1>
         </>
       )}
 
