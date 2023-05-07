@@ -33,7 +33,7 @@ export const Header = () => {
         <button>
           <SunIcon className="w-6" />
         </button>
-        <Link href="/settings">
+        <Link href="/settings" prefetch={false}>
           <GearIcon className="w-6" />
         </Link>
       </div>

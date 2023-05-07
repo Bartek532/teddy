@@ -79,7 +79,7 @@ const Settings = () => {
       </form>
 
       <h2 className="text-sm mt-4">Snippets</h2>
-      <Link href="/snippets/add">
+      <Link href="/snippets/add" prefetch={false}>
         <span className="text-sm rounded-2xl border-2 p-2.5 border-gray-100 bg-gray-100 w-full flex justify-center gap-3 items-center">
           <PlusIcon className="w-3" />
           Create snippet
