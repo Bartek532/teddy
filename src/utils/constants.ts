@@ -2,14 +2,14 @@ import { AI_MODEL } from "./types";
 
 import type { Settings } from "./types";
 
-export const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+export const CHAT_COMPLETIONS_URL =
+  "https://api.openai.com/v1/chat/completions";
 
 export const DEFAULT_SETTINGS: Settings = {
   model: AI_MODEL.GPT_3_5,
   apiKey: "",
-  maxTokens: 1500,
+  max_tokens: 1500,
   temperature: 0.8,
-  stream: true,
 };
 
 export const MODELS = [

@@ -20,7 +20,7 @@ const Home = () => {
   });
   const { snippets, activeSnippet, activateSnippet, deactivateSnippet } =
     useSnippetsContext();
-  const { messages, sendMessage, clearMessages } = useChatContext();
+  const { messages, sendMessage, resetMessages } = useChatContext();
 
   const onPromptSubmit = ({ prompt }: SubmitPromptInput) => {
     reset();
@@ -28,16 +28,15 @@ const Home = () => {
   };
 
   return (
-    <main className="px-7 pr-5.5 h-full flex flex-col justify-between grow">
+    <main className="px-7 pr-5 h-full flex flex-col justify-between grow">
       <Snippets
         snippets={snippets}
         active={activeSnippet}
         onActivate={activateSnippet}
         onDeactivate={deactivateSnippet}
       />
-      <MessagesList messages={messages} />
+      <MessagesList messages={messages.filter(({ content }) => content)} />
 
-      <button onClick={() => clearMessages()}>Clear</button>
       <form
         className="relative"
         onSubmit={onPromise(handleSubmit(onPromptSubmit))}
@@ -52,6 +51,16 @@ const Home = () => {
           <PaperPlaneIcon className="w-4" />
         </button>
       </form>
+
+      <div className="text-sm px-3.5 flex justify-between mb-3 mt-1">
+        <button
+          onClick={() => resetMessages()}
+          className="underline hover:no-underline"
+        >
+          Clear conversation
+        </button>
+        <span>Token limit: 0 / 8172</span>
+      </div>
     </main>
   );
 };

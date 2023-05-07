@@ -5,9 +5,8 @@ import { AI_MODEL } from "../types";
 export const settingsSchema = z.object({
   model: z.nativeEnum(AI_MODEL),
   apiKey: z.string(),
-  maxTokens: z.number(),
+  max_tokens: z.number(),
   temperature: z.number(),
-  stream: z.boolean(),
 });
 
 export const createSnippetSchema = z.object({

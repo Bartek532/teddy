@@ -1,8 +1,3 @@
-export enum MESSAGE_SENDER {
-  USER = "user",
-  ASSISTANT = "assistant",
-}
-
 export enum MESSAGE_VARIANT {
   DEFAULT = "DEFAULT",
   ERROR = "ERROR",
@@ -13,37 +8,86 @@ export enum AI_MODEL {
   "GPT_3_5" = "gpt-3.5-turbo",
 }
 
-export interface Message {
-  readonly id: string;
-  readonly text: string;
-  readonly timestamp: string;
-  readonly sender: MESSAGE_SENDER;
-  readonly variant: MESSAGE_VARIANT;
-}
+// export interface Message {
+//   readonly id: string;
+//   readonly text: string;
+//   readonly timestamp: string;
+//   readonly sender: MESSAGE_SENDER;
+//   readonly variant: MESSAGE_VARIANT;
+// }
 
 export * from "./validation/types";
 
-export interface GptChatCompletionResponse {
+export type GPT35Model = "gpt-3.5-turbo" | "gpt-3.5-turbo-0301";
+
+export type GPT4Model = "gpt-4" | "gpt-4-0314" | "gpt-4-32k" | "gpt-4-32k-0314";
+
+export enum ROLE {
+  USER = "user",
+  ASSISTANT = "assistant",
+  SYSTEM = "system",
+}
+
+export type Model = GPT35Model | GPT4Model;
+
+export interface OpenAIChatMessage {
+  content: string;
+  role: ROLE;
+}
+
+export interface OpenAIChatCompletionChunk {
   id: string;
   object: string;
   created: number;
-  choices: GptChoice[];
-  usage: GptUsage;
+  model: Model;
+  choices: {
+    delta: Partial<OpenAIChatMessage>;
+    index: number;
+    finish_reason: string | null;
+  }[];
 }
 
-export interface GptChoice {
-  index: number;
-  message: GptMessage;
-  finish_reason: string;
+export interface ChatCompletionToken extends OpenAIChatMessage {
+  timestamp: number;
 }
 
-export interface GptMessage {
-  role: "system" | "user" | "assistant";
-  content: string;
+export interface ChatMessageParams extends OpenAIChatMessage {
+  timestamp?: number;
+  variant?: MESSAGE_VARIANT;
+  meta?: {
+    loading?: boolean;
+    responseTime?: string;
+    chunks?: ChatCompletionToken[];
+  };
 }
 
-export interface GptUsage {
-  prompt_tokens: number;
-  completion_tokens: number;
-  total_tokens: number;
+export interface ChatMessage extends OpenAIChatMessage {
+  timestamp: number;
+  variant: MESSAGE_VARIANT;
+  meta: {
+    loading: boolean;
+    responseTime: string;
+    chunks: ChatCompletionToken[];
+  };
+}
+
+export interface OpenAIStreamingParams {
+  apiKey: string;
+  model: Model;
+  temperature?: number;
+  top_p?: number;
+  n?: number;
+  stop?: string | string[];
+  max_tokens?: number;
+  presence_penalty?: number;
+  frequency_penalty?: number;
+  logit_bias?: Map<string | number, number>;
+  user?: string;
+}
+
+export interface FetchRequestOptions {
+  headers: Record<string, string>;
+  method: "POST";
+  body: string;
+  signal?: AbortSignal;
 }

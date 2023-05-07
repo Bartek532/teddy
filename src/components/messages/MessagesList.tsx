@@ -2,10 +2,10 @@ import { memo } from "react";
 
 import { Message } from "./Message";
 
-import type { Message as MessageType } from "@/src/utils/types";
+import type { ChatMessage } from "@/src/utils/types";
 
 interface MessagesListProps {
-  readonly messages: MessageType[];
+  readonly messages: ChatMessage[];
 }
 
 export const MessagesList = memo<MessagesListProps>(({ messages }) => {
@@ -13,7 +13,7 @@ export const MessagesList = memo<MessagesListProps>(({ messages }) => {
     <section className="flex grow justify-end flex-col py-5">
       <ul className="flex flex-col grow h-full gap-3 overflow-y-scroll basis-0 pr-1.5">
         {messages.map((message) => {
-          return <Message key={message.id} message={message} />;
+          return <Message key={message.timestamp} message={message} />;
         })}
       </ul>
     </section>

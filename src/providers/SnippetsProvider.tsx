@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { createSafeContext } from "../lib/createSafeContext";
+import { createSafeContext } from "../lib/context";
 import { getState, saveState } from "../lib/store";
 import { isSnippet } from "../utils/validation/validator";
 

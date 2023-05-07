@@ -28,3 +28,7 @@ h6 {
 *::-webkit-scrollbar-thumb:hover {
   @apply bg-scrollbar-thumb-hover;
 }
+
+*::selection {
+  @apply text-selection-color bg-selection-background;
+}
