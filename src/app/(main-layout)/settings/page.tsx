@@ -11,10 +11,6 @@ import { useChatContext } from "@/src/providers/ChatProvider";
 import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
 import { MODELS } from "@/src/utils/constants";
 
-export const metadata = {
-  title: "Settings",
-};
-
 const Settings = () => {
   const { settings, changeApiKey, changeModel } = useChatContext();
   const { snippets } = useSnippetsContext();
@@ -40,7 +36,10 @@ const Settings = () => {
     <main className="px-7 flex flex-col justify-start gap-4 h-full grow">
       <h2 className="text-sm">Chat</h2>
 
-      <form className="flex flex-col justify-start gap-4">
+      <form
+        className="flex flex-col justify-start gap-4"
+        onSubmit={(e) => e.preventDefault()}
+      >
         <div>
           <span className="text-sm block mb-1.5">
             API model, details available{" "}
