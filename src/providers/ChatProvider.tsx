@@ -2,7 +2,7 @@ import { debounce } from "lodash";
 import { useEffect, useMemo, useState } from "react";
 
 import { createSafeContext } from "../lib/createSafeContext";
-import { get, save, store } from "../lib/store";
+import { get, save } from "../lib/store";
 import { DEFAULT_SETTINGS } from "../utils/constants";
 import { isSettings } from "../utils/validation/validator";
 
@@ -20,7 +20,7 @@ const [useChatContext, ChatContextProvider] =
   createSafeContext<ChatContextValue>();
 
 const syncSettings = debounce(async (settings: Settings) => {
-  await save(store.chat, "settings", settings);
+  await save("settings", settings);
 }, 1000);
 
 const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
@@ -37,7 +37,7 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
 
   useEffect(() => {
     const loadSettings = async () => {
-      const settings = await get(store.chat, "settings");
+      const settings = await get("settings");
 
       if (isSettings(settings)) {
         setSettings(settings);

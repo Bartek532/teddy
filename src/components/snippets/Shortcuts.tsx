@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { memo } from "react";
 
 import BinIcon from "@/public/svg/bin.svg";
@@ -34,13 +35,14 @@ export const Shortcuts = memo<ShortcutsProps>(({ snippets }) => {
             <Input className="h-full text-center">
               <span className="sr-only">Shortcut</span>
             </Input>
-            <button
+            <Link
+              href={`/snippets/edit/${snippet.id}`}
+              prefetch={false}
               className="group border-2 border-blue-100 bg-blue-100 transition hover:bg-transparent rounded-2xl flex items-center justify-center"
-              onClick={() => removeSnippet(snippet.id)}
             >
               <span className="sr-only">Edit</span>
               <PencilICon className="w-5 fill-white-100 group-hover:fill-blue-100" />
-            </button>
+            </Link>
             <button
               className="group border-2 border-red-100 bg-red-100 transition hover:bg-transparent rounded-2xl flex items-center justify-center"
               onClick={() => removeSnippet(snippet.id)}
