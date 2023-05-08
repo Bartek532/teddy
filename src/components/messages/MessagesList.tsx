@@ -20,8 +20,8 @@ export const MessagesList = memo<MessagesListProps>(({ messages }) => {
   }, [messages]);
 
   return (
-    <section className="flex grow justify-end flex-col py-5">
-      <ul className="flex flex-col grow h-full gap-3 overflow-y-scroll basis-0 pr-1.5">
+    <section className="flex grow justify-end flex-col">
+      <ul className="flex flex-col grow h-full gap-3 overflow-y-scroll pb-1 basis-0 pr-1.5">
         {messages.map((message) => {
           return <Message key={message.timestamp} message={message} />;
         })}

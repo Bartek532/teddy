@@ -29,12 +29,12 @@ export const Snippet = memo<SnippetProps>(
       setIsHovering(false);
     };
     return (
-      <li className="grow basis-60">
+      <li>
         <button
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           className={twMerge(
-            "border-2 border-solid rounded-2xl transition w-full flex justify-center items-center p-2.5 gap-3.5 hover:text-white-100",
+            "border-2 border-solid rounded-2xl transition w-full flex flex-col justify-center items-center p-2.5 pt-3 gap-2.5 hover:text-white-100",
             isActive && "text-white-100",
           )}
           style={{
@@ -47,7 +47,7 @@ export const Snippet = memo<SnippetProps>(
           }
         >
           <Icon name={snippet.icon} props={iconProps} />
-          {snippet.title}
+          <span className="truncate max-w-[85%] text-sm">{snippet.title}</span>
         </button>
       </li>
     );

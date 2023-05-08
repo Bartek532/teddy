@@ -25,12 +25,15 @@ export const Shortcuts = memo<ShortcutsProps>(({ snippets }) => {
             className="grid grid-cols-[2fr_2fr_0.4fr_0.4fr] gap-2 items-stretch"
           >
             <div
-              className="flex justify-center items-center border-2 border-solid rounded-2xl p-2.5 gap-3.5"
+              className="flex justify-center items-center border-2 border-solid rounded-2xl p-2.5 gap-3.5 overflow-hidden"
               style={{
                 borderColor: snippet.color,
               }}
             >
-              <Icon name={snippet.icon} /> {snippet.title}
+              <Icon name={snippet.icon} />
+              <span className="truncate text-sm max-w-[70%]">
+                {snippet.title}
+              </span>
             </div>
             <Input className="h-full text-center">
               <span className="sr-only">Shortcut</span>
@@ -41,7 +44,7 @@ export const Shortcuts = memo<ShortcutsProps>(({ snippets }) => {
               className="group border-2 border-blue-100 bg-blue-100 transition hover:bg-transparent rounded-2xl flex items-center justify-center"
             >
               <span className="sr-only">Edit</span>
-              <PencilICon className="w-5 fill-white-100 group-hover:fill-blue-100" />
+              <PencilICon className="w-4 fill-white-100 group-hover:fill-blue-100" />
             </Link>
             <button
               className="group border-2 border-red-100 bg-red-100 transition hover:bg-transparent rounded-2xl flex items-center justify-center"
