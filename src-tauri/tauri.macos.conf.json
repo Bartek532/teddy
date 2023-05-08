@@ -1,0 +1,17 @@
+{
+  "tauri": {
+    "windows": [
+      {
+        "decorations": true,
+        "fullscreen": false,
+        "resizable": true,
+        "title": "B.E.A.R.",
+        "width": 650,
+        "height": 800,
+        "hiddenTitle": true,
+        "titleBarStyle": "Overlay",
+        "acceptFirstMouse": true
+      }
+    ]
+  }
+}

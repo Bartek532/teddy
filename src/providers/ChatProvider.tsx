@@ -18,6 +18,8 @@ interface ChatContextValue {
   readonly changeModel: (model: AI_MODEL) => void;
   readonly sendMessage: (message: string) => void;
   readonly resetMessages: () => void;
+  readonly updateSystemMessage: (message: string) => void;
+  readonly resetSystemMessage: () => void;
 }
 
 const [useChatContext, ChatContextProvider] =
@@ -29,7 +31,13 @@ const syncSettings = debounce(async (settings: Settings) => {
 }, 1000);
 
 const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
-  const { messages, submitPrompt, resetMessages } = useChatCompletion();
+  const {
+    messages,
+    submitPrompt,
+    resetMessages,
+    updateSystemMessage,
+    resetSystemMessage,
+  } = useChatCompletion();
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
   const changeApiKey = (apiKey: string) => {
@@ -76,8 +84,17 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
       changeModel,
       sendMessage,
       resetMessages,
+      updateSystemMessage,
+      resetSystemMessage,
     }),
-    [settings, messages, sendMessage, resetMessages],
+    [
+      settings,
+      messages,
+      sendMessage,
+      resetMessages,
+      updateSystemMessage,
+      resetSystemMessage,
+    ],
   );
 
   return <ChatContextProvider value={value}>{children}</ChatContextProvider>;

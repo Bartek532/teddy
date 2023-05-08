@@ -5,7 +5,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <div
         data-tauri-drag-region
-        className="w-full pb-6 cursor-grab bg-background-100"
+        className="w-full pb-4 cursor-grab bg-background-100"
       ></div>
       <Header />
       {children}

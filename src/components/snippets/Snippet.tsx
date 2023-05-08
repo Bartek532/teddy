@@ -34,7 +34,7 @@ export const Snippet = memo<SnippetProps>(
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           className={twMerge(
-            "border-2 border-solid rounded-2xl transition w-full flex flex-col justify-center items-center p-2.5 pt-3 gap-2.5 hover:text-white-100",
+            "border-2 border-solid rounded-2xl transition w-full flex flex-col justify-center items-center p-2.5 pt-3 gap-1.5 hover:text-white-100",
             isActive && "text-white-100",
           )}
           style={{

@@ -18,7 +18,7 @@ const Home = () => {
   const { register, handleSubmit, reset } = useForm<SubmitPromptInput>({
     resolver: zodResolver(messageSchema),
   });
-  const { snippets, activeSnippet, activateSnippet, deactivateSnippet } =
+  const { snippets, activeSnippet, deactivateSnippet, activateSnippet } =
     useSnippetsContext();
   const { messages, sendMessage, resetMessages } = useChatContext();
 

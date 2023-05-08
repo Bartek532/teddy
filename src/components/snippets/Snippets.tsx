@@ -15,7 +15,7 @@ export const Snippets = memo<SnippetsProps>(
   ({ snippets, active, onActivate, onDeactivate }) => {
     return (
       <section className="pb-5">
-        <ul className="grid grid-cols-[repeat(auto-fit,minmax(105px,1fr))] justify-center pr-1.5 items-center w-full flex-wrap gap-3 max-h-[90px] overflow-y-scroll">
+        <ul className="grid grid-cols-[repeat(auto-fit,minmax(105px,1fr))] justify-center pr-1.5 items-center w-full flex-wrap gap-3 max-h-[82px] overflow-y-scroll">
           {snippets.map((snippet) => (
             <Snippet
               key={snippet.id}

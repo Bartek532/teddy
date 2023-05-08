@@ -4,6 +4,7 @@ import {
   getOpenAiRequestOptions,
   openAiStreamingDataHandler,
 } from "../lib/openai";
+import { LOADING_ASSISTANT_MESSAGE, SYSTEM_PROMPT } from "../utils/constants";
 import { MESSAGE_VARIANT } from "../utils/types";
 import { ROLE } from "../utils/types";
 
@@ -50,7 +51,13 @@ const updateLastItem =
     });
 
 export const useChatCompletion = () => {
-  const [messages, _setMessages] = React.useState<ChatMessage[]>([]);
+  const [messages, _setMessages] = React.useState<ChatMessage[]>([
+    createChatMessage({
+      role: ROLE.SYSTEM,
+      variant: MESSAGE_VARIANT.DEFAULT,
+      content: SYSTEM_PROMPT,
+    }),
+  ]);
   const [loading, setLoading] = React.useState(false);
   const [controller, setController] = React.useState<AbortController | null>(
     null,
@@ -65,7 +72,7 @@ export const useChatCompletion = () => {
 
   const resetMessages = () => {
     if (!loading) {
-      _setMessages([]);
+      _setMessages((prev) => prev.filter(({ role }) => role === ROLE.SYSTEM));
     }
   };
 
@@ -87,7 +94,10 @@ export const useChatCompletion = () => {
   const handleNewData = (chunkContent: string, chunkRole: ROLE) => {
     _setMessages(
       updateLastItem((msg) => ({
-        content: `${msg.content}${chunkContent}`,
+        content: `${msg.content.replace(
+          LOADING_ASSISTANT_MESSAGE,
+          "",
+        )}${chunkContent}`,
         role: msg.role,
         variant: MESSAGE_VARIANT.DEFAULT,
         timestamp: 0,
@@ -125,6 +135,26 @@ export const useChatCompletion = () => {
     );
   };
 
+  const updateSystemMessage = (message: string) => {
+    _setMessages((prev) => {
+      const xd = prev.map((msg) =>
+        msg.role === ROLE.SYSTEM
+          ? { ...msg, content: msg.content + message }
+          : msg,
+      );
+
+      return xd;
+    });
+  };
+
+  const resetSystemMessage = () => {
+    _setMessages((prev) =>
+      prev.map((msg) =>
+        msg.role === ROLE.SYSTEM ? { ...msg, content: SYSTEM_PROMPT } : msg,
+      ),
+    );
+  };
+
   const submitPrompt = React.useCallback(
     async (
       apiParams: OpenAIStreamingParams,
@@ -140,7 +170,7 @@ export const useChatCompletion = () => {
         ...messages,
         ...newMessages.map(createChatMessage),
         createChatMessage({
-          content: "",
+          content: LOADING_ASSISTANT_MESSAGE,
           role: ROLE.ASSISTANT,
           timestamp: 0,
           meta: { loading: true },
@@ -161,7 +191,9 @@ export const useChatCompletion = () => {
           .filter(
             ({ variant }, index, arr) =>
               variant !== MESSAGE_VARIANT.ERROR &&
-              arr[index + 1]?.variant !== MESSAGE_VARIANT.ERROR,
+              (arr[index + 1]
+                ? arr[index + 1].variant !== MESSAGE_VARIANT.ERROR
+                : true),
           )
           .map(officialOpenAIParams),
         signal,
@@ -212,5 +244,7 @@ export const useChatCompletion = () => {
     abortResponse,
     resetMessages,
     setMessages,
+    updateSystemMessage,
+    resetSystemMessage,
   };
 };

@@ -40,16 +40,12 @@
     },
     "windows": [
       {
-        "decorations": true,
+        "decorations": false,
         "fullscreen": false,
         "resizable": true,
         "title": "B.E.A.R.",
         "width": 650,
-        "height": 800,
-        "maxWidth": 650,
-        "hiddenTitle": true,
-        "titleBarStyle": "Overlay",
-        "acceptFirstMouse": true
+        "height": 800
       }
     ]
   }

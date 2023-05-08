@@ -5,6 +5,9 @@ import type { Settings } from "./types";
 export const CHAT_COMPLETIONS_URL =
   "https://api.openai.com/v1/chat/completions";
 
+export const LOADING_ASSISTANT_MESSAGE = "I'm thinking...";
+export const SYSTEM_PROMPT = "You're a helpful assistant called David.";
+
 export const DEFAULT_SETTINGS: Settings = {
   model: AI_MODEL.GPT_3_5,
   apiKey: "",

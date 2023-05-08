@@ -5,6 +5,8 @@ import { createSafeContext } from "../lib/context";
 import { getState, saveState } from "../lib/store";
 import { isSnippet } from "../utils/validation/validator";
 
+import { useChatContext } from "./ChatProvider";
+
 import type { Snippet } from "../utils/types";
 import type { ReactNode } from "react";
 
@@ -28,6 +30,7 @@ const syncSnippets = async (snippets: Snippet[]) => {
 };
 
 const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
+  const { resetSystemMessage, updateSystemMessage } = useChatContext();
   const [snippets, setSnippets] = useState<Snippet[]>([]);
   const [activeSnippet, setActiveSnippet] = useState<Snippet | null>(null);
 
@@ -63,9 +66,10 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
 
       if (snippet) {
         setActiveSnippet(snippet);
+        updateSystemMessage(snippet.prompt);
       }
     },
-    [getSnippet],
+    [getSnippet, updateSystemMessage],
   );
 
   const deactivateSnippet = useCallback(
@@ -74,9 +78,10 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
 
       if (snippet) {
         setActiveSnippet(null);
+        resetSystemMessage();
       }
     },
-    [getSnippet],
+    [getSnippet, resetSystemMessage],
   );
 
   useEffect(() => {
@@ -106,7 +111,7 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
       getSnippet,
       editSnippet,
     }),
-    [snippets, activeSnippet, activateSnippet, getSnippet],
+    [snippets, activeSnippet, activateSnippet, getSnippet, deactivateSnippet],
   );
 
   return (
