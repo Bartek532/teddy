@@ -33,6 +33,7 @@ const syncSettings = debounce(async (settings: Settings) => {
 const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
   const {
     messages,
+    tokens,
     submitPrompt,
     resetMessages,
     updateSystemMessage,
@@ -78,6 +79,7 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
 
   const value = useMemo(
     () => ({
+      tokens,
       messages,
       settings,
       changeApiKey,
@@ -88,6 +90,7 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
       resetSystemMessage,
     }),
     [
+      tokens,
       settings,
       messages,
       sendMessage,

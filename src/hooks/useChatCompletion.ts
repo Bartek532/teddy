@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   getOpenAiRequestOptions,
@@ -51,17 +51,20 @@ const updateLastItem =
     });
 
 export const useChatCompletion = () => {
-  const [messages, _setMessages] = React.useState<ChatMessage[]>([
+  const [tokens, setTokens] = useState(0);
+  const [messages, _setMessages] = useState<ChatMessage[]>([
     createChatMessage({
       role: ROLE.SYSTEM,
       variant: MESSAGE_VARIANT.DEFAULT,
       content: SYSTEM_PROMPT,
     }),
   ]);
-  const [loading, setLoading] = React.useState(false);
-  const [controller, setController] = React.useState<AbortController | null>(
-    null,
-  );
+  const [loading, setLoading] = useState(false);
+  const [controller, setController] = useState<AbortController | null>(null);
+
+  useEffect(() => {
+    setTokens(messages.reduce((acc, { content }) => acc + content.length, 0)); // TODO: change to serverless function to count tokens
+  }, [messages]);
 
   const abortResponse = () => {
     if (controller) {
@@ -246,5 +249,6 @@ export const useChatCompletion = () => {
     setMessages,
     updateSystemMessage,
     resetSystemMessage,
+    tokens,
   };
 };

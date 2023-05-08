@@ -74,6 +74,8 @@ export const openAiStreamingDataHandler = async (
       );
       const roleChunk: ROLE = chunk.choices[0].delta.role ?? ROLE.ASSISTANT;
 
+      console.log(chunk);
+
       content = `${content}${contentChunk}`;
       role = `${role}${roleChunk}`;
 

@@ -21,7 +21,7 @@ const Home = () => {
   });
   const { snippets, activeSnippet, deactivateSnippet, activateSnippet } =
     useSnippetsContext();
-  const { messages, sendMessage, resetMessages } = useChatContext();
+  const { messages, sendMessage, resetMessages, tokens } = useChatContext();
 
   const onPromptSubmit = ({ prompt }: SubmitPromptInput) => {
     reset();
@@ -75,7 +75,7 @@ const Home = () => {
         <button onClick={() => resetMessages()} className="hover:underline">
           Clear conversation
         </button>
-        <span>Tokens: 0 / 8172</span>
+        <span>Tokens: {tokens} / 8172</span>
       </div>
     </main>
   );
