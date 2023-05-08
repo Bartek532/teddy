@@ -30,7 +30,7 @@ export const Header = () => {
           <ChipIcon className="w-6" />
         </Link>
 
-        <Link href="/settings" prefetch={false}>
+        <Link href="/snippets" prefetch={false}>
           <SettingsIcon className="w-5" />
         </Link>
       </div>

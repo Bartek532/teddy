@@ -1,19 +1,14 @@
 "use client";
-import Link from "next/link";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import PlusIcon from "@/public/svg/plus.svg";
 import { Input } from "@/src/components/Input";
 import { Radio } from "@/src/components/Radio";
-import { Shortcuts } from "@/src/components/snippets/Shortcuts";
 import { useChatContext } from "@/src/providers/ChatProvider";
-import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
 import { MODELS } from "@/src/utils/constants";
 
 const Settings = () => {
   const { settings, changeApiKey, changeModel } = useChatContext();
-  const { snippets } = useSnippetsContext();
   const { register, watch } = useForm({
     defaultValues: {
       model: settings.model,
@@ -34,10 +29,8 @@ const Settings = () => {
 
   return (
     <main className="px-7 flex flex-col justify-start gap-4 h-full grow">
-      <h2 className="text-sm">Chat</h2>
-
       <form
-        className="flex flex-col justify-start gap-4"
+        className="flex flex-col justify-start gap-5"
         onSubmit={(e) => e.preventDefault()}
       >
         <div>
@@ -76,16 +69,6 @@ const Settings = () => {
           </span>
         </Input>
       </form>
-
-      <h2 className="text-sm mt-4">Snippets</h2>
-      <Link href="/snippets/add" prefetch={false}>
-        <span className="text-sm rounded-2xl border-2 p-2.5 border-gray-100 bg-gray-100 w-full flex justify-center gap-3 items-center">
-          <PlusIcon className="w-3" />
-          Create snippet
-        </span>
-      </Link>
-
-      <Shortcuts snippets={snippets} />
     </main>
   );
 };

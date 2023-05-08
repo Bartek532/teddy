@@ -10,6 +10,7 @@ import { Textarea } from "@/src/components/Textarea";
 import { useChatContext } from "@/src/providers/ChatProvider";
 import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
 import { onPromise } from "@/src/utils/functions";
+import { ROLE } from "@/src/utils/types";
 import { messageSchema } from "@/src/utils/validation/schema";
 
 import type { SubmitPromptInput } from "@/src/utils/types";
@@ -44,7 +45,11 @@ const Home = () => {
         onActivate={activateSnippet}
         onDeactivate={deactivateSnippet}
       />
-      <MessagesList messages={messages.filter(({ content }) => content)} />
+      <MessagesList
+        messages={messages.filter(
+          ({ content, role }) => content && role !== ROLE.SYSTEM,
+        )}
+      />
 
       <form
         className="relative"
