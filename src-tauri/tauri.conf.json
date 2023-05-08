@@ -15,6 +15,9 @@
       "all": false,
       "path": {
         "all": true
+      },
+      "window": {
+        "startDragging": true
       }
     },
     "bundle": {
@@ -42,7 +45,11 @@
         "resizable": true,
         "title": "B.E.A.R.",
         "width": 650,
-        "height": 800
+        "height": 800,
+        "maxWidth": 650,
+        "hiddenTitle": true,
+        "titleBarStyle": "overlay",
+        "acceptFirstMouse": true
       }
     ]
   }

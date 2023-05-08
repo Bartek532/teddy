@@ -1,43 +1,37 @@
 "use client";
-import { capitalize } from "lodash";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
 
-import ArrowLeftIcon from "@/public/svg/arrow-left.svg";
-import GearIcon from "@/public/svg/gear.svg";
+import ChipIcon from "@/public/svg/chip.svg";
+import SettingsIcon from "@/public/svg/settings.svg";
 import SunIcon from "@/public/svg/sun.svg";
 
 export const Header = () => {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const page = pathname.split("/")[1];
-
   return (
     <header className="flex w-full justify-between items-center py-5 px-7 h-20">
-      {pathname === "/" ? (
+      <Link href="/" className="flex gap-3 items-center justify-start">
         <Image
           src="/img/logo.png"
           alt="bear's head but it's half robotic"
-          width="40"
-          height="40"
+          width="44"
+          height="44"
         />
-      ) : (
-        <>
-          <button onClick={() => router.back()}>
-            <ArrowLeftIcon className="w-6" />
-          </button>
-          <h1>{capitalize(page)}</h1>
-        </>
-      )}
+        <div className="flex flex-col pt-0.5">
+          <span className="text-sm opacity-50">AI Assistant</span>
+          <h1 className="leading-tight">B.E.A.R.</h1>
+        </div>
+      </Link>
 
-      <div className="flex gap-6 items-center">
+      <div className="flex gap-5 items-center">
         <button>
           <SunIcon className="w-6" />
         </button>
         <Link href="/settings" prefetch={false}>
-          <GearIcon className="w-6" />
+          <ChipIcon className="w-6" />
+        </Link>
+
+        <Link href="/settings" prefetch={false}>
+          <SettingsIcon className="w-5" />
         </Link>
       </div>
     </header>

@@ -27,6 +27,15 @@ const Home = () => {
     return sendMessage(prompt);
   };
 
+  const handleTextareaKeyDown = (
+    e: React.KeyboardEvent<HTMLTextAreaElement>,
+  ) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      void handleSubmit(onPromptSubmit)();
+    }
+  };
+
   return (
     <main className="px-7 pr-5 h-full flex flex-col justify-between grow">
       <Snippets
@@ -44,6 +53,7 @@ const Home = () => {
         <Textarea
           className="pr-12"
           placeholder="Ask me anything..."
+          onKeyDown={handleTextareaKeyDown}
           {...register("prompt")}
         />
 
@@ -53,13 +63,10 @@ const Home = () => {
       </form>
 
       <div className="text-sm px-3.5 flex justify-between mb-3 mt-1">
-        <button
-          onClick={() => resetMessages()}
-          className="underline hover:no-underline"
-        >
+        <button onClick={() => resetMessages()} className="hover:underline">
           Clear conversation
         </button>
-        <span>Token limit: 0 / 8172</span>
+        <span>Tokens: 0 / 8172</span>
       </div>
     </main>
   );
