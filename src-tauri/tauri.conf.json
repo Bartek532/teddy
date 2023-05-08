@@ -48,7 +48,7 @@
         "height": 800,
         "maxWidth": 650,
         "hiddenTitle": true,
-        "titleBarStyle": "overlay",
+        "titleBarStyle": "Overlay",
         "acceptFirstMouse": true
       }
     ]

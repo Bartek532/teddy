@@ -55,9 +55,13 @@ const Home = () => {
           placeholder="Ask me anything..."
           onKeyDown={handleTextareaKeyDown}
           {...register("prompt")}
+          disabled={messages.at(-1)?.meta.loading ?? false}
         />
 
-        <button className="absolute bottom-6 right-6">
+        <button
+          className="absolute bottom-6 right-6 disabled:opacity-50"
+          disabled={messages.at(-1)?.meta.loading ?? false}
+        >
           <PaperPlaneIcon className="w-4" />
         </button>
       </form>
