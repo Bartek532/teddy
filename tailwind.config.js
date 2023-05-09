@@ -39,6 +39,10 @@ module.exports = {
         green: {
           100: "#59cbc0",
         },
+        syntax: {
+          color: "#000",
+          background: "#EEEEEE",
+        },
         "scrollbar-thumb": "#919191",
         "scrollbar-thumb-hover": "#b7b7b7",
         "selection-background": "#4432ff",

@@ -14,6 +14,10 @@ const walsheim = localFont({
       weight: "600",
     },
     {
+      path: "../../public/fonts/GT-Walsheim-Bold.woff2",
+      weight: "bold",
+    },
+    {
       path: "../../public/fonts/GT-Walsheim-Regular.woff2",
       weight: "normal",
     },
