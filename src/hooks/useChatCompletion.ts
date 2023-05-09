@@ -1,3 +1,4 @@
+import { encode } from "gpt-tokenizer";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -63,7 +64,9 @@ export const useChatCompletion = () => {
   const [controller, setController] = useState<AbortController | null>(null);
 
   useEffect(() => {
-    setTokens(messages.reduce((acc, { content }) => acc + content.length, 0)); // TODO: change to serverless function to count tokens
+    setTokens(
+      messages.reduce((acc, { content }) => acc + encode(content).length, 0),
+    );
   }, [messages]);
 
   const abortResponse = () => {
@@ -82,15 +85,6 @@ export const useChatCompletion = () => {
   const setMessages = (newMessages: ChatMessageParams[]) => {
     if (!loading) {
       _setMessages(newMessages.map(createChatMessage));
-    }
-  };
-
-  const addMessage = (message: ChatMessageParams) => {
-    if (!loading) {
-      _setMessages((currentMessages) => [
-        ...currentMessages,
-        createChatMessage(message),
-      ]);
     }
   };
 

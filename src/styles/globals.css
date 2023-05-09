@@ -14,11 +14,11 @@ h6 {
 }
 
 *::-webkit-scrollbar {
-  @apply w-1.5;
+  @apply w-1.5 h-1.5;
 }
 
 *::-webkit-scrollbar-track {
-  @apply bg-background-100;
+  @apply bg-background-100 rounded-xl;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -31,4 +31,54 @@ h6 {
 
 *::selection {
   @apply text-selection-color bg-selection-background;
+}
+
+/* Markdown formatted content */
+.content ul {
+  @apply list-disc pl-7 pb-3;
+}
+
+.content ol {
+  @apply list-decimal pl-8 pb-3;
+}
+
+.content a {
+  @apply text-blue-200 underline hover:no-underline;
+}
+
+.content p {
+  @apply pt-2;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  @apply pt-3;
+}
+
+.content img {
+  @apply w-full py-2;
+}
+
+.content pre {
+  @apply bg-syntax-background -mx-5 py-3 px-5 mt-2;
+}
+
+.content code,
+.content pre {
+  @apply text-xs whitespace-pre break-normal text-syntax-color hyphens-none;
+  tab-size: 2;
+  word-wrap: 2;
+  word-spacing: normal;
+}
+
+.content pre > code {
+  @apply overflow-auto block pb-2;
+}
+
+.content > :not(pre) > code {
+  @apply py-1 px-2 mx-0.5 bg-syntax-background rounded-sm;
 }

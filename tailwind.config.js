@@ -39,10 +39,18 @@ module.exports = {
         green: {
           100: "#59cbc0",
         },
-        "scrollbar-thumb": "#919191",
-        "scrollbar-thumb-hover": "#b7b7b7",
-        "selection-background": "#4432ff",
-        "selection-color": "#FFFFFF",
+        syntax: {
+          color: "#dd4a68",
+          background: "#EEEEEE",
+        },
+        scrollbar: {
+          thumb: "#919191",
+          "thumb-hover": "#b7b7b7",
+        },
+        selection: {
+          background: "#4432ff",
+          color: "#FFFFFF",
+        },
       },
       fontFamily: {
         sans: ["var(--font-walsheim)", ...defaultTheme.fontFamily.sans],
