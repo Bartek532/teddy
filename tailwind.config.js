@@ -9,7 +9,11 @@ module.exports = {
   ],
   theme: {
     extend: {
-      shadow: "rgba(0, 0, 0, 0.08) 0px 1px 4px;",
+      boxShadow: {
+        DEFAULT: "rgba(0, 0, 0, 0.08) 0px 1px 4px;",
+        200: "0px -26px 23px -1px rgba(247, 241, 243, 1)",
+        300: "0px 26px 23px -1px rgba(247, 241, 243, 1)",
+      },
       colors: {
         background: {
           100: "#F7f1f3",

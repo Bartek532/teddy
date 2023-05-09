@@ -13,7 +13,10 @@ interface MessageProps {
 export const Message = memo<MessageProps>(({ message }) => {
   return (
     <li
-      className={twMerge("flex", message.role === ROLE.USER && "justify-end")}
+      className={twMerge(
+        "flex first:pt-4",
+        message.role === ROLE.USER && "justify-end",
+      )}
     >
       <div
         className={twMerge(

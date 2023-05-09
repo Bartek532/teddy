@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { twMerge } from "tailwind-merge";
 
 import PaperPlaneIcon from "@/public/svg/paper-plane.svg";
 import { MessagesList } from "@/src/components/messages/MessagesList";
@@ -9,6 +10,7 @@ import { Snippets } from "@/src/components/snippets/Snippets";
 import { Textarea } from "@/src/components/Textarea";
 import { useChatContext } from "@/src/providers/ChatProvider";
 import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
+import { MODELS } from "@/src/utils/constants";
 import { onPromise } from "@/src/utils/functions";
 import { ROLE } from "@/src/utils/types";
 import { messageSchema } from "@/src/utils/validation/schema";
@@ -21,7 +23,11 @@ const Home = () => {
   });
   const { snippets, activeSnippet, deactivateSnippet, activateSnippet } =
     useSnippetsContext();
-  const { messages, sendMessage, resetMessages, tokens } = useChatContext();
+  const { messages, sendMessage, resetMessages, tokens, settings } =
+    useChatContext();
+
+  const maxTokens =
+    MODELS.find(({ value }) => value === settings.model)?.tokenLimit ?? 0;
 
   const onPromptSubmit = ({ prompt }: SubmitPromptInput) => {
     reset();
@@ -52,7 +58,7 @@ const Home = () => {
       />
 
       <form
-        className="relative"
+        className="relative shadow-200"
         onSubmit={onPromise(handleSubmit(onPromptSubmit))}
       >
         <Textarea
@@ -75,7 +81,9 @@ const Home = () => {
         <button onClick={() => resetMessages()} className="hover:underline">
           Clear conversation
         </button>
-        <span>Tokens: {tokens} / 8172</span>
+        <span className={twMerge(tokens > maxTokens && "text-red-100")}>
+          Tokens: {tokens} / {maxTokens}
+        </span>
       </div>
     </main>
   );

@@ -21,11 +21,13 @@ export const MODELS = [
     value: AI_MODEL.GPT_3_5,
     label: "GPT-3.5 Turbo",
     isAvailable: true,
+    tokenLimit: 4096,
   },
   {
     id: AI_MODEL.GPT_4,
     value: AI_MODEL.GPT_4,
     label: "GPT-4",
     isAvailable: false,
+    tokenLimit: 8192,
   },
 ] as const;
