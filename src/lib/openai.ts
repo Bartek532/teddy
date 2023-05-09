@@ -31,7 +31,7 @@ export const getOpenAiRequestOptions = (
 
 export const openAiStreamingDataHandler = async (
   requestOpts: FetchRequestOptions,
-  onIncomingChunk: (contentChunk: string, roleChunk: ROLE) => void,
+  onIncomingChunk: ({ content, role }: { content: string; role: ROLE }) => void,
   onCloseStream: (beforeTimestamp: number) => void,
 ) => {
   const beforeTimestamp = Date.now();
@@ -74,12 +74,10 @@ export const openAiStreamingDataHandler = async (
       );
       const roleChunk: ROLE = chunk.choices[0].delta.role ?? ROLE.ASSISTANT;
 
-      console.log(chunk);
-
       content = `${content}${contentChunk}`;
       role = `${role}${roleChunk}`;
 
-      onIncomingChunk(contentChunk, roleChunk);
+      onIncomingChunk({ content: contentChunk, role: roleChunk });
     }
   }
 

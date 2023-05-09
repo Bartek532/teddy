@@ -14,6 +14,7 @@ import type { ReactNode } from "react";
 interface ChatContextValue {
   readonly settings: Settings;
   readonly messages: ChatMessage[];
+  readonly tokens: number;
   readonly changeApiKey: (apiKey: string) => void;
   readonly changeModel: (model: AI_MODEL) => void;
   readonly sendMessage: (message: string) => void;

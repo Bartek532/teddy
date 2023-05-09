@@ -17,7 +17,17 @@
         "all": true
       },
       "window": {
-        "startDragging": true
+        "center": true,
+        "startDragging": true,
+        "maximize": true,
+        "unmaximize": true,
+        "minimize": true,
+        "unminimize": true,
+        "show": true,
+        "hide": true,
+        "close": true,
+        "setSize": true,
+        "setPosition": true
       }
     },
     "bundle": {
@@ -45,7 +55,7 @@
         "resizable": true,
         "title": "B.E.A.R.",
         "width": 650,
-        "height": 800
+        "height": 850
       }
     ]
   }

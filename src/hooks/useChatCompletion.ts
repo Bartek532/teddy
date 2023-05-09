@@ -94,23 +94,31 @@ export const useChatCompletion = () => {
     }
   };
 
-  const handleNewData = (chunkContent: string, chunkRole: ROLE) => {
+  const handleNewData = ({
+    content,
+    role,
+    variant = MESSAGE_VARIANT.DEFAULT,
+  }: {
+    content: string;
+    role: ROLE;
+    variant?: MESSAGE_VARIANT;
+  }) => {
     _setMessages(
       updateLastItem((msg) => ({
         content: `${msg.content.replace(
           LOADING_ASSISTANT_MESSAGE,
           "",
-        )}${chunkContent}`,
+        )}${content}`,
         role: msg.role,
-        variant: MESSAGE_VARIANT.DEFAULT,
+        variant: variant,
         timestamp: 0,
         meta: {
           ...msg.meta,
           chunks: [
             ...msg.meta.chunks,
             {
-              content: chunkContent,
-              role: chunkRole,
+              content,
+              role,
               timestamp: Date.now(),
             },
           ],
@@ -211,20 +219,20 @@ export const useChatCompletion = () => {
       } catch (err) {
         console.error(err);
         if (signal.aborted) {
-          addMessage({
+          handleNewData({
             content: "Request aborted, please try again.",
             role: ROLE.ASSISTANT,
             variant: MESSAGE_VARIANT.ERROR,
           });
         } else {
           if (err instanceof Error) {
-            addMessage({
+            handleNewData({
               content: err.message,
               role: ROLE.ASSISTANT,
               variant: MESSAGE_VARIANT.ERROR,
             });
           } else {
-            addMessage({
+            handleNewData({
               content:
                 "Something went wrong during streaming response. Check your settings and try again.",
               role: ROLE.ASSISTANT,

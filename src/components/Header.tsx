@@ -22,7 +22,7 @@ export const Header = () => {
         </div>
       </Link>
 
-      <div className="flex gap-5 items-center">
+      <nav className="flex gap-5 items-center">
         <button>
           <SunIcon className="w-6" />
         </button>
@@ -33,7 +33,7 @@ export const Header = () => {
         <Link href="/snippets" prefetch={false}>
           <SettingsIcon className="w-5" />
         </Link>
-      </div>
+      </nav>
     </header>
   );
 };
