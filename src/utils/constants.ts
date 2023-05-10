@@ -15,6 +15,17 @@ export const DEFAULT_SETTINGS: Settings = {
   temperature: 0.8,
 };
 
+export const SETTINGS_ROUTES = [
+  {
+    route: "/settings",
+    label: "Settings",
+  },
+  {
+    route: "/snippets",
+    label: "Snippets",
+  },
+] as const;
+
 export const MODELS = [
   {
     id: AI_MODEL.GPT_3_5,

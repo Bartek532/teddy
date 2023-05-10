@@ -2,7 +2,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import ChipIcon from "@/public/svg/chip.svg";
 import SettingsIcon from "@/public/svg/settings.svg";
 import SunIcon from "@/public/svg/sun.svg";
 
@@ -27,10 +26,6 @@ export const Header = () => {
           <SunIcon className="w-6" />
         </button>
         <Link href="/settings" prefetch={false}>
-          <ChipIcon className="w-6" />
-        </Link>
-
-        <Link href="/snippets" prefetch={false}>
           <SettingsIcon className="w-5" />
         </Link>
       </nav>

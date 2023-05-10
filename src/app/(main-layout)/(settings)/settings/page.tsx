@@ -33,6 +33,18 @@ const Settings = () => {
         className="flex flex-col justify-start gap-5"
         onSubmit={(e) => e.preventDefault()}
       >
+        <Input {...register("apiKey")}>
+          <span className="text-sm block mb-1.5">
+            OpenAI API key, you could receive it from your{" "}
+            <a
+              href="https://platform.openai.com/account/api-keys"
+              className="text-blue-200"
+            >
+              account
+            </a>
+          </span>
+        </Input>
+
         <div>
           <span className="text-sm block mb-1.5">
             API model, details available{" "}
@@ -56,18 +68,6 @@ const Settings = () => {
             ))}
           </div>
         </div>
-
-        <Input {...register("apiKey")}>
-          <span className="text-sm block mb-1.5">
-            OpenAI API key, you could receive it from your{" "}
-            <a
-              href="https://platform.openai.com/account/api-keys"
-              className="text-blue-200"
-            >
-              account
-            </a>
-          </span>
-        </Input>
       </form>
     </main>
   );
