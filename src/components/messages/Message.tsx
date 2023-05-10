@@ -20,7 +20,7 @@ export const Message = memo<MessageProps>(({ message }) => {
     >
       <div
         className={twMerge(
-          "shadow bg-white-100 rounded-2xl p-3 px-5 pt-1 max-w-[80%] mb-1 rounded-br-none",
+          "bg-white-100 rounded-2xl p-3 px-5 pt-1 max-w-[80%] mb-1 rounded-br-none",
           message.role === ROLE.ASSISTANT &&
             "bg-gray-100 rounded-br-2xl rounded-bl-none",
           message.variant === MESSAGE_VARIANT.ERROR &&

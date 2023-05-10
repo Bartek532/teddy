@@ -8,7 +8,11 @@ import SunIcon from "@/public/svg/sun.svg";
 export const Header = () => {
   return (
     <header className="flex w-full justify-between items-center py-5 px-7 h-20">
-      <Link href="/" className="flex gap-3 items-center justify-start">
+      <Link
+        href="/"
+        className="flex gap-3 items-center justify-start"
+        prefetch={false}
+      >
         <Image
           src="/img/logo.png"
           alt="bear's head but it's half robotic"
