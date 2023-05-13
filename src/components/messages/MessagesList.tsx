@@ -2,7 +2,7 @@ import { memo, useEffect, useRef } from "react";
 
 import { Message } from "./Message";
 
-import type { ChatMessage } from "@/src/utils/types";
+import type { ChatMessage } from "../../utils/types";
 
 interface MessagesListProps {
   readonly messages: ChatMessage[];

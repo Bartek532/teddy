@@ -1,14 +1,13 @@
-"use client";
 import { ErrorMessage } from "@hookform/error-message";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 
-import { Input } from "@/src/components/Input";
-import { Textarea } from "@/src/components/Textarea";
-import { createSnippetSchema } from "@/src/utils/validation/schema";
+import { createSnippetSchema } from "../../utils/validation/schema";
+import { Input } from "../Input";
+import { Textarea } from "../Textarea";
 
-import type { CreateSnippetInput } from "@/src/utils/types";
+import type { CreateSnippetInput } from "../../utils/types";
 
 interface SnippetFormProps {
   readonly onSubmit: (data: CreateSnippetInput) => void;

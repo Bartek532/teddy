@@ -1,5 +1,4 @@
-import dynamic from "next/dynamic";
-import { memo } from "react";
+import { lazy, memo } from "react";
 
 import type { IconBaseProps, IconType } from "react-icons/lib";
 
@@ -14,7 +13,7 @@ export const Icon = memo<IconProps>(({ name, props }) => {
     .split(" ")[0]
     .toLocaleLowerCase();
 
-  const ElementIcon = dynamic(() =>
+  const ElementIcon = lazy(() =>
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
     import(`react-icons/${lib}/index.js`).then((mod) => mod[name]),
   ) as IconType;

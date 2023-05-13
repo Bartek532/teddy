@@ -4,7 +4,7 @@ import { twMerge } from "tailwind-merge";
 
 import { Icon } from "../Icon";
 
-import type { Snippet as SnippetType } from "@/src/utils/types";
+import type { Snippet as SnippetType } from "../../utils/types";
 
 interface SnippetProps {
   readonly snippet: SnippetType;

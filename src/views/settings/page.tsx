@@ -1,11 +1,12 @@
-"use client";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { Input } from "@/src/components/Input";
-import { Radio } from "@/src/components/Radio";
-import { useChatContext } from "@/src/providers/ChatProvider";
-import { MODELS } from "@/src/utils/constants";
+import { Input } from "../../components/Input";
+import { RootLayout } from "../../components/layout/root";
+import SettingsLayout from "../../components/layout/settings";
+import { Radio } from "../../components/Radio";
+import { useChatContext } from "../../providers/ChatProvider";
+import { MODELS } from "../../utils/constants";
 
 const Settings = () => {
   const { settings, changeApiKey, changeModel } = useChatContext();
@@ -73,4 +74,10 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export const SettingsView = () => (
+  <RootLayout>
+    <SettingsLayout>
+      <Settings />
+    </SettingsLayout>
+  </RootLayout>
+);

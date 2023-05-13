@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import { Snippet } from "./Snippet";
 
-import type { Snippet as SnippetType } from "@/src/utils/types";
+import type { Snippet as SnippetType } from "../../utils/types";
 
 interface SnippetsProps {
   readonly snippets: SnippetType[];

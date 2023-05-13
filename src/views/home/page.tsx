@@ -1,26 +1,29 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
-import PaperPlaneIcon from "@/public/svg/paper-plane.svg";
-import { MessagesList } from "@/src/components/messages/MessagesList";
-import { Snippets } from "@/src/components/snippets/Snippets";
-import { Textarea } from "@/src/components/Textarea";
-import { useChatContext } from "@/src/providers/ChatProvider";
-import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
-import { MODELS } from "@/src/utils/constants";
-import { onPromise } from "@/src/utils/functions";
-import { ROLE } from "@/src/utils/types";
-import { messageSchema } from "@/src/utils/validation/schema";
+import { ReactComponent as PaperPlaneIcon } from "../../assets/svg/paper-plane.svg";
+import { RootLayout } from "../../components/layout/root";
+import { MessagesList } from "../../components/messages/MessagesList";
+import { Snippets } from "../../components/snippets/Snippets";
+import { Textarea } from "../../components/Textarea";
+import { useChatContext } from "../../providers/ChatProvider";
+import { useSnippetsContext } from "../../providers/SnippetsProvider";
+import { MODELS } from "../../utils/constants";
+import { onPromise } from "../../utils/functions";
+import { ROLE } from "../../utils/types";
+import { messageSchema } from "../../utils/validation/schema";
 
-import type { SubmitPromptInput } from "@/src/utils/types";
+import type { SubmitPromptInput } from "../../utils/types";
 
 const Home = () => {
-  const { register, handleSubmit, reset } = useForm<SubmitPromptInput>({
-    resolver: zodResolver(messageSchema),
-  });
+  const { register, handleSubmit, reset, setFocus } =
+    useForm<SubmitPromptInput>({
+      resolver: zodResolver(messageSchema),
+    });
   const { snippets, activeSnippet, deactivateSnippet, activateSnippet } =
     useSnippetsContext();
   const { messages, sendMessage, resetMessages, tokens, settings } =
@@ -34,6 +37,12 @@ const Home = () => {
     return sendMessage(prompt);
   };
 
+  useEffect(() => {
+    if (!messages.at(-1)?.meta.loading) {
+      setFocus("prompt");
+    }
+  }, [messages.at(-1)?.meta.loading]);
+
   const handleTextareaKeyDown = (
     e: React.KeyboardEvent<HTMLTextAreaElement>,
   ) => {
@@ -45,12 +54,12 @@ const Home = () => {
 
   return (
     <main className="px-7 pr-5 h-full flex flex-col justify-between grow">
-      <Snippets
+      {/* <Snippets
         snippets={snippets}
         active={activeSnippet}
         onActivate={activateSnippet}
         onDeactivate={deactivateSnippet}
-      />
+      /> */}
       <MessagesList
         messages={messages.filter(
           ({ content, role }) => content && role !== ROLE.SYSTEM,
@@ -89,4 +98,8 @@ const Home = () => {
   );
 };
 
-export default Home;
+export const HomeView = () => (
+  <RootLayout>
+    <Home />
+  </RootLayout>
+);

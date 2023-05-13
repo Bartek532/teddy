@@ -3,12 +3,14 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "import"],
   "extends": [
-    "next/core-web-vitals",
+    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:@typescript-eslint/strict"
+    "plugin:@typescript-eslint/strict",
+    "plugin:import/errors",
+    "plugin:import/warnings"
   ],
   "settings": {
     "import/parsers": {
@@ -25,6 +27,8 @@
     }
   },
   "rules": {
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
     "@typescript-eslint/consistent-type-imports": "warn",
     "import/order": [
       "error",
@@ -57,6 +61,7 @@
         "format": ["UPPER_CASE"]
       }
     ],
-    "curly": "error"
+    "curly": "error",
+    "react/prop-types": "off"
   }
 }

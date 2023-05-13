@@ -2,9 +2,9 @@ import { marked } from "marked";
 import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { MESSAGE_VARIANT, ROLE } from "@/src/utils/types";
+import { MESSAGE_VARIANT, ROLE } from "../../utils/types";
 
-import type { ChatMessage } from "@/src/utils/types";
+import type { ChatMessage } from "../../utils/types";
 
 interface MessageProps {
   readonly message: ChatMessage;

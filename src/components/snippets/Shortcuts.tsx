@@ -1,14 +1,13 @@
-import Link from "next/link";
 import { memo } from "react";
+import { Link } from "react-router-dom";
 
-import BinIcon from "@/public/svg/bin.svg";
-import PencilICon from "@/public/svg/pencil.svg";
-import { useSnippetsContext } from "@/src/providers/SnippetsProvider";
-
+import { ReactComponent as BinIcon } from "../../assets/svg/bin.svg";
+import { ReactComponent as PencilICon } from "../../assets/svg/pencil.svg";
+import { useSnippetsContext } from "../../providers/SnippetsProvider";
 import { Icon } from "../Icon";
 import { Input } from "../Input";
 
-import type { Snippet } from "@/src/utils/types";
+import type { Snippet } from "../../utils/types";
 
 interface ShortcutsProps {
   readonly snippets: Snippet[];
@@ -39,8 +38,7 @@ export const Shortcuts = memo<ShortcutsProps>(({ snippets }) => {
               <span className="sr-only">Shortcut</span>
             </Input>
             <Link
-              href={`/snippets/edit/${snippet.id}`}
-              prefetch={false}
+              to={`/snippets/edit/${snippet.id}`}
               className="group border-2 border-blue-100 bg-blue-100 transition hover:bg-transparent rounded-2xl flex items-center justify-center"
             >
               <span className="sr-only">Edit</span>

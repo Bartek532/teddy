@@ -8,14 +8,6 @@ export enum AI_MODEL {
   "GPT_3_5" = "gpt-3.5-turbo",
 }
 
-// export interface Message {
-//   readonly id: string;
-//   readonly text: string;
-//   readonly timestamp: string;
-//   readonly sender: MESSAGE_SENDER;
-//   readonly variant: MESSAGE_VARIANT;
-// }
-
 export * from "./validation/types";
 
 export type GPT35Model = "gpt-3.5-turbo" | "gpt-3.5-turbo-0301";

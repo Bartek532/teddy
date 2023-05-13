@@ -3,9 +3,8 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/views/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -57,9 +56,9 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-walsheim)", ...defaultTheme.fontFamily.sans],
-        mono: ["var(--font-league-mono)", ...defaultTheme.fontFamily.mono],
-        serif: ["var(--font-kenfolg)", ...defaultTheme.fontFamily.serif],
+        sans: ["GT Walsheim", ...defaultTheme.fontFamily.sans],
+        mono: ["League Mono", ...defaultTheme.fontFamily.mono],
+        serif: ["Kenfolg", ...defaultTheme.fontFamily.serif],
       },
     },
   },

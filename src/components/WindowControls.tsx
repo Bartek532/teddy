@@ -7,11 +7,10 @@ import {
 } from "@tauri-apps/api/window";
 import { useState } from "react";
 
-import CrossIcon from "@/public/svg/cross.svg";
-import LineIcon from "@/public/svg/line.svg";
-import MaximizeIcon from "@/public/svg/maximize.svg";
-import MinimizeIcon from "@/public/svg/minimize.svg";
-
+import { ReactComponent as CrossIcon } from "../assets/svg/cross.svg";
+import { ReactComponent as LineIcon } from "../assets/svg/line.svg";
+import { ReactComponent as MaximizeIcon } from "../assets/svg/maximize.svg";
+import { ReactComponent as MinimizeIcon } from "../assets/svg/minimize.svg";
 import { onPromise } from "../utils/functions";
 
 export const WindowControls = () => {

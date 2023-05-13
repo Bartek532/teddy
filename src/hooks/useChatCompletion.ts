@@ -6,8 +6,7 @@ import {
   openAiStreamingDataHandler,
 } from "../lib/openai";
 import { LOADING_ASSISTANT_MESSAGE, SYSTEM_PROMPT } from "../utils/constants";
-import { MESSAGE_VARIANT } from "../utils/types";
-import { ROLE } from "../utils/types";
+import { MESSAGE_VARIANT, ROLE } from "../utils/types";
 
 import type {
   ChatMessage,

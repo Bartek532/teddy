@@ -1,20 +1,14 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
-import SettingsIcon from "@/public/svg/settings.svg";
-import SunIcon from "@/public/svg/sun.svg";
+import { ReactComponent as SettingsIcon } from "../assets/svg/settings.svg";
+import { ReactComponent as SunIcon } from "../assets/svg/sun.svg";
 
 export const Header = () => {
   return (
     <header className="flex w-full justify-between items-center py-5 px-7 h-20">
-      <Link
-        href="/"
-        className="flex gap-3 items-center justify-start"
-        prefetch={false}
-      >
-        <Image
-          src="/img/logo.png"
+      <Link to="/" className="flex gap-3 items-center justify-start">
+        <img
+          src="/logo.png"
           alt="bear's head but it's half robotic"
           width="44"
           height="44"
@@ -29,7 +23,7 @@ export const Header = () => {
         <button>
           <SunIcon className="w-6" />
         </button>
-        <Link href="/settings" prefetch={false}>
+        <Link to="/settings">
           <SettingsIcon className="w-5" />
         </Link>
       </nav>
