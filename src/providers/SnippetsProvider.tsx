@@ -18,6 +18,7 @@ interface SnippetsContextValue {
   readonly removeSnippet: (snippetId: string) => void;
   readonly getSnippet: (snippetId: string) => Snippet | undefined;
   readonly editSnippet: (snippetId: string, data: Omit<Snippet, "id">) => void;
+  readonly changeSnippetShortcut: (snippetId: string, shortcut: string) => void;
 }
 
 const [useSnippetsContext, SnippetsContextProvider] =
@@ -83,6 +84,17 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
     [getSnippet, resetSystemMessage],
   );
 
+  const changeSnippetShortcut = useCallback(
+    (snippetId: string, shortcut: string) => {
+      setSnippets((prev) =>
+        prev.map((snippet) =>
+          snippet.id === snippetId ? { ...snippet, shortcut } : snippet,
+        ),
+      );
+    },
+    [],
+  );
+
   useEffect(() => {
     void syncSnippets(snippets);
   }, [snippets]);
@@ -109,6 +121,7 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
       removeSnippet,
       getSnippet,
       editSnippet,
+      changeSnippetShortcut,
     }),
     [snippets, activeSnippet, activateSnippet, getSnippet, deactivateSnippet],
   );

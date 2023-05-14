@@ -1,13 +1,11 @@
 import { Link } from "react-router-dom";
 
 import { ReactComponent as PlusIcon } from "../../assets/svg/plus.svg";
-import { Shortcuts } from "../../components/snippets/Shortcuts";
+import { Shortcuts } from "../../components/snippets/shortcuts/Shortcuts";
 import { useSnippetsContext } from "../../providers/SnippetsProvider";
 
 export const SnippetsView = () => {
   const { snippets } = useSnippetsContext();
-
-  console.log(snippets);
 
   return (
     <main className="px-7 flex flex-col justify-start gap-4 h-full grow">

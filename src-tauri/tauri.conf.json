@@ -28,6 +28,9 @@
         "close": true,
         "setSize": true,
         "setPosition": true
+      },
+      "os": {
+        "all": true
       }
     },
     "bundle": {
