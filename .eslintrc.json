@@ -62,6 +62,7 @@
       }
     ],
     "curly": "error",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "allowComputed": 0
   }
 }

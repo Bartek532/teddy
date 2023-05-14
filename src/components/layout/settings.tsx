@@ -1,8 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 import { SETTINGS_ROUTES } from "../../utils/constants";
 
-const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
+export const SettingsLayout = () => {
   return (
     <>
       <nav className="w-full px-7 pb-6 pt-2">
@@ -22,9 +22,7 @@ const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
           ))}
         </ul>
       </nav>
-      {children}
+      <Outlet />
     </>
   );
 };
-
-export default SettingsLayout;

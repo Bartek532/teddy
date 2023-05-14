@@ -1,14 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { RootLayout } from "../../../components/layout/root";
-import SettingsLayout from "../../../components/layout/settings";
 import { SnippetForm } from "../../../components/snippets/SnippetForm";
 import { useSnippetsContext } from "../../../providers/SnippetsProvider";
 
 import type { CreateSnippetInput } from "../../../utils/types";
 
-const EditSnippet = () => {
+export const EditSnippetView = () => {
   const { reset } = useForm<CreateSnippetInput>();
   const params = useParams();
   const navigate = useNavigate();
@@ -40,11 +38,3 @@ const EditSnippet = () => {
     </main>
   );
 };
-
-export const EditSnippetView = () => (
-  <RootLayout>
-    <SettingsLayout>
-      <EditSnippet />
-    </SettingsLayout>
-  </RootLayout>
-);

@@ -1,6 +1,7 @@
-import { lazy, memo } from "react";
+import { memo } from "react";
+import * as icons from "react-icons/all";
 
-import type { IconBaseProps, IconType } from "react-icons/lib";
+import type { IconBaseProps } from "react-icons/lib";
 
 interface IconProps {
   name: string;
@@ -8,15 +9,12 @@ interface IconProps {
 }
 
 export const Icon = memo<IconProps>(({ name, props }) => {
-  const lib = name
-    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-    .split(" ")[0]
-    .toLocaleLowerCase();
+  // eslint-disable-next-line import/namespace
+  const ElementIcon = icons[name as keyof typeof icons];
 
-  const ElementIcon = lazy(() =>
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return
-    import(`react-icons/${lib}/index.js`).then((mod) => mod[name]),
-  ) as IconType;
+  if (!ElementIcon) {
+    return <span>...</span>;
+  }
 
   return <ElementIcon {...props} />;
 });

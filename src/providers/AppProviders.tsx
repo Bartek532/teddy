@@ -1,5 +1,3 @@
-"use client";
-
 import { ChatProvider } from "./ChatProvider";
 import { SnippetsProvider } from "./SnippetsProvider";
 

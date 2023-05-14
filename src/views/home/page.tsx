@@ -1,12 +1,9 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
 import { ReactComponent as PaperPlaneIcon } from "../../assets/svg/paper-plane.svg";
-import { RootLayout } from "../../components/layout/root";
 import { MessagesList } from "../../components/messages/MessagesList";
 import { Snippets } from "../../components/snippets/Snippets";
 import { Textarea } from "../../components/Textarea";
@@ -19,7 +16,7 @@ import { messageSchema } from "../../utils/validation/schema";
 
 import type { SubmitPromptInput } from "../../utils/types";
 
-const Home = () => {
+export const HomeView = () => {
   const { register, handleSubmit, reset, setFocus } =
     useForm<SubmitPromptInput>({
       resolver: zodResolver(messageSchema),
@@ -54,12 +51,12 @@ const Home = () => {
 
   return (
     <main className="px-7 pr-5 h-full flex flex-col justify-between grow">
-      {/* <Snippets
+      <Snippets
         snippets={snippets}
         active={activeSnippet}
         onActivate={activateSnippet}
         onDeactivate={deactivateSnippet}
-      /> */}
+      />
       <MessagesList
         messages={messages.filter(
           ({ content, role }) => content && role !== ROLE.SYSTEM,
@@ -97,9 +94,3 @@ const Home = () => {
     </main>
   );
 };
-
-export const HomeView = () => (
-  <RootLayout>
-    <Home />
-  </RootLayout>
-);

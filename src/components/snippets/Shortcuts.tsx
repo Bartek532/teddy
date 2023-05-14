@@ -21,7 +21,7 @@ export const Shortcuts = memo<ShortcutsProps>(({ snippets }) => {
         return (
           <li
             key={snippet.id}
-            className="grid grid-cols-[2fr_2fr_0.4fr_0.4fr] gap-2 items-stretch"
+            className="grid grid-cols-[1fr_1fr_44px_44px] gap-2 items-stretch"
           >
             <div
               className="flex justify-center items-center border-2 border-solid rounded-2xl p-2.5 gap-3.5 overflow-hidden"

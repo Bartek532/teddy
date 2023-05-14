@@ -2,13 +2,11 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { Input } from "../../components/Input";
-import { RootLayout } from "../../components/layout/root";
-import SettingsLayout from "../../components/layout/settings";
 import { Radio } from "../../components/Radio";
 import { useChatContext } from "../../providers/ChatProvider";
 import { MODELS } from "../../utils/constants";
 
-const Settings = () => {
+export const SettingsView = () => {
   const { settings, changeApiKey, changeModel } = useChatContext();
   const { register, watch } = useForm({
     defaultValues: {
@@ -73,11 +71,3 @@ const Settings = () => {
     </main>
   );
 };
-
-export const SettingsView = () => (
-  <RootLayout>
-    <SettingsLayout>
-      <Settings />
-    </SettingsLayout>
-  </RootLayout>
-);
