@@ -47,7 +47,11 @@
 }
 
 body {
-  @apply font-sans;
+  @apply font-sans text-black-100;
+}
+
+* {
+  @apply antialiased;
 }
 
 h1,

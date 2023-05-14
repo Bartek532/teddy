@@ -1,5 +1,6 @@
 import { ChatProvider } from "./ChatProvider";
 import { SnippetsProvider } from "./SnippetsProvider";
+import { ThemeProvider } from "./ThemeProvider";
 
 import type { ReactNode } from "react";
 
@@ -8,7 +9,9 @@ type AppProvidersProps = Readonly<{
 }>;
 
 export const AppProviders = ({ children }: AppProvidersProps) => (
-  <ChatProvider>
-    <SnippetsProvider>{children}</SnippetsProvider>
-  </ChatProvider>
+  <ThemeProvider>
+    <ChatProvider>
+      <SnippetsProvider>{children}</SnippetsProvider>
+    </ChatProvider>
+  </ThemeProvider>
 );

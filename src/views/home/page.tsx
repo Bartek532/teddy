@@ -79,7 +79,7 @@ export const HomeView = () => {
           className="absolute bottom-6 right-6 disabled:opacity-50"
           disabled={messages.at(-1)?.meta.loading ?? false}
         >
-          <PaperPlaneIcon className="w-4" />
+          <PaperPlaneIcon className="w-4 fill-black-100" />
         </button>
       </form>
 

@@ -1,5 +1,6 @@
 @import url("./tailwind.css");
-@import url("_typography.css");
+@import url("./typography.css");
+@import url("./variables.css");
 
 body,
 #root {

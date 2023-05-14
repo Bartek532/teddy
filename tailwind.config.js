@@ -2,6 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: [
     "./src/views/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,50 +10,55 @@ module.exports = {
   theme: {
     extend: {
       boxShadow: {
-        DEFAULT: "rgba(0, 0, 0, 0.08) 0px 1px 4px;",
-        200: "0px -26px 23px -1px rgba(247, 241, 243, 1)",
-        300: "0px 26px 23px -1px rgba(247, 241, 243, 1)",
+        DEFAULT: "var(--shadow-default)",
+        200: "var(--shadow-200)",
+        300: "var(--shadow-300)",
       },
       colors: {
         background: {
-          100: "#F7f1f3",
+          100: "var(--bg-100)",
         },
         white: {
-          100: "#ffffff",
-          200: "#f0f6fc",
+          100: "var(--white-100)",
+          200: "var(--white-200)",
+        },
+        black: {
+          100: "var(--black-100)",
+          200: "var(--black-200)",
+          300: "var(--black-300)",
         },
         yellow: {
-          100: "#fcd53b",
+          100: "var(--yellow-100)",
         },
         gray: {
-          100: "#ece8eb",
-          200: "#ece8eb",
-          300: "#b5b8b9",
-          400: "#fcfcfc",
-          500: "#ece8eb",
+          100: "var(--gray-100)",
+          200: "var(--gray-200)",
+          300: "var(--gray-300)",
+          400: "var(--gray-400)",
+          500: "var(--gray-500)",
         },
         blue: {
-          100: "#94ccff",
-          200: "#4432ff",
-          300: "#e2e9fa",
+          100: "var(--blue-100)",
+          200: "var(--blue-200)",
+          300: "var(--blue-300)",
         },
         red: {
-          100: "#EF476F",
+          100: "var(--red-100)",
         },
         green: {
-          100: "#59cbc0",
+          100: "var(--green-100)",
         },
         syntax: {
-          color: "#dd4a68",
-          background: "#EEEEEE",
+          color: "var(--syntax-color)",
+          background: "var(--syntax-background)",
         },
         scrollbar: {
-          thumb: "#919191",
-          "thumb-hover": "#b7b7b7",
+          thumb: "var(--scrollbar-thumb)",
+          "thumb-hover": "var(--scrollbar-thumb-hover)",
         },
         selection: {
-          background: "#4432ff",
-          color: "#FFFFFF",
+          background: "var(--selection-background)",
+          color: "var(--selection-color)",
         },
       },
       fontFamily: {
