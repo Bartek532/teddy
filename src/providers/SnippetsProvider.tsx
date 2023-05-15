@@ -1,8 +1,8 @@
-import { register } from "@tauri-apps/api/globalShortcut";
+import { isRegistered } from "@tauri-apps/api/globalShortcut";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { createSafeContext } from "../lib/context";
-import { registerShortcut } from "../lib/shortcuts";
+import { registerShortcut, unregisterShortcut } from "../lib/shortcuts";
 import { getState, saveState } from "../lib/store";
 import { isSnippet } from "../utils/validation/validator";
 
@@ -20,7 +20,10 @@ interface SnippetsContextValue {
   readonly removeSnippet: (snippetId: string) => void;
   readonly getSnippet: (snippetId: string) => Snippet | undefined;
   readonly editSnippet: (snippetId: string, data: Omit<Snippet, "id">) => void;
-  readonly changeSnippetShortcut: (snippetId: string, shortcut: string) => void;
+  readonly changeSnippetShortcut: (
+    snippetId: string,
+    shortcut: string,
+  ) => Promise<void>;
 }
 
 const [useSnippetsContext, SnippetsContextProvider] =
@@ -87,16 +90,32 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
     [getSnippet, resetSystemMessage],
   );
 
-  const changeSnippetShortcut = useCallback(
-    (snippetId: string, shortcut: string) => {
-      setSnippets((prev) =>
-        prev.map((snippet) =>
-          snippet.id === snippetId ? { ...snippet, shortcut } : snippet,
-        ),
-      );
-    },
-    [],
-  );
+  const changeSnippetShortcut = async (snippetId: string, shortcut: string) => {
+    const snippet = getSnippet(snippetId);
+
+    if (!snippet) {
+      return;
+    }
+
+    console.log(snippet);
+
+    if (snippet.shortcut) {
+      const prevShortcut = snippet.shortcut;
+      const isShortcutRegistered = await isRegistered(prevShortcut);
+
+      isShortcutRegistered && (await unregisterShortcut(prevShortcut));
+    }
+
+    await registerShortcut({ settings, ...snippet, shortcut });
+
+    console.log("regies");
+
+    setSnippets((prev) =>
+      prev.map((snippet) =>
+        snippet.id === snippetId ? { ...snippet, shortcut } : snippet,
+      ),
+    );
+  };
 
   useEffect(() => {
     void syncSnippets(snippets);
@@ -113,8 +132,9 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
           await Promise.all(
             state.snippets
               .filter(({ shortcut }) => shortcut)
-              .map(({ shortcut, prompt }) =>
+              .map(({ shortcut, prompt, title }) =>
                 registerShortcut({
+                  title,
                   shortcut: shortcut!,
                   prompt,
                   settings,

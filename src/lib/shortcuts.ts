@@ -23,33 +23,30 @@ export const registerShortcut = async ({
   settings: Settings;
   prompt: string;
 }) => {
-  try {
-    const alreadyRegistered = await isRegistered(shortcut);
-    if (alreadyRegistered) {
+  const alreadyRegistered = await isRegistered(shortcut);
+  if (alreadyRegistered) {
+    return;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  await register(shortcut, async () => {
+    const clipboardText = (await readText())?.toString()?.trim();
+
+    if (!clipboardText) {
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    await register(shortcut, async () => {
-      const clipboardText = (await readText())?.toString()?.trim();
-      if (!clipboardText) {
-        return;
-      }
+    const options = getOpenAiRequestOptions(settings, [
+      { role: ROLE.SYSTEM, content: prompt },
+      { role: ROLE.USER, content: clipboardText },
+    ]);
 
-      const options = getOpenAiRequestOptions(settings, [
-        { role: ROLE.SYSTEM, content: prompt },
-        { role: ROLE.USER, content: clipboardText },
-      ]);
+    const { content } = await openAiStreamingDataHandler(options);
 
-      const { content } = await openAiStreamingDataHandler(options);
+    await writeText(content);
 
-      await writeText(content);
-
-      sendNotification({ title: `🎉 ${title}`, body: content });
-    });
-  } catch (e) {
-    console.error(e);
-  }
+    sendNotification({ title: `🎉 ${title}`, body: content });
+  });
 };
 
 export const unregisterShortcut = async (shortcut: string) => {

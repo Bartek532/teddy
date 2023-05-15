@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { ReactComponent as BinIcon } from "../../../assets/svg/bin.svg";
 import { ReactComponent as PencilICon } from "../../../assets/svg/pencil.svg";
 import { useSnippetsContext } from "../../../providers/SnippetsProvider";
+import { onPromise } from "../../../utils/functions";
 import { Icon } from "../../Icon";
 import { Input } from "../../Input";
 
@@ -20,6 +21,7 @@ interface ShortcutProps {
 export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
   const [os, setOs] = useState<OsType>();
   const [isFinished, setIsFinished] = useState(!!snippet.shortcut);
+  const [isError, setIsError] = useState(false);
   const [shortcut, setShortcut] = useState<string[]>(
     snippet.shortcut?.split("+").filter(Boolean).length
       ? snippet.shortcut.trim().split("+").filter(Boolean)
@@ -28,9 +30,16 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
   const { removeSnippet, changeSnippetShortcut } = useSnippetsContext();
 
   const debouncedKeyUp = useCallback(
-    debounce(() => {
+    debounce(async () => {
       setIsFinished(true);
-      changeSnippetShortcut(snippet.id, shortcut.join("+"));
+      try {
+        console.log(shortcut);
+        await changeSnippetShortcut(snippet.id, shortcut.join("+"));
+        setIsError(false);
+      } catch (err) {
+        console.error(err);
+        setIsError(true);
+      }
     }, 100),
     [shortcut],
   );
@@ -93,12 +102,13 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
       <Input
         className="h-full text-center"
         onKeyDownCapture={handleKeyDownCapture}
-        onKeyUp={debouncedKeyUp}
+        onKeyUp={onPromise(async () => debouncedKeyUp())}
         value={shortcut
           .map(replaceSpecialCharacters)
           .map(capitalize)
           .join(" + ")}
         readOnly
+        isError={isError}
       >
         <span className="sr-only">Shortcut</span>
       </Input>
