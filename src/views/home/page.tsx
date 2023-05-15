@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
 import { ReactComponent as PaperPlaneIcon } from "../../assets/svg/paper-plane.svg";
+import { Textarea } from "../../components/common/Textarea";
 import { MessagesList } from "../../components/messages/MessagesList";
 import { Snippets } from "../../components/snippets/Snippets";
-import { Textarea } from "../../components/Textarea";
 import { useChatContext } from "../../providers/ChatProvider";
 import { useSnippetsContext } from "../../providers/SnippetsProvider";
 import { MODELS } from "../../utils/constants";

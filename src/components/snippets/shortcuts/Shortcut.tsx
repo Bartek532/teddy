@@ -2,13 +2,13 @@ import { type } from "@tauri-apps/api/os";
 import { capitalize, debounce } from "lodash";
 import { memo, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { twMerge } from "tailwind-merge";
 
-import { ReactComponent as BinIcon } from "../../../assets/svg/bin.svg";
-import { ReactComponent as PencilICon } from "../../../assets/svg/pencil.svg";
 import { useSnippetsContext } from "../../../providers/SnippetsProvider";
 import { onPromise } from "../../../utils/functions";
-import { Icon } from "../../Icon";
-import { Input } from "../../Input";
+import { Icon } from "../../common/Icon";
+import { Input } from "../../common/Input";
+import { Toggle } from "../../common/Toggle";
 
 import type { Snippet } from "../../../utils/types";
 import type { OsType } from "@tauri-apps/api/os";
@@ -27,13 +27,13 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
       ? snippet.shortcut.trim().split("+").filter(Boolean)
       : [],
   );
-  const { removeSnippet, changeSnippetShortcut } = useSnippetsContext();
+  const { changeSnippetShortcut, enableSnippet, disableSnippet } =
+    useSnippetsContext();
 
   const debouncedKeyUp = useCallback(
     debounce(async () => {
       setIsFinished(true);
       try {
-        console.log(shortcut);
         await changeSnippetShortcut(snippet.id, shortcut.join("+"));
         setIsError(false);
       } catch (err) {
@@ -88,17 +88,39 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
   return (
     <li
       key={snippet.id}
-      className="grid grid-cols-[1fr_1fr_44px_44px] gap-2 items-stretch"
+      className="grid grid-cols-[50px_1fr_1fr] gap-2 items-stretch justify-items-center"
     >
-      <div
-        className="flex justify-center items-center border-2 border-solid rounded-2xl p-2.5 gap-3.5 overflow-hidden"
+      <div className="w-full flex justify-center items-center">
+        <Toggle
+          checked={snippet.enabled}
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onChange={(e) =>
+            e.target.checked
+              ? enableSnippet(snippet.id)
+              : disableSnippet(snippet.id)
+          }
+        />
+      </div>
+      <Link
+        to={`/snippets/edit/${snippet.id}`}
+        className={twMerge(
+          "group flex w-full justify-center items-center border-2 border-solid rounded-2xl p-2.5 gap-3.5 overflow-hidden transition-opacity",
+          !snippet.enabled && "opacity-40 cursor-default",
+        )}
         style={{
           borderColor: snippet.color,
         }}
       >
         <Icon name={snippet.icon} />
-        <span className="truncate text-sm max-w-[70%]">{snippet.title}</span>
-      </div>
+        <span
+          className={twMerge(
+            "truncate text-sm max-w-[70%] ",
+            snippet.enabled && "group-hover:underline",
+          )}
+        >
+          {snippet.title}
+        </span>
+      </Link>
       <Input
         className="h-full text-center"
         onKeyDownCapture={handleKeyDownCapture}
@@ -109,23 +131,10 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
           .join(" + ")}
         readOnly
         isError={isError}
+        disabled={!snippet.enabled}
       >
         <span className="sr-only">Shortcut</span>
       </Input>
-      <Link
-        to={`/snippets/edit/${snippet.id}`}
-        className="group border-2 border-blue-100 transition hover:bg-blue-100 rounded-2xl flex items-center justify-center"
-      >
-        <span className="sr-only">Edit</span>
-        <PencilICon className="w-4 fill-blue-100 group-hover:fill-white-200" />
-      </Link>
-      <button
-        className="group border-2 border-red-100 transition hover:bg-red-100 rounded-2xl flex items-center justify-center"
-        onClick={() => removeSnippet(snippet.id)}
-      >
-        <span className="sr-only">Delete</span>
-        <BinIcon className="w-5 stroke-red-100 group-hover:stroke-white-200" />
-      </button>
     </li>
   );
 });

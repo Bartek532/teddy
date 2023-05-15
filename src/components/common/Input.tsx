@@ -12,7 +12,7 @@ export const Input = forwardRef<
         ref={ref}
         {...props}
         className={twMerge(
-          "rounded-2xl px-4 py-2.5 text-sm bg-gray-400 w-full outline-none border-gray-100 border focus:border-gray-300",
+          "rounded-2xl px-4 py-2.5 text-sm bg-gray-400 w-full outline-none border-gray-100 border focus:border-gray-300 transition-opacity disabled:opacity-40",
           isError && "border-red-100",
           props.className,
         )}

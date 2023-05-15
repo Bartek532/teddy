@@ -5,8 +5,8 @@ import {
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { Input } from "../../components/Input";
-import { Radio } from "../../components/Radio";
+import { Input } from "../../components/common/Input";
+import { Radio } from "../../components/common/Radio";
 import { useChatContext } from "../../providers/ChatProvider";
 import { MODELS } from "../../utils/constants";
 import { onPromise } from "../../utils/functions";

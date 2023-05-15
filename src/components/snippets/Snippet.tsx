@@ -1,7 +1,7 @@
 import { memo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { Icon } from "../Icon";
+import { Icon } from "../common/Icon";
 
 import type { Snippet as SnippetType } from "../../utils/types";
 

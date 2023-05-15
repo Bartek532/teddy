@@ -23,6 +23,7 @@ export const snippetSchema = z.object({
   prompt: z.string(),
   color: z.string(),
   shortcut: z.string().optional(),
+  enabled: z.boolean().default(true),
 });
 
 export const messageSchema = z.object({

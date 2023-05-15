@@ -24,6 +24,8 @@ interface SnippetsContextValue {
     snippetId: string,
     shortcut: string,
   ) => Promise<void>;
+  readonly enableSnippet: (snippetId: string) => Promise<void> | undefined;
+  readonly disableSnippet: (snippetId: string) => Promise<void> | undefined;
 }
 
 const [useSnippetsContext, SnippetsContextProvider] =
@@ -97,8 +99,6 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
       return;
     }
 
-    console.log(snippet);
-
     if (snippet.shortcut) {
       const prevShortcut = snippet.shortcut;
       const isShortcutRegistered = await isRegistered(prevShortcut);
@@ -108,13 +108,55 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
 
     await registerShortcut({ settings, ...snippet, shortcut });
 
-    console.log("regies");
-
     setSnippets((prev) =>
       prev.map((snippet) =>
         snippet.id === snippetId ? { ...snippet, shortcut } : snippet,
       ),
     );
+  };
+
+  const enableSnippet = (snippetId: string) => {
+    const snippet = getSnippet(snippetId);
+
+    if (!snippet) {
+      return;
+    }
+
+    setSnippets((prev) =>
+      prev.map((snippet) =>
+        snippet.id === snippetId ? { ...snippet, enabled: true } : snippet,
+      ),
+    );
+
+    const shortcut = snippet.shortcut;
+
+    if (!shortcut) {
+      return;
+    }
+
+    return registerShortcut({ settings, ...snippet, shortcut });
+  };
+
+  const disableSnippet = (snippetId: string) => {
+    const snippet = getSnippet(snippetId);
+
+    if (!snippet) {
+      return;
+    }
+
+    setSnippets((prev) =>
+      prev.map((snippet) =>
+        snippet.id === snippetId ? { ...snippet, enabled: false } : snippet,
+      ),
+    );
+
+    const shortcut = snippet.shortcut;
+
+    if (!shortcut) {
+      return;
+    }
+
+    return unregisterShortcut(shortcut);
   };
 
   useEffect(() => {
@@ -131,11 +173,11 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
         try {
           await Promise.all(
             state.snippets
-              .filter(({ shortcut }) => shortcut)
+              .filter((s): s is Snippet & { shortcut: string } => !!s.shortcut)
               .map(({ shortcut, prompt, title }) =>
                 registerShortcut({
                   title,
-                  shortcut: shortcut!,
+                  shortcut,
                   prompt,
                   settings,
                 }),
@@ -161,6 +203,8 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
       getSnippet,
       editSnippet,
       changeSnippetShortcut,
+      enableSnippet,
+      disableSnippet,
     }),
     [snippets, activeSnippet, activateSnippet, getSnippet, deactivateSnippet],
   );

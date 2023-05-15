@@ -3,15 +3,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { memo } from "react";
 import { useForm } from "react-hook-form";
 
+import { ReactComponent as BinIcon } from "../../assets/svg/bin.svg";
+import { useSnippetsContext } from "../../providers/SnippetsProvider";
 import { createSnippetSchema } from "../../utils/validation/schema";
-import { Input } from "../Input";
-import { Textarea } from "../Textarea";
+import { Input } from "../common/Input";
+import { Textarea } from "../common/Textarea";
 
-import type { CreateSnippetInput } from "../../utils/types";
+import type { CreateSnippetInput, Snippet } from "../../utils/types";
 
 interface SnippetFormProps {
   readonly onSubmit: (data: CreateSnippetInput) => void;
-  readonly defaultValues?: CreateSnippetInput;
+  readonly defaultValues?: Snippet;
   readonly type?: "add" | "edit";
 }
 
@@ -25,6 +27,8 @@ export const SnippetForm = memo<SnippetFormProps>(
       resolver: zodResolver(createSnippetSchema),
       defaultValues,
     });
+
+    const { removeSnippet } = useSnippetsContext();
 
     return (
       <form
@@ -93,11 +97,23 @@ export const SnippetForm = memo<SnippetFormProps>(
           />
         </div>
 
-        <button className="mt-2">
-          <span className="text-sm rounded-2xl border-2 p-2.5 border-gray-100 bg-gray-100 w-full flex justify-center gap-3 items-center">
-            {type === "add" ? "Add" : "Edit"} snippet
-          </span>
-        </button>
+        <div className="mt-2 text-sm w-full flex gap-3">
+          {type === "edit" && (
+            <button
+              onClick={() =>
+                defaultValues?.id && removeSnippet(defaultValues.id)
+              }
+              className="rounded-2xl border-2 p-2.5 text-white-200 bg-red-100 w-full flex gap-3 justify-center items-center"
+            >
+              <BinIcon className="w-4 stroke-white-200" />
+              <span>Delete snippet</span>
+            </button>
+          )}
+
+          <button className="rounded-2xl border-2 p-2.5 bg-gray-100 w-full flex justify-center items-center">
+            <span>{type === "add" ? "Add" : "Edit"} snippet</span>
+          </button>
+        </div>
       </form>
     );
   },
