@@ -19,9 +19,11 @@ interface ShortcutProps {
 
 export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
   const [os, setOs] = useState<OsType>();
-  const [isFinished, setIsFinished] = useState(false);
+  const [isFinished, setIsFinished] = useState(!!snippet.shortcut);
   const [shortcut, setShortcut] = useState<string[]>(
-    snippet.shortcut?.split("+") ?? [],
+    snippet.shortcut?.split("+").filter(Boolean).length
+      ? snippet.shortcut.trim().split("+").filter(Boolean)
+      : [],
   );
   const { removeSnippet, changeSnippetShortcut } = useSnippetsContext();
 
@@ -30,7 +32,7 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
       setIsFinished(true);
       changeSnippetShortcut(snippet.id, shortcut.join("+"));
     }, 100),
-    [],
+    [shortcut],
   );
 
   useEffect(() => {
@@ -96,6 +98,7 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
           .map(replaceSpecialCharacters)
           .map(capitalize)
           .join(" + ")}
+        readOnly
       >
         <span className="sr-only">Shortcut</span>
       </Input>

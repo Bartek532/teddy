@@ -31,8 +31,14 @@ export const getOpenAiRequestOptions = (
 
 export const openAiStreamingDataHandler = async (
   requestOpts: FetchRequestOptions,
-  onIncomingChunk: ({ content, role }: { content: string; role: ROLE }) => void,
-  onCloseStream: (beforeTimestamp: number) => void,
+  onIncomingChunk?: ({
+    content,
+    role,
+  }: {
+    content: string;
+    role: ROLE;
+  }) => void,
+  onCloseStream?: (beforeTimestamp: number) => void,
 ) => {
   const beforeTimestamp = Date.now();
 
@@ -77,60 +83,11 @@ export const openAiStreamingDataHandler = async (
       content = `${content}${contentChunk}`;
       role = `${role}${roleChunk}`;
 
-      onIncomingChunk({ content: contentChunk, role: roleChunk });
+      onIncomingChunk?.({ content: contentChunk, role: roleChunk });
     }
   }
 
-  onCloseStream(beforeTimestamp);
+  onCloseStream?.(beforeTimestamp);
 
   return { content, role } as OpenAIChatMessage;
 };
-
-// export const getCompletion = async (
-//   messages: Message[],
-//   settings: Settings,
-// ) => {
-//   const filteredMessages = messages.filter(
-//     ({ variant }, index, arr) =>
-//       variant !== MESSAGE_VARIANT.ERROR &&
-//       arr[index + 1]?.variant !== MESSAGE_VARIANT.ERROR,
-//   );
-
-//   const { openai } = getApi(settings.apiKey);
-
-//   const completion = await openai.createChatCompletion({
-//     model: "text-davinci-003", //settings.model,
-//     max_tokens: settings.maxTokens,
-//     temperature: settings.temperature,
-//     messages: filteredMessages.map(({ sender, text }) => ({
-//       role: sender,
-//       content: text,
-//     })),
-//     stream: settings.stream,
-//     stop: ["---"],
-//   });
-
-//   //   const options = {
-//   //     method: "POST",
-//   //     headers: {
-//   //       "Content-Type": "application/json; charset=utf-8",
-//   //       Authorization: `Bearer ${settings.apiKey}`,
-//   //     },
-//   //     body: JSON.stringify({
-//   //       model: "text-davinci-003", //settings.model,
-//   //       max_tokens: settings.maxTokens,
-//   //       temperature: settings.temperature,
-//   //       messages: filteredMessages.map(({ sender, text }) => ({
-//   //         role: sender,
-//   //         content: text,
-//   //       })),
-//   //       stream: settings.stream,
-//   //       stop: ["---"],
-//   //     }),
-//   //   };
-
-//   //   const response = await fetch(OPENAI_API_URL, options);
-//   //   return response;
-
-//   return completion;
-// };

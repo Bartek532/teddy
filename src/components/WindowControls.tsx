@@ -76,7 +76,7 @@ export const WindowControls = () => {
           onClick={onPromise(handleHideWindow)}
         >
           {isHovered && (
-            <LineIcon className="w-1.5 dark:stroke-yellow-100 stroke-black-100" />
+            <LineIcon className="w-2 dark:stroke-yellow-100 stroke-black-100" />
           )}
         </button>
         <button

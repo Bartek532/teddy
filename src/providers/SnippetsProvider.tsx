@@ -1,6 +1,8 @@
+import { register } from "@tauri-apps/api/globalShortcut";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { createSafeContext } from "../lib/context";
+import { registerShortcut } from "../lib/shortcuts";
 import { getState, saveState } from "../lib/store";
 import { isSnippet } from "../utils/validation/validator";
 
@@ -31,6 +33,7 @@ const syncSnippets = async (snippets: Snippet[]) => {
 
 const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
   const { resetSystemMessage, updateSystemMessage } = useChatContext();
+  const { settings } = useChatContext();
   const [snippets, setSnippets] = useState<Snippet[]>([]);
   const [activeSnippet, setActiveSnippet] = useState<Snippet | null>(null);
 
@@ -105,6 +108,22 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
 
       if (Array.isArray(state?.snippets) && state?.snippets.every(isSnippet)) {
         setSnippets(state.snippets);
+
+        try {
+          await Promise.all(
+            state.snippets
+              .filter(({ shortcut }) => shortcut)
+              .map(({ shortcut, prompt }) =>
+                registerShortcut({
+                  shortcut: shortcut!,
+                  prompt,
+                  settings,
+                }),
+              ),
+          );
+        } catch (err) {
+          console.error(err);
+        }
       }
     };
 
