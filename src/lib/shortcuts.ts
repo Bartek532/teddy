@@ -4,6 +4,7 @@ import {
   register,
   unregister,
 } from "@tauri-apps/api/globalShortcut";
+import { sendNotification } from "@tauri-apps/api/notification";
 
 import { ROLE } from "../utils/types";
 
@@ -12,10 +13,12 @@ import { getOpenAiRequestOptions, openAiStreamingDataHandler } from "./openai";
 import type { Settings } from "../utils/types";
 
 export const registerShortcut = async ({
+  title,
   shortcut,
   settings,
   prompt,
 }: {
+  title: string;
   shortcut: string;
   settings: Settings;
   prompt: string;
@@ -41,6 +44,8 @@ export const registerShortcut = async ({
       const { content } = await openAiStreamingDataHandler(options);
 
       await writeText(content);
+
+      sendNotification({ title: `🎉 ${title}`, body: content });
     });
   } catch (e) {
     console.error(e);

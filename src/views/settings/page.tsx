@@ -1,12 +1,18 @@
-import { useEffect } from "react";
+import {
+  isPermissionGranted,
+  requestPermission,
+} from "@tauri-apps/api/notification";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Input } from "../../components/Input";
 import { Radio } from "../../components/Radio";
 import { useChatContext } from "../../providers/ChatProvider";
 import { MODELS } from "../../utils/constants";
+import { onPromise } from "../../utils/functions";
 
 export const SettingsView = () => {
+  const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
   const { settings, changeApiKey, changeModel } = useChatContext();
   const { register, watch } = useForm({
     defaultValues: {
@@ -26,8 +32,34 @@ export const SettingsView = () => {
     watchApiKey && changeApiKey(watchApiKey);
   }, [watchApiKey]);
 
+  useEffect(() => {
+    const checkNotificationPermission = async () => {
+      const permissionGranted = await isPermissionGranted();
+      setIsNotificationEnabled(permissionGranted);
+    };
+
+    void checkNotificationPermission();
+  }, []);
+
   return (
     <main className="px-7 flex flex-col justify-start gap-4 h-full grow">
+      <div className="flex pt-1.5 mb-1.5 justify-between items-center">
+        <span className="text-sm block ">Notifications</span>
+        <div className="flex items-center justify-center gap-5">
+          <span className="text-sm">
+            {isNotificationEnabled ? "✅ Enabled" : "❌ Disabled"}
+          </span>
+          {isNotificationEnabled ? null : (
+            <button
+              className="text-sm rounded-2xl bg-gray-100 p-2 px-6"
+              onClick={onPromise(() => requestPermission())}
+            >
+              Enable
+            </button>
+          )}
+        </div>
+      </div>
+
       <form
         className="flex flex-col justify-start gap-5"
         onSubmit={(e) => e.preventDefault()}
