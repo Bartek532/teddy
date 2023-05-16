@@ -3,10 +3,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useChatCompletion } from "../hooks/useChatCompletion";
 import { createSafeContext } from "../lib/context";
-import { getState, saveState } from "../lib/store";
+import { getValidatedState, saveState } from "../lib/store";
 import { DEFAULT_SETTINGS } from "../utils/constants";
 import { ROLE } from "../utils/types";
-import { isSettings } from "../utils/validation/validator";
 
 import type { AI_MODEL, ChatMessage, Settings } from "../utils/types";
 import type { ReactNode } from "react";
@@ -27,7 +26,7 @@ const [useChatContext, ChatContextProvider] =
   createSafeContext<ChatContextValue>();
 
 const syncSettings = debounce(async (settings: Settings) => {
-  const prev = await getState();
+  const prev = await getValidatedState();
   await saveState({ ...prev, settings });
 }, 1000);
 
@@ -64,11 +63,9 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
 
   useEffect(() => {
     const loadSettings = async () => {
-      const state = await getState();
+      const { settings } = await getValidatedState();
 
-      if (state?.settings && isSettings(state.settings)) {
-        setSettings(state.settings);
-      }
+      setSettings(settings);
     };
 
     void loadSettings();

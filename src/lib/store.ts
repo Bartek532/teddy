@@ -1,13 +1,10 @@
 import { Store } from "tauri-plugin-store-api";
 
-import type { Settings, Snippet } from "../utils/types";
+import { stateSchema } from "../utils/validation/schema";
+
+import type { State } from "../utils/types";
 
 const store = new Store(".store.dat");
-
-export interface State {
-  readonly settings: Settings;
-  readonly snippets: Snippet[];
-}
 
 export const saveState = async (value: Partial<State>) => {
   try {
@@ -18,12 +15,10 @@ export const saveState = async (value: Partial<State>) => {
   }
 };
 
-export const getState = async () => {
-  try {
-    // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-    const state = (await store.get("state")) as Partial<State>;
-    return state;
-  } catch (error) {
-    console.error(error);
-  }
+const getState = () => store.get("state");
+
+export const getValidatedState = async () => {
+  const state = await getState();
+
+  return stateSchema.parse(state);
 };

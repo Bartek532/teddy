@@ -1,10 +1,9 @@
 import { isRegistered } from "@tauri-apps/api/globalShortcut";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { createSafeContext } from "../lib/context";
 import { registerShortcut, unregisterShortcut } from "../lib/shortcuts";
-import { getState, saveState } from "../lib/store";
-import { isSnippet } from "../utils/validation/validator";
+import { add, get, load, remove, sync, update } from "../lib/snippets";
 
 import { useChatContext } from "./ChatProvider";
 
@@ -16,84 +15,66 @@ interface SnippetsContextValue {
   readonly activateSnippet: (snippetId: string) => void;
   readonly deactivateSnippet: (snippetId: string) => void;
   readonly snippets: Snippet[];
-  readonly addSnippet: (snippet: Omit<Snippet, "id">) => void;
+  readonly addSnippet: (snippet: Omit<Snippet, "id" | "enabled">) => void;
   readonly removeSnippet: (snippetId: string) => void;
-  readonly getSnippet: (snippetId: string) => Snippet | undefined;
-  readonly editSnippet: (snippetId: string, data: Omit<Snippet, "id">) => void;
+  readonly getSnippet: (snippetId: string) => Snippet | null;
+  readonly editSnippet: (
+    snippetId: string,
+    data: Partial<Omit<Snippet, "id">>,
+  ) => void;
   readonly changeSnippetShortcut: (
     snippetId: string,
     shortcut: string,
   ) => Promise<void>;
-  readonly enableSnippet: (snippetId: string) => Promise<void> | undefined;
-  readonly disableSnippet: (snippetId: string) => Promise<void> | undefined;
+  readonly toggleSnippet: (snippetId: string) => Promise<void> | null;
 }
 
 const [useSnippetsContext, SnippetsContextProvider] =
   createSafeContext<SnippetsContextValue>();
 
-const syncSnippets = async (snippets: Snippet[]) => {
-  const prev = await getState();
-  await saveState({ ...prev, snippets });
-};
-
 const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
-  const { resetSystemMessage, updateSystemMessage } = useChatContext();
-  const { settings } = useChatContext();
+  const { resetSystemMessage, updateSystemMessage, settings } =
+    useChatContext();
   const [snippets, setSnippets] = useState<Snippet[]>([]);
   const [activeSnippet, setActiveSnippet] = useState<Snippet | null>(null);
 
-  const addSnippet = (snippet: Omit<Snippet, "id">) => {
-    const id = crypto.randomUUID();
-    setSnippets((prev) => [...prev, { ...snippet, id }]);
+  const addSnippet = (snippet: Omit<Snippet, "id" | "enabled">) => {
+    setSnippets((prev) => add(prev, snippet));
   };
 
   const removeSnippet = (snippetId: string) => {
-    setSnippets((prev) => prev.filter((snippet) => snippet.id !== snippetId));
+    setSnippets((prev) => remove(prev, snippetId));
   };
 
-  const getSnippet = useCallback(
-    (snippetId: string) => {
-      return snippets.find((snippet) => snippet.id === snippetId);
-    },
-    [snippets],
-  );
-
-  const editSnippet = (snippetId: string, snippet: Omit<Snippet, "id">) => {
-    setSnippets((prev) =>
-      prev.map((prevSnippet) =>
-        prevSnippet.id === snippetId
-          ? { ...snippet, id: snippetId }
-          : prevSnippet,
-      ),
-    );
+  const getSnippet = (snippetId: string) => {
+    return get(snippets, snippetId) ?? null;
   };
 
-  const activateSnippet = useCallback(
-    (snippetId: string) => {
-      const snippet = getSnippet(snippetId);
+  const editSnippet = (
+    snippetId: string,
+    data: Partial<Omit<Snippet, "id">>,
+  ) => {
+    setSnippets((prev) => update(prev, snippetId, data));
+  };
 
-      if (snippet) {
-        setActiveSnippet(snippet);
-        updateSystemMessage(snippet.prompt);
-      }
-    },
-    [getSnippet, updateSystemMessage],
-  );
+  const activateSnippet = (snippetId: string) => {
+    const snippet = get(snippets, snippetId);
 
-  const deactivateSnippet = useCallback(
-    (snippetId: string) => {
-      const snippet = getSnippet(snippetId);
+    if (snippet) {
+      setActiveSnippet(snippet);
+    }
+  };
 
-      if (snippet) {
-        setActiveSnippet(null);
-        resetSystemMessage();
-      }
-    },
-    [getSnippet, resetSystemMessage],
-  );
+  const deactivateSnippet = (snippetId: string) => {
+    const snippet = get(snippets, snippetId);
+
+    if (snippet) {
+      setActiveSnippet(null);
+    }
+  };
 
   const changeSnippetShortcut = async (snippetId: string, shortcut: string) => {
-    const snippet = getSnippet(snippetId);
+    const snippet = get(snippets, snippetId);
 
     if (!snippet) {
       return;
@@ -108,89 +89,54 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
 
     await registerShortcut({ settings, ...snippet, shortcut });
 
-    setSnippets((prev) =>
-      prev.map((snippet) =>
-        snippet.id === snippetId ? { ...snippet, shortcut } : snippet,
-      ),
-    );
+    setSnippets((prev) => update(prev, snippetId, { shortcut }));
   };
 
-  const enableSnippet = (snippetId: string) => {
-    const snippet = getSnippet(snippetId);
+  const toggleSnippet = (snippetId: string) => {
+    const snippet = get(snippets, snippetId);
 
     if (!snippet) {
-      return;
+      return null;
     }
 
     setSnippets((prev) =>
-      prev.map((snippet) =>
-        snippet.id === snippetId ? { ...snippet, enabled: true } : snippet,
-      ),
+      update(prev, snippetId, { enabled: !snippet.enabled }),
     );
 
     const shortcut = snippet.shortcut;
 
     if (!shortcut) {
-      return;
+      return null;
     }
 
-    return registerShortcut({ settings, ...snippet, shortcut });
-  };
-
-  const disableSnippet = (snippetId: string) => {
-    const snippet = getSnippet(snippetId);
-
-    if (!snippet) {
-      return;
-    }
-
-    setSnippets((prev) =>
-      prev.map((snippet) =>
-        snippet.id === snippetId ? { ...snippet, enabled: false } : snippet,
-      ),
-    );
-
-    const shortcut = snippet.shortcut;
-
-    if (!shortcut) {
-      return;
-    }
-
-    return unregisterShortcut(shortcut);
+    return snippet.enabled
+      ? unregisterShortcut(shortcut)
+      : registerShortcut({ settings, ...snippet, shortcut });
   };
 
   useEffect(() => {
-    void syncSnippets(snippets);
+    void sync(snippets);
   }, [snippets]);
 
   useEffect(() => {
     const loadSnippets = async () => {
-      const state = await getState();
+      const snippets = await load();
 
-      if (Array.isArray(state?.snippets) && state?.snippets.every(isSnippet)) {
-        setSnippets(state.snippets);
-
-        try {
-          await Promise.all(
-            state.snippets
-              .filter((s): s is Snippet & { shortcut: string } => !!s.shortcut)
-              .map(({ shortcut, prompt, title }) =>
-                registerShortcut({
-                  title,
-                  shortcut,
-                  prompt,
-                  settings,
-                }),
-              ),
-          );
-        } catch (err) {
-          console.error(err);
-        }
+      if (snippets) {
+        setSnippets(snippets);
       }
     };
 
     void loadSnippets();
   }, []);
+
+  useEffect(() => {
+    if (activeSnippet) {
+      updateSystemMessage(activeSnippet.prompt);
+    } else {
+      resetSystemMessage();
+    }
+  }, [activeSnippet]);
 
   const value = useMemo(
     () => ({
@@ -202,9 +148,8 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
       removeSnippet,
       getSnippet,
       editSnippet,
+      toggleSnippet,
       changeSnippetShortcut,
-      enableSnippet,
-      disableSnippet,
     }),
     [snippets, activeSnippet, activateSnippet, getSnippet, deactivateSnippet],
   );

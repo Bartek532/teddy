@@ -1,6 +1,6 @@
-import { settingsSchema, snippetSchema } from "./schema";
+import { settingsSchema, snippetSchema, stateSchema } from "./schema";
 
-import type { Settings, Snippet } from "./types";
+import type { Settings, Snippet, State } from "./types";
 
 export const isSettings = (maybeSettings: unknown): maybeSettings is Settings =>
   settingsSchema.safeParse(maybeSettings).success;

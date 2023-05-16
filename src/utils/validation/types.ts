@@ -3,8 +3,11 @@ import type {
   messageSchema,
   settingsSchema,
   snippetSchema,
+  stateSchema,
 } from "./schema";
 import type { z } from "zod";
+
+export type State = z.infer<typeof stateSchema>;
 
 export type Settings = z.infer<typeof settingsSchema>;
 export type CreateSnippetInput = z.infer<typeof createSnippetSchema>;

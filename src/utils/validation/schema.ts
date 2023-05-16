@@ -29,3 +29,8 @@ export const snippetSchema = z.object({
 export const messageSchema = z.object({
   prompt: z.string(),
 });
+
+export const stateSchema = z.object({
+  settings: settingsSchema,
+  snippets: z.array(snippetSchema),
+});

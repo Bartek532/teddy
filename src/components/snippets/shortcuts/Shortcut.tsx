@@ -27,8 +27,7 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
       ? snippet.shortcut.trim().split("+").filter(Boolean)
       : [],
   );
-  const { changeSnippetShortcut, enableSnippet, disableSnippet } =
-    useSnippetsContext();
+  const { changeSnippetShortcut, toggleSnippet } = useSnippetsContext();
 
   const debouncedKeyUp = useCallback(
     debounce(async () => {
@@ -94,11 +93,7 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
         <Toggle
           checked={snippet.enabled}
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          onChange={(e) =>
-            e.target.checked
-              ? enableSnippet(snippet.id)
-              : disableSnippet(snippet.id)
-          }
+          onChange={() => toggleSnippet(snippet.id)}
         />
       </div>
       <Link
