@@ -7,7 +7,8 @@ import { ReactComponent as PaperPlaneIcon } from "../../assets/svg/paper-plane.s
 import { Textarea } from "../../components/common/Textarea";
 import { MessagesList } from "../../components/messages/MessagesList";
 import { Snippets } from "../../components/snippets/Snippets";
-import { useChatContext } from "../../providers/ChatProvider";
+import { useChatCompletion } from "../../hooks/useChatCompletion";
+import { useSettingsContext } from "../../providers/SettingsProvider";
 import { useSnippetsContext } from "../../providers/SnippetsProvider";
 import { MODELS } from "../../utils/constants";
 import { onPromise } from "../../utils/functions";
@@ -21,17 +22,22 @@ export const HomeView = () => {
     useForm<SubmitPromptInput>({
       resolver: zodResolver(messageSchema),
     });
+  const { settings } = useSettingsContext();
   const { snippets, activeSnippet, deactivateSnippet, activateSnippet } =
     useSnippetsContext();
-  const { messages, sendMessage, resetMessages, tokens, settings } =
-    useChatContext();
+  const { messages, resetMessages, tokens, submitPrompt } = useChatCompletion();
 
   const maxTokens =
     MODELS.find(({ value }) => value === settings.model)?.tokenLimit ?? 0;
 
   const onPromptSubmit = ({ prompt }: SubmitPromptInput) => {
     reset();
-    return sendMessage(prompt);
+    return submitPrompt(settings, [
+      {
+        content: prompt,
+        role: ROLE.USER,
+      },
+    ]);
   };
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { ChatProvider } from "./ChatProvider";
+import { SettingsProvider } from "./SettingsProvider";
 import { SnippetsProvider } from "./SnippetsProvider";
 import { ThemeProvider } from "./ThemeProvider";
 
@@ -10,8 +10,8 @@ type AppProvidersProps = Readonly<{
 
 export const AppProviders = ({ children }: AppProvidersProps) => (
   <ThemeProvider>
-    <ChatProvider>
+    <SettingsProvider>
       <SnippetsProvider>{children}</SnippetsProvider>
-    </ChatProvider>
+    </SettingsProvider>
   </ThemeProvider>
 );

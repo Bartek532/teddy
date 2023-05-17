@@ -8,7 +8,7 @@ import { sendNotification } from "@tauri-apps/api/notification";
 
 import { ROLE } from "../utils/types";
 
-import { getOpenAiRequestOptions, openAiStreamingDataHandler } from "./openai";
+import { getOpenAiRequestOptions, getChatCompletion } from "./openai";
 
 import type { Settings } from "../utils/types";
 
@@ -41,7 +41,7 @@ export const registerShortcut = async ({
       { role: ROLE.USER, content: clipboardText },
     ]);
 
-    const { content } = await openAiStreamingDataHandler(options);
+    const { content } = await getChatCompletion(options);
 
     await writeText(content);
 

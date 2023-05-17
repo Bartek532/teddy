@@ -3,34 +3,30 @@ import {
   requestPermission,
 } from "@tauri-apps/api/notification";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import { Input } from "../../components/common/Input";
 import { Radio } from "../../components/common/Radio";
-import { useChatContext } from "../../providers/ChatProvider";
+import { useSettingsContext } from "../../providers/SettingsProvider";
 import { MODELS } from "../../utils/constants";
 import { onPromise } from "../../utils/functions";
 
 export const SettingsView = () => {
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
-  const { settings, changeApiKey, changeModel } = useChatContext();
-  const { register, watch } = useForm({
+  const { settings, updateSettings } = useSettingsContext();
+  const { register, control, getValues } = useForm({
     defaultValues: {
       model: settings.model,
       apiKey: settings.apiKey,
+      airtable: settings.airtable,
     },
   });
 
-  const watchModel = watch("model");
-  const watchApiKey = watch("apiKey");
+  const values = useWatch({ name: ["model", "apiKey", "airtable"], control });
 
   useEffect(() => {
-    changeModel(watchModel);
-  }, [watchModel]);
-
-  useEffect(() => {
-    watchApiKey && changeApiKey(watchApiKey);
-  }, [watchApiKey]);
+    updateSettings(getValues());
+  }, values);
 
   useEffect(() => {
     const checkNotificationPermission = async () => {
@@ -98,6 +94,16 @@ export const SettingsView = () => {
               </Radio>
             ))}
           </div>
+        </div>
+
+        <div className="flex gap-3">
+          <Input {...register("airtable.apiKey")}>
+            <span className="text-sm block mb-1.5">Airtable API key</span>
+          </Input>
+
+          <Input>
+            <span className="text-sm block mb-1.5">Airtable base Id</span>
+          </Input>
         </div>
       </form>
     </main>

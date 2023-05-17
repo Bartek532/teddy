@@ -24,7 +24,7 @@ export const Message = memo<MessageProps>(({ message }) => {
           message.role === ROLE.ASSISTANT &&
             "bg-gray-100 rounded-br-2xl rounded-bl-none",
           message.variant === MESSAGE_VARIANT.ERROR &&
-            "text-red-100 bg-red-100/10",
+            "text-red-100 bg-red-200",
         )}
       >
         <p
