@@ -25,7 +25,7 @@ const SettingsProvider = ({ children }: { readonly children: ReactNode }) => {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
 
   const updateSettings = (settings: Partial<Settings>) => {
-    setSettings((prev) => ({ ...prev, settings }));
+    setSettings((prev) => ({ ...prev, ...settings }));
   };
 
   useEffect(() => {

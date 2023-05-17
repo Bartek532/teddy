@@ -85,10 +85,7 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
   };
 
   return (
-    <li
-      key={snippet.id}
-      className="grid grid-cols-[50px_1fr_1fr] gap-2 items-stretch justify-items-center"
-    >
+    <li className="grid grid-cols-[50px_1fr_1fr] gap-2 items-stretch justify-items-center">
       <div className="w-full flex justify-center items-center">
         <Toggle
           checked={snippet.enabled}

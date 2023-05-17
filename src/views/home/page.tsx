@@ -6,7 +6,7 @@ import { twMerge } from "tailwind-merge";
 import { ReactComponent as PaperPlaneIcon } from "../../assets/svg/paper-plane.svg";
 import { Textarea } from "../../components/common/Textarea";
 import { MessagesList } from "../../components/messages/MessagesList";
-import { Snippets } from "../../components/snippets/Snippets";
+import { SnippetsList } from "../../components/snippets/SnippetsList";
 import { useChatCompletion } from "../../hooks/useChatCompletion";
 import { useSettingsContext } from "../../providers/SettingsProvider";
 import { useSnippetsContext } from "../../providers/SnippetsProvider";
@@ -57,7 +57,7 @@ export const HomeView = () => {
 
   return (
     <main className="px-7 pr-5 h-full flex flex-col justify-between grow">
-      <Snippets
+      <SnippetsList
         snippets={snippets}
         active={activeSnippet}
         onActivate={activateSnippet}

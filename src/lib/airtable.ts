@@ -1,25 +1,19 @@
 import * as Airtable from "airtable";
 
-export const getBase = ({
-  apiKey,
-  baseId,
-}: {
-  apiKey: string;
-  baseId: string;
-}) => {
+export const getBase = ({ apiKey, id }: { apiKey: string; id: string }) => {
   const airtable = new Airtable({ apiKey });
-  return airtable.base(baseId);
+  return airtable.base(id);
 };
 
 export const getTable = ({
   apiKey,
-  baseId,
+  base: baseId,
   table,
 }: {
   apiKey: string;
-  baseId: string;
+  base: string;
   table: string;
 }) => {
-  const base = getBase({ apiKey, baseId });
+  const base = getBase({ apiKey, id: baseId });
   return base(table);
 };

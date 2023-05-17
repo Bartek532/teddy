@@ -4,14 +4,14 @@ import { Snippet } from "./Snippet";
 
 import type { Snippet as SnippetType } from "../../utils/types";
 
-interface SnippetsProps {
+interface SnippetsListProps {
   readonly snippets: SnippetType[];
   readonly active: SnippetType | null;
   readonly onActivate: (snippetId: string) => void;
   readonly onDeactivate: (snippetId: string) => void;
 }
 
-export const Snippets = memo<SnippetsProps>(
+export const SnippetsList = memo<SnippetsListProps>(
   ({ snippets, active, onActivate, onDeactivate }) => {
     return (
       <section className="shadow-300 z-10">
@@ -31,4 +31,4 @@ export const Snippets = memo<SnippetsProps>(
   },
 );
 
-Snippets.displayName = "Snippets";
+SnippetsList.displayName = "SnippetsList";

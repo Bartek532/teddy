@@ -38,7 +38,7 @@ export const SettingsView = () => {
   }, []);
 
   return (
-    <main className="px-7 flex flex-col justify-start gap-4 h-full grow">
+    <main className="px-7 flex flex-col justify-start gap-1 h-full grow">
       <div className="flex pt-1.5 mb-1.5 justify-between items-center">
         <span className="text-sm block ">Notifications</span>
         <div className="flex items-center justify-center gap-5">
@@ -60,6 +60,7 @@ export const SettingsView = () => {
         className="flex flex-col justify-start gap-5"
         onSubmit={(e) => e.preventDefault()}
       >
+        <h2 className="text-sm mt-2.5">OpenAI</h2>
         <Input {...register("apiKey")}>
           <span className="text-sm block mb-1.5">
             OpenAI API key, you could receive it from your{" "}
@@ -96,13 +97,18 @@ export const SettingsView = () => {
           </div>
         </div>
 
-        <div className="flex gap-3">
+        <h2 className="text-sm mt-2.5">Airtable</h2>
+        <div className="flex gap-3 -mt-2">
           <Input {...register("airtable.apiKey")}>
-            <span className="text-sm block mb-1.5">Airtable API key</span>
+            <span className="text-sm block mb-1.5">API key</span>
           </Input>
 
-          <Input>
-            <span className="text-sm block mb-1.5">Airtable base Id</span>
+          <Input {...register("airtable.base")}>
+            <span className="text-sm block mb-1.5">Base id</span>
+          </Input>
+
+          <Input {...register("airtable.table")}>
+            <span className="text-sm block mb-1.5">Table</span>
           </Input>
         </div>
       </form>

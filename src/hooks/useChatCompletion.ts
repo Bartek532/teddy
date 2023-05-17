@@ -3,10 +3,16 @@ import React, { useEffect, useState } from "react";
 
 import {
   getOpenAiRequestOptions,
-  openAiStreamingDataHandler,
+  getChatCompletion,
+  getPromptIntention,
 } from "../lib/openai";
-import { LOADING_ASSISTANT_MESSAGE, SYSTEM_PROMPT } from "../utils/constants";
-import { MESSAGE_VARIANT, ROLE } from "../utils/types";
+import {
+  INTENTIONS,
+  LOADING_ASSISTANT_MESSAGE,
+  SYSTEM_PROMPT,
+} from "../utils/constants";
+import { fetcher } from "../utils/fetcher";
+import { INTENTION, MESSAGE_VARIANT, ROLE } from "../utils/types";
 
 import type {
   ChatMessage,
@@ -204,11 +210,21 @@ export const useChatCompletion = () => {
       );
 
       try {
-        await openAiStreamingDataHandler(
-          requestOpts,
-          handleNewData,
-          closeStream,
+        const intention = await getPromptIntention(
+          apiParams,
+          newMessages[0].content,
         );
+        if (intention === INTENTION.QUERY) {
+          await getChatCompletion(requestOpts, handleNewData, closeStream);
+        } else {
+          const data = await fetcher(INTENTIONS[intention].url, {
+            method: "POST",
+            body: {
+              prompt: newMessages[0].content,
+            },
+          });
+          console.log(data);
+        }
       } catch (err) {
         console.error(err);
         if (signal.aborted) {

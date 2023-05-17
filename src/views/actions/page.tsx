@@ -1,22 +1,22 @@
 import { Link } from "react-router-dom";
 
 import { ReactComponent as PlusIcon } from "../../assets/svg/plus.svg";
-import { ShortcutsList } from "../../components/snippets/shortcuts/ShortcutsList";
-import { useSnippetsContext } from "../../providers/SnippetsProvider";
+import { ActionsList } from "../../components/actions/ActionsList";
+import { useActionsContext } from "../../providers/ActionsProvider";
 
-export const SnippetsView = () => {
-  const { snippets } = useSnippetsContext();
+export const ActionsView = () => {
+  const { actions } = useActionsContext();
 
   return (
     <main className="px-7 flex flex-col justify-start gap-4 h-full grow">
       <Link to="add">
         <span className="text-sm rounded-xl border-2 p-2.5 border-gray-100 bg-gray-100 w-full flex justify-center gap-3 items-center">
           <PlusIcon className="w-3 fill-black-100" />
-          Create snippet
+          Add action
         </span>
       </Link>
 
-      <ShortcutsList snippets={snippets} />
+      <ActionsList actions={actions} />
     </main>
   );
 };

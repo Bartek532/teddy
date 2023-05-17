@@ -1,5 +1,6 @@
-import { CHAT_COMPLETIONS_URL } from "../utils/constants";
-import { ROLE } from "../utils/types";
+import { CHAT_COMPLETIONS_URL, INTENTION_PROMPT } from "../utils/constants";
+import { fetcher } from "../utils/fetcher";
+import { INTENTION, ROLE } from "../utils/types";
 
 import type {
   FetchRequestOptions,
@@ -20,16 +21,16 @@ export const getOpenAiRequestOptions = (
     Authorization: `Bearer ${apiKey}`,
   },
   method: "POST",
-  body: JSON.stringify({
+  body: {
     model,
     ...restOfApiParams,
     messages,
     stream: true,
-  }),
+  },
   signal,
 });
 
-export const openAiStreamingDataHandler = async (
+export const getChatCompletion = async (
   requestOpts: FetchRequestOptions,
   onIncomingChunk?: ({
     content,
@@ -42,13 +43,7 @@ export const openAiStreamingDataHandler = async (
 ) => {
   const beforeTimestamp = Date.now();
 
-  const response = await fetch(CHAT_COMPLETIONS_URL, requestOpts);
-
-  if (!response.ok) {
-    throw new Error(
-      `Network response was not ok: ${response.status} - ${response.statusText}.`,
-    );
-  }
+  const response = await fetcher(CHAT_COMPLETIONS_URL, requestOpts);
 
   if (!response.body) {
     throw new Error("No body included in POST response object.");
@@ -90,4 +85,26 @@ export const openAiStreamingDataHandler = async (
   onCloseStream?.(beforeTimestamp);
 
   return { content, role } as OpenAIChatMessage;
+};
+
+export const getPromptIntention = async (
+  params: OpenAIStreamingParams,
+  prompt: string,
+): Promise<INTENTION> => {
+  const options = getOpenAiRequestOptions(params, [
+    {
+      content: INTENTION_PROMPT + prompt,
+      role: ROLE.USER,
+    },
+  ]);
+
+  const { content } = await getChatCompletion(options);
+
+  console.log(content);
+
+  if (Object.values<string>(INTENTION).includes(content)) {
+    return content as INTENTION;
+  }
+
+  return INTENTION.QUERY;
 };

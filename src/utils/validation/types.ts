@@ -1,4 +1,5 @@
 import type {
+  actionSchema,
   createSnippetSchema,
   messageSchema,
   settingsSchema,
@@ -13,3 +14,4 @@ export type Settings = z.infer<typeof settingsSchema>;
 export type CreateSnippetInput = z.infer<typeof createSnippetSchema>;
 export type Snippet = z.infer<typeof snippetSchema>;
 export type SubmitPromptInput = z.infer<typeof messageSchema>;
+export type Action = z.infer<typeof actionSchema>;

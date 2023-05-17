@@ -31,6 +31,13 @@ export const snippetSchema = z.object({
   enabled: z.boolean().default(true),
 });
 
+export const actionSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  prompt: z.string(),
+  url: z.string().url(),
+});
+
 export const messageSchema = z.object({
   prompt: z.string(),
 });

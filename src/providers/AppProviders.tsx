@@ -1,3 +1,4 @@
+import { ActionsProvider } from "./ActionsProvider";
 import { SettingsProvider } from "./SettingsProvider";
 import { SnippetsProvider } from "./SnippetsProvider";
 import { ThemeProvider } from "./ThemeProvider";
@@ -11,7 +12,9 @@ type AppProvidersProps = Readonly<{
 export const AppProviders = ({ children }: AppProvidersProps) => (
   <ThemeProvider>
     <SettingsProvider>
-      <SnippetsProvider>{children}</SnippetsProvider>
+      <ActionsProvider>
+        <SnippetsProvider>{children}</SnippetsProvider>
+      </ActionsProvider>
     </SettingsProvider>
   </ThemeProvider>
 );

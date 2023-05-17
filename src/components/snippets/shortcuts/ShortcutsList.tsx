@@ -4,11 +4,11 @@ import { Shortcut } from "./Shortcut";
 
 import type { Snippet } from "../../../utils/types";
 
-interface ShortcutsProps {
+interface ShortcutsListProps {
   readonly snippets: Snippet[];
 }
 
-export const Shortcuts = memo<ShortcutsProps>(({ snippets }) => {
+export const ShortcutsList = memo<ShortcutsListProps>(({ snippets }) => {
   return (
     <ul className="w-full flex flex-col gap-2">
       {snippets.map((snippet) => {
@@ -18,4 +18,4 @@ export const Shortcuts = memo<ShortcutsProps>(({ snippets }) => {
   );
 });
 
-Shortcuts.displayName = "Shortcuts";
+ShortcutsList.displayName = "ShortcutsList";

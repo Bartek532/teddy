@@ -1,3 +1,5 @@
+export * from "./validation/types";
+
 export enum MESSAGE_VARIANT {
   DEFAULT = "DEFAULT",
   ERROR = "ERROR",
@@ -13,7 +15,11 @@ export enum THEME {
   DARK = "dark",
 }
 
-export * from "./validation/types";
+export enum INTENTION {
+  ACTION = "action",
+  QUERY = "query",
+  MEMORY = "memory",
+}
 
 export type GPT35Model = "gpt-3.5-turbo" | "gpt-3.5-turbo-0301";
 
@@ -85,6 +91,6 @@ export interface OpenAIStreamingParams {
 export interface FetchRequestOptions {
   headers: Record<string, string>;
   method: "POST";
-  body: string;
+  body: object;
   signal?: AbortSignal;
 }
