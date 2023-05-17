@@ -7,6 +7,11 @@ export const settingsSchema = z.object({
   apiKey: z.string(),
   max_tokens: z.number(),
   temperature: z.number(),
+  airtable: z.object({
+    apiKey: z.string(),
+    table: z.string(),
+    base: z.string(),
+  }),
 });
 
 export const createSnippetSchema = z.object({

@@ -1,6 +1,7 @@
 import { Store } from "tauri-plugin-store-api";
 
-import { stateSchema } from "../utils/validation/schema";
+import { DEFAULT_STATE } from "../utils/constants";
+import { isState } from "../utils/validation/validator";
 
 import type { State } from "../utils/types";
 
@@ -20,5 +21,11 @@ const getState = () => store.get("state");
 export const getValidatedState = async () => {
   const state = await getState();
 
-  return stateSchema.parse(state);
+  if (isState(state)) {
+    return state;
+  }
+
+  await store.set("state", DEFAULT_STATE);
+
+  return DEFAULT_STATE;
 };
