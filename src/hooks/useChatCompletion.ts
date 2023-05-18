@@ -5,12 +5,9 @@ import {
   getOpenAiRequestOptions,
   getChatCompletion,
   getPromptIntention,
+  getEmbedding,
 } from "../lib/openai";
-import {
-  INTENTIONS,
-  LOADING_ASSISTANT_MESSAGE,
-  SYSTEM_PROMPT,
-} from "../utils/constants";
+import { LOADING_ASSISTANT_MESSAGE, SYSTEM_PROMPT } from "../utils/constants";
 import { fetcher } from "../utils/fetcher";
 import { INTENTION, MESSAGE_VARIANT, ROLE } from "../utils/types";
 
@@ -210,8 +207,7 @@ export const useChatCompletion = () => {
       );
 
       try {
-        await getChatCompletion(requestOpts, handleNewData, closeStream);
-
+        //await getChatCompletion(requestOpts, handleNewData, closeStream);
         //   const intention = await getPromptIntention(
         //     apiParams,
         //     newMessages[0].content,

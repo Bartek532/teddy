@@ -5,6 +5,8 @@ import type { Settings } from "./types";
 export const CHAT_COMPLETIONS_URL =
   "https://api.openai.com/v1/chat/completions";
 
+export const EMBEDDING_URL = "https://api.openai.com/v1/embeddings";
+
 export const LOADING_ASSISTANT_MESSAGE = "I'm thinking...";
 export const SYSTEM_PROMPT =
   "You're a superanimal, helpful assistant called B.E.A.R..";

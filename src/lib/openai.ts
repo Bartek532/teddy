@@ -1,4 +1,8 @@
-import { CHAT_COMPLETIONS_URL, INTENTION_PROMPT } from "../utils/constants";
+import {
+  CHAT_COMPLETIONS_URL,
+  EMBEDDING_URL,
+  INTENTION_PROMPT,
+} from "../utils/constants";
 import { fetcher } from "../utils/fetcher";
 import { INTENTION, ROLE } from "../utils/types";
 
@@ -85,6 +89,32 @@ export const getChatCompletion = async (
   onCloseStream?.(beforeTimestamp);
 
   return { content, role } as OpenAIChatMessage;
+};
+
+export const getEmbedding = async ({
+  apiKey,
+  input,
+}: {
+  apiKey: string;
+  input: string;
+}) => {
+  const response = await fetcher(EMBEDDING_URL, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiKey}`,
+    },
+    method: "POST",
+    body: {
+      input,
+      model: "text-embedding-ada-002",
+    },
+  });
+
+  const { data } = (await response.json()) as {
+    data: { embedding: number[] }[];
+  };
+
+  return { embedding: data[0].embedding };
 };
 
 export const getPromptIntention = async (

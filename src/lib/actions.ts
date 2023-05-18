@@ -1,6 +1,8 @@
 import { isAction } from "../utils/validation/validator";
 
 import { getTable } from "./airtable";
+import { getEmbedding } from "./openai";
+import { getIndex } from "./pinecone";
 
 import type { Action, CreateActionInput, Settings } from "../utils/types";
 
@@ -38,12 +40,29 @@ export const addAction = async ({
   settings,
   action,
 }: {
-  settings: Settings["airtable"];
+  settings: Settings;
   action: CreateActionInput;
 }) => {
-  const actionsTable = getTable({ ...settings });
+  const actionsTable = getTable(settings.airtable);
+  const { embedding } = await getEmbedding({
+    apiKey: settings.apiKey,
+    input: action.prompt,
+  });
 
   const newAction = await actionsTable.create(action);
+
+  const index = await getIndex(settings.pinecone);
+
+  await index.upsert({
+    upsertRequest: {
+      vectors: [
+        {
+          id: newAction.id,
+          values: embedding,
+        },
+      ],
+    },
+  });
 
   return newAction;
 };
