@@ -12,6 +12,11 @@ export const settingsSchema = z.object({
     table: z.string(),
     base: z.string(),
   }),
+  pinecone: z.object({
+    apiKey: z.string(),
+    env: z.string(),
+    index: z.string(),
+  }),
 });
 
 export const createSnippetSchema = z.object({

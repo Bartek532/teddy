@@ -22,6 +22,11 @@ export const DEFAULT_SETTINGS: Settings = {
     base: "",
     table: "",
   },
+  pinecone: {
+    apiKey: "",
+    env: "",
+    index: "",
+  },
 };
 
 export const DEFAULT_STATE = {

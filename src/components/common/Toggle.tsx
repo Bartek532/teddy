@@ -13,7 +13,7 @@ export const Toggle = forwardRef<
         type="checkbox"
       />
 
-      <span className="peer-checked:bg-yellow-100 border border-white-200 peer-checked:before:translate-x-4 transition-colors before:transition-transform absolute cursor-pointer inset-0 bg-gray-100 rounded-xl before:absolute before:h-4 before:w-4 before:left-[1px] before:top-[1px] before:bg-white-200 before:rounded-full"></span>
+      <span className="peer-checked:bg-yellow-100 border border-gray-200 peer-checked:before:translate-x-4 transition-colors before:transition-transform absolute cursor-pointer inset-0 bg-gray-100 rounded-xl before:absolute before:h-4 before:w-4 before:left-[1px] before:top-[1px] before:bg-white-200 before:rounded-full"></span>
     </label>
   );
 });
