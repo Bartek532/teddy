@@ -1,4 +1,5 @@
-import { ActionsProvider } from "./ActionsProvider";
+import { QueryClient, QueryClientProvider } from "react-query";
+
 import { SettingsProvider } from "./SettingsProvider";
 import { SnippetsProvider } from "./SnippetsProvider";
 import { ThemeProvider } from "./ThemeProvider";
@@ -9,12 +10,14 @@ type AppProvidersProps = Readonly<{
   children: ReactNode;
 }>;
 
+const queryClient = new QueryClient();
+
 export const AppProviders = ({ children }: AppProvidersProps) => (
-  <ThemeProvider>
-    <SettingsProvider>
-      <ActionsProvider>
+  <QueryClientProvider client={queryClient}>
+    <ThemeProvider>
+      <SettingsProvider>
         <SnippetsProvider>{children}</SnippetsProvider>
-      </ActionsProvider>
-    </SettingsProvider>
-  </ThemeProvider>
+      </SettingsProvider>
+    </ThemeProvider>
+  </QueryClientProvider>
 );

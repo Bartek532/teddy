@@ -97,6 +97,7 @@ export const SettingsView = () => {
           </div>
         </div>
 
+        {/* TODO: add links to pages */}
         <h2 className="text-sm mt-2.5">Airtable</h2>
         <div className="flex gap-3 -mt-2">
           <Input {...register("airtable.apiKey")}>
@@ -108,7 +109,7 @@ export const SettingsView = () => {
           </Input>
 
           <Input {...register("airtable.table")}>
-            <span className="text-sm block mb-1.5">Table</span>
+            <span className="text-sm block mb-1.5">Table (name or id)</span>
           </Input>
         </div>
       </form>
