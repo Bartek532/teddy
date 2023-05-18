@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 
 import { ReactComponent as PaperPlaneIcon } from "../../assets/svg/paper-plane.svg";
@@ -90,7 +91,10 @@ export const HomeView = () => {
       </form>
 
       <div className="text-sm px-3.5 flex justify-between mb-3 mt-1">
-        <button onClick={() => resetMessages()} className="hover:underline">
+        <button
+          onClick={() => toast.success("Successfully addedd hsdfg shfg !")}
+          className="hover:underline"
+        >
           Clear conversation
         </button>
         <span className={twMerge(tokens > maxTokens && "text-red-100")}>

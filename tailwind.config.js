@@ -48,6 +48,7 @@ module.exports = {
         },
         green: {
           100: "var(--green-100)",
+          200: "var(--green-200)",
         },
         syntax: {
           color: "var(--syntax-color)",

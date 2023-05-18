@@ -2,7 +2,7 @@ import { isAction } from "../utils/validation/validator";
 
 import { getTable } from "./airtable";
 
-import type { Action, Settings } from "../utils/types";
+import type { Action, CreateActionInput, Settings } from "../utils/types";
 
 export const loadActions = async ({
   apiKey,
@@ -18,4 +18,62 @@ export const loadActions = async ({
     .filter(isAction);
 
   return filteredActions;
+};
+
+export const getAction = async ({
+  settings,
+  actionId,
+}: {
+  settings: Settings["airtable"];
+  actionId: string;
+}) => {
+  const actionsTable = getTable({ ...settings });
+
+  const action = await actionsTable.find(actionId);
+
+  return action;
+};
+
+export const addAction = async ({
+  settings,
+  action,
+}: {
+  settings: Settings["airtable"];
+  action: CreateActionInput;
+}) => {
+  const actionsTable = getTable({ ...settings });
+
+  const newAction = await actionsTable.create(action);
+
+  return newAction;
+};
+
+export const deleteAction = async ({
+  settings,
+  actionId,
+}: {
+  settings: Settings["airtable"];
+  actionId: string;
+}) => {
+  const actionsTable = getTable({ ...settings });
+
+  const deletedAction = await actionsTable.destroy(actionId);
+
+  return deletedAction;
+};
+
+export const updateAction = async ({
+  settings,
+  actionId,
+  data,
+}: {
+  settings: Settings["airtable"];
+  actionId: string;
+  data: Partial<Action>;
+}) => {
+  const actionsTable = getTable({ ...settings });
+
+  const updatedAction = await actionsTable.update(actionId, data);
+
+  return updatedAction;
 };

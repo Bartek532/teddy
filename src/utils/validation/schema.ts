@@ -39,8 +39,19 @@ export const snippetSchema = z.object({
 export const actionSchema = z.object({
   id: z.string(),
   name: z.string(),
+  icon: z.string(),
   prompt: z.string(),
   url: z.string().url(),
+});
+
+export const createActionSchema = z.object({
+  name: z.string().nonempty("Title cannot be empty."),
+  icon: z.string().nonempty("Icon cannot be empty."),
+  prompt: z.string().nonempty("Prompt cannot be empty."),
+  url: z
+    .string()
+    .nonempty("Url cannot be empty.")
+    .url("Url must be a valid url."),
 });
 
 export const messageSchema = z.object({

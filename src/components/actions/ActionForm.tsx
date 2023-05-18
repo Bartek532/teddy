@@ -4,27 +4,27 @@ import { memo } from "react";
 import { useForm } from "react-hook-form";
 
 import { ReactComponent as BinIcon } from "../../assets/svg/bin.svg";
-import { createSnippetSchema } from "../../utils/validation/schema";
+import { createActionSchema } from "../../utils/validation/schema";
 import { Input } from "../common/Input";
 import { Textarea } from "../common/Textarea";
 
-import type { CreateSnippetInput, Snippet } from "../../utils/types";
+import type { Action, CreateActionInput } from "../../utils/types";
 
-interface SnippetFormProps {
-  readonly onSubmit: (data: CreateSnippetInput) => void;
-  readonly onDelete?: (id: string) => void;
-  readonly defaultValues?: Snippet;
+interface ActionFormProps {
+  readonly onSubmit: (data: CreateActionInput) => Promise<void>;
+  readonly onDelete?: (id: string) => Promise<void>;
+  readonly defaultValues?: Action;
   readonly type?: "add" | "edit";
 }
 
-export const SnippetForm = memo<SnippetFormProps>(
+export const ActionForm = memo<ActionFormProps>(
   ({ onSubmit, onDelete, defaultValues, type = "add" }) => {
     const {
       register,
       handleSubmit,
       formState: { errors },
-    } = useForm<CreateSnippetInput>({
-      resolver: zodResolver(createSnippetSchema),
+    } = useForm<CreateActionInput>({
+      resolver: zodResolver(createActionSchema),
       defaultValues,
     });
 
@@ -35,11 +35,11 @@ export const SnippetForm = memo<SnippetFormProps>(
         onSubmit={handleSubmit(onSubmit)}
       >
         <div>
-          <Input {...register("title")}>
-            <span className="text-sm block mb-1.5">Title</span>
+          <Input {...register("name")}>
+            <span className="text-sm block mb-1.5">Name</span>
           </Input>
           <ErrorMessage
-            name="title"
+            name="name"
             errors={errors}
             render={({ message }) => (
               <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>
@@ -69,12 +69,12 @@ export const SnippetForm = memo<SnippetFormProps>(
         </div>
 
         <div>
-          <Input {...register("color")}>
-            <span className="text-sm block mb-1.5">Color</span>
+          <Input {...register("url")}>
+            <span className="text-sm block mb-1.5">Webhook url</span>
           </Input>
 
           <ErrorMessage
-            name="color"
+            name="url"
             errors={errors}
             render={({ message }) => (
               <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>
@@ -99,16 +99,17 @@ export const SnippetForm = memo<SnippetFormProps>(
           {type === "edit" && (
             <button
               type="button"
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onClick={() => defaultValues?.id && onDelete?.(defaultValues.id)}
               className="rounded-2xl border-2 p-2.5 text-white-200 bg-red-100 w-full flex gap-3 justify-center items-center"
             >
               <BinIcon className="w-4 stroke-white-200" />
-              <span>Delete snippet</span>
+              <span>Delete action</span>
             </button>
           )}
 
           <button className="rounded-2xl border-2 p-2.5 bg-gray-100 w-full flex justify-center items-center">
-            <span>{type === "add" ? "Add" : "Edit"} snippet</span>
+            <span>{type === "add" ? "Add" : "Edit"} action</span>
           </button>
         </div>
       </form>
@@ -116,4 +117,4 @@ export const SnippetForm = memo<SnippetFormProps>(
   },
 );
 
-SnippetForm.displayName = "SnippetForm";
+ActionForm.displayName = "ActionForm";

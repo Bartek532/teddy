@@ -10,7 +10,7 @@ export const EditSnippetView = () => {
   const { reset } = useForm<CreateSnippetInput>();
   const params = useParams();
   const navigate = useNavigate();
-  const { getSnippet, editSnippet } = useSnippetsContext();
+  const { getSnippet, editSnippet, removeSnippet } = useSnippetsContext();
 
   if (!params.id) {
     return null;
@@ -24,6 +24,12 @@ export const EditSnippetView = () => {
     return navigate(-1);
   };
 
+  const deleteSnippet = (snippetId: string) => {
+    removeSnippet(snippetId);
+    reset();
+    return navigate(-1);
+  };
+
   if (!snippet) {
     return null;
   }
@@ -33,6 +39,7 @@ export const EditSnippetView = () => {
       <SnippetForm
         onSubmit={updateSnippet}
         defaultValues={snippet}
+        onDelete={deleteSnippet}
         type="edit"
       />
     </main>

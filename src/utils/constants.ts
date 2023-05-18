@@ -1,4 +1,4 @@
-import { AI_MODEL, INTENTION } from "./types";
+import { AI_MODEL } from "./types";
 
 import type { Settings } from "./types";
 
@@ -49,6 +49,32 @@ export const SETTINGS_ROUTES = [
   },
 ] as const;
 
+export const TOASTER_CONFIG = {
+  style: {
+    padding: "14px 25px",
+    minWidth: "250px",
+    gap: "10px",
+  },
+  error: {
+    iconTheme: {
+      primary: "var(--red-100)",
+    },
+    style: {
+      backgroundColor: "var(--red-200)",
+      color: "var(--red-100)",
+    },
+  },
+  success: {
+    iconTheme: {
+      primary: "var(--green-100)",
+    },
+    style: {
+      backgroundColor: "var(--green-200)",
+      color: "var(--green-100)",
+    },
+  },
+};
+
 export const MODELS = [
   {
     id: AI_MODEL.GPT_3_5,
@@ -65,15 +91,3 @@ export const MODELS = [
     tokenLimit: 8192,
   },
 ] as const;
-
-export const INTENTIONS: Record<INTENTION, { url: string }> = {
-  [INTENTION.ACTION]: {
-    url: "https://hook.eu1.make.com/61wtmjty1fs2v8zi0o8zn73qg5xzweq6",
-  },
-  [INTENTION.QUERY]: {
-    url: "https://hook.eu1.make.com/61wtmjty1fs2v8zi0o8zn73qg5xzweq6",
-  },
-  [INTENTION.MEMORY]: {
-    url: "https://hook.eu1.make.com/61wtmjty1fs2v8zi0o8zn73qg5xzweq6",
-  },
-};

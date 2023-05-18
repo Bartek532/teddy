@@ -3,6 +3,8 @@ import { createBrowserRouter } from "react-router-dom";
 import { RootLayout } from "../components/layout/root";
 import { SettingsLayout } from "../components/layout/settings";
 
+import { AddActionView } from "./actions/add/page";
+import { EditActionView } from "./actions/edit/page";
 import { ActionsView } from "./actions/page";
 import { HomeView } from "./home/page";
 import { SettingsView } from "./settings/page";
@@ -41,6 +43,14 @@ export const router = createBrowserRouter([
           {
             path: "actions",
             element: <ActionsView />,
+          },
+          {
+            path: "actions/add",
+            element: <AddActionView />,
+          },
+          {
+            path: "actions/edit/:id",
+            element: <EditActionView />,
           },
         ],
       },
