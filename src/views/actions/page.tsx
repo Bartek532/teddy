@@ -11,13 +11,13 @@ import { onPromise } from "../../utils/functions";
 
 export const ActionsView = () => {
   const {
-    settings: { airtable },
+    settings: { actionsUrl },
   } = useSettingsContext();
   const {
     isLoading,
     data: actions,
     refetch,
-  } = useQuery("actions", () => loadActions(airtable));
+  } = useQuery("actions", () => loadActions({ url: actionsUrl }));
 
   return (
     <main className="px-7 flex flex-col justify-start gap-4 h-full grow">

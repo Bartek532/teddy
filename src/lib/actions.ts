@@ -1,98 +1,91 @@
+import { fetcher } from "../utils/fetcher";
 import { isAction } from "../utils/validation/validator";
 
-import { getTable } from "./airtable";
-import { getEmbedding } from "./openai";
-import { getIndex } from "./pinecone";
+import type { Action, CreateActionInput } from "../utils/types";
 
-import type { Action, CreateActionInput, Settings } from "../utils/types";
+export const loadActions = async ({ url }: { url: string }) => {
+  const response = await fetcher(url, { method: "GET" });
 
-export const loadActions = async ({
-  apiKey,
-  base,
-  table,
-}: Settings["airtable"]): Promise<Action[]> => {
-  const actionsTable = getTable({ apiKey, base, table });
+  const actions: unknown = await response.json();
 
-  const actions = await actionsTable.select().all();
-
-  const filteredActions = actions
-    .map((action) => action.fields)
-    .filter(isAction);
+  const filteredActions = Array.isArray(actions)
+    ? actions.filter(isAction)
+    : [];
 
   return filteredActions;
 };
 
-export const getAction = async ({
-  settings,
-  actionId,
-}: {
-  settings: Settings["airtable"];
-  actionId: string;
-}) => {
-  const actionsTable = getTable({ ...settings });
+export const getAction = async ({ url, id }: { url: string; id: string }) => {
+  const response = await fetcher(url, { method: "GET", body: { id } });
 
-  const action = await actionsTable.find(actionId);
+  const action: unknown = await response.json();
 
-  return action;
+  if (isAction(action)) {
+    return action;
+  }
+
+  return null;
 };
 
 export const addAction = async ({
-  settings,
+  url,
   action,
 }: {
-  settings: Settings;
+  url: string;
   action: CreateActionInput;
 }) => {
-  const actionsTable = getTable(settings.airtable);
-  const { embedding } = await getEmbedding({
-    apiKey: settings.apiKey,
-    input: action.prompt,
-  });
+  const response = await fetcher(url, { method: "POST", body: { ...action } });
 
-  const newAction = await actionsTable.create(action);
+  const newAction: unknown = await response.json();
 
-  const index = await getIndex(settings.pinecone);
+  if (isAction(newAction)) {
+    return newAction;
+  }
 
-  await index.upsert({
-    upsertRequest: {
-      vectors: [
-        {
-          id: newAction.id,
-          values: embedding,
-        },
-      ],
-    },
-  });
-
-  return newAction;
+  return null;
 };
 
 export const deleteAction = async ({
-  settings,
-  actionId,
+  url,
+  id,
 }: {
-  settings: Settings["airtable"];
-  actionId: string;
+  url: string;
+  id: string;
 }) => {
-  const actionsTable = getTable({ ...settings });
+  const response = await fetcher(url, { method: "DELETE", body: { id } });
 
-  const deletedAction = await actionsTable.destroy(actionId);
+  const deletedAction: unknown = await response.json();
 
-  return deletedAction;
+  if (
+    typeof deletedAction === "object" &&
+    deletedAction &&
+    "id" in deletedAction
+  ) {
+    return deletedAction;
+  }
+
+  return null;
 };
 
 export const updateAction = async ({
-  settings,
-  actionId,
+  url,
+  id,
   data,
 }: {
-  settings: Settings["airtable"];
-  actionId: string;
+  url: string;
+  id: string;
   data: Partial<Action>;
 }) => {
-  const actionsTable = getTable({ ...settings });
+  const response = await fetcher(url, {
+    method: "POST",
+    body: { ...data, id },
+  });
 
-  const updatedAction = await actionsTable.update(actionId, data);
+  const editedAction: unknown = await response.json();
 
-  return updatedAction;
+  if (isAction(editedAction)) {
+    return editedAction;
+  }
+
+  return null;
 };

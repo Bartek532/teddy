@@ -18,13 +18,12 @@ export const SettingsView = () => {
     defaultValues: {
       model: settings.model,
       apiKey: settings.apiKey,
-      airtable: settings.airtable,
-      pinecone: settings.pinecone,
+      actionsUrl: settings.actionsUrl,
     },
   });
 
   const values = useWatch({
-    name: ["model", "apiKey", "airtable", "pinecone"],
+    name: ["model", "apiKey", "actionsUrl"],
     control,
   });
 
@@ -61,10 +60,9 @@ export const SettingsView = () => {
       </div>
 
       <form
-        className="flex flex-col justify-start gap-5"
+        className="flex flex-col justify-start gap-5 mt-1.5"
         onSubmit={(e) => e.preventDefault()}
       >
-        <h2 className="text-sm mt-2.5">OpenAI</h2>
         <Input {...register("apiKey")}>
           <span className="text-sm block mb-1.5">
             API key, you could receive it from your{" "}
@@ -103,80 +101,19 @@ export const SettingsView = () => {
           </div>
         </div>
 
-        {/* TODO: add links to pages */}
-        <h2 className="text-sm mt-2.5">Airtable</h2>
-        <div className="flex gap-3 -mt-2">
-          <Input {...register("airtable.apiKey")}>
-            <span className="text-sm block mb-1.5">
-              <a
-                href="https://airtable.com/developers/web/guides/personal-access-tokens"
-                className="text-blue-200"
-              >
-                API key
-              </a>
-            </span>
-          </Input>
-
-          <Input {...register("airtable.base")}>
-            <span className="text-sm block mb-1.5">
-              <a
-                href="https://support.airtable.com/docs/finding-airtable-ids"
-                className="text-blue-200"
-              >
-                Base id
-              </a>
-            </span>
-          </Input>
-
-          <Input {...register("airtable.table")}>
-            <span className="text-sm block mb-1.5">
-              <a
-                href="https://support.airtable.com/docs/finding-airtable-ids"
-                className="text-blue-200"
-              >
-                Table
-              </a>{" "}
-              (name or id)
-            </span>
-          </Input>
-        </div>
-
-        <h2 className="text-sm mt-2.5">Pinecone</h2>
-        <div className="flex gap-3 -mt-2">
-          <Input {...register("pinecone.apiKey")}>
-            <span className="text-sm block mb-1.5">
-              <a
-                href="https://docs.pinecone.io/docs/quickstart#2-get-and-verify-your-pinecone-api-key"
-                className="text-blue-200"
-              >
-                API key
-              </a>
-            </span>
-          </Input>
-
-          <Input {...register("pinecone.env")}>
-            <span className="text-sm block mb-1.5">
-              <a
-                href="https://docs.pinecone.io/docs/projects#project-environment"
-                className="text-blue-200"
-              >
-                Environment
-              </a>
-            </span>
-          </Input>
-
-          <Input {...register("pinecone.index")}>
-            <span className="text-sm block mb-1.5">
-              <a
-                href="https://docs.pinecone.io/docs/indexes"
-                className="text-blue-200"
-              >
-                Index
-              </a>{" "}
-              name
-            </span>
-          </Input>
-        </div>
+        <Input {...register("actionsUrl")}>
+          <span className="text-sm block mb-1.5">
+            Actions webhook url (from{" "}
+            <a
+              href="https://make.com"
+              className="text-blue-200"
+              rel="noreferrer"
+            >
+              make.com
+            </a>
+            )
+          </span>
+        </Input>
       </form>
     </main>
   );

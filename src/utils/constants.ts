@@ -19,16 +19,7 @@ export const DEFAULT_SETTINGS: Settings = {
   apiKey: "",
   max_tokens: 1500,
   temperature: 0.8,
-  airtable: {
-    apiKey: "",
-    base: "",
-    table: "",
-  },
-  pinecone: {
-    apiKey: "",
-    env: "",
-    index: "",
-  },
+  actionsUrl: "",
 };
 
 export const DEFAULT_STATE = {
@@ -60,6 +51,7 @@ export const TOASTER_CONFIG = {
   error: {
     iconTheme: {
       primary: "var(--red-100)",
+      secondary: "var(--white-200)",
     },
     style: {
       backgroundColor: "var(--red-200)",
@@ -69,6 +61,7 @@ export const TOASTER_CONFIG = {
   success: {
     iconTheme: {
       primary: "var(--green-100)",
+      secondary: "var(--white-200)",
     },
     style: {
       backgroundColor: "var(--green-200)",

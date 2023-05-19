@@ -6,11 +6,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ActionForm } from "../../../components/actions/ActionForm";
 import { deleteAction, getAction, updateAction } from "../../../lib/actions";
 import { useSettingsContext } from "../../../providers/SettingsProvider";
-import { isAction } from "../../../utils/validation/validator";
 
 import type { CreateActionInput } from "../../../utils/types";
 
 export const EditActionView = () => {
+  const {
+    settings: { actionsUrl },
+  } = useSettingsContext();
   const editActionMutation = useMutation("editAction", updateAction, {
     onSuccess: () => {
       reset();
@@ -24,16 +26,14 @@ export const EditActionView = () => {
     },
   });
   const { data: action, isLoading } = useQuery("action", () =>
-    getAction({ actionId: params.id!, settings: airtable }),
+    getAction({ id: params.id!, url: actionsUrl }),
   );
-  const {
-    settings: { airtable },
-  } = useSettingsContext();
+
   const { reset } = useForm<CreateActionInput>();
   const params = useParams();
   const navigate = useNavigate();
 
-  if (isLoading || !action || !isAction(action.fields)) {
+  if (isLoading || !action) {
     return (
       <main className="w-full grow h-full flex justify-center items-center">
         <p className="text-xl">Loading...</p>
@@ -44,8 +44,8 @@ export const EditActionView = () => {
   const editAction = async (data: CreateActionInput) => {
     await toast.promise(
       editActionMutation.mutateAsync({
-        actionId: params.id!,
-        settings: airtable,
+        id: params.id!,
+        url: actionsUrl,
         data,
       }),
       {
@@ -56,11 +56,11 @@ export const EditActionView = () => {
     );
   };
 
-  const removeAction = async (actionId: string) => {
+  const removeAction = async (id: string) => {
     await toast.promise(
       removeActionMutation.mutateAsync({
-        actionId,
-        settings: airtable,
+        id,
+        url: actionsUrl,
       }),
       {
         loading: "Deleting action...",
@@ -75,7 +75,7 @@ export const EditActionView = () => {
       <ActionForm
         onSubmit={editAction}
         onDelete={removeAction}
-        defaultValues={action.fields}
+        defaultValues={action}
         type="edit"
       />
     </main>

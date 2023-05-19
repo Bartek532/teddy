@@ -12,7 +12,9 @@ import type { CreateActionInput } from "../../../utils/types";
 export const AddActionView = () => {
   const navigate = useNavigate();
   const { reset } = useForm<CreateActionInput>();
-  const { settings } = useSettingsContext();
+  const {
+    settings: { actionsUrl },
+  } = useSettingsContext();
   const createActionMutation = useMutation("createAction", addAction, {
     onSuccess: () => {
       reset();
@@ -23,7 +25,7 @@ export const AddActionView = () => {
   const createAction = async (action: CreateActionInput) => {
     await toast.promise(
       createActionMutation.mutateAsync({
-        settings,
+        url: actionsUrl,
         action,
       }),
       {
