@@ -73,6 +73,6 @@ body,
   @apply overflow-auto block pb-2;
 }
 
-.content > :not(pre) > code {
+.content *:not(pre) > code {
   @apply py-1 px-2 mx-0.5 bg-syntax-background rounded-sm;
 }

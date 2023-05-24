@@ -34,6 +34,9 @@
   --selection-color: rgb(255, 255, 255);
   --selection-background: rgb(68, 50, 255);
 
+  --syntax-color: rgb(221, 74, 104);
+  --syntax-background: rgb(226, 226, 226);
+
   --shadow-default: rgba(0, 0, 0, 0.08) 0px 1px 4px;
   --shadow-200: 0px -26px 23px -1px rgba(247, 241, 243, 1);
   --shadow-300: 0px 26px 23px -1px rgba(247, 241, 243, 1);
@@ -72,6 +75,9 @@
 
   --scrollbar-thumb: rgb(144, 144, 144);
   --scrollbar-thumb-hover: rgb(101, 101, 101);
+
+  --syntax-color: rgb(241, 96, 125);
+  --syntax-background: rgb(48, 48, 48);
 
   --shadow-default: rgba(36, 36, 36, 0.781) 0px 1px 4px;
   --shadow-200: 0px -26px 23px -1px rgba(22, 27, 34, 1);
