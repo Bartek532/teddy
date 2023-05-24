@@ -44,6 +44,20 @@ const createChatMessage = ({
   },
 });
 
+const filterMessages = (messages: ChatMessage[]) =>
+  messages
+    .filter(
+      ({ content }) =>
+        content.trim().length && content !== LOADING_ASSISTANT_MESSAGE,
+    )
+    .filter(
+      ({ variant }, index, arr) =>
+        variant !== MESSAGE_VARIANT.ERROR &&
+        (arr[index + 1]
+          ? arr[index + 1].variant !== MESSAGE_VARIANT.ERROR
+          : true),
+    );
+
 const [useChatContext, ChatContextProvider] =
   createSafeContext<ChatContextValue>();
 
@@ -158,17 +172,9 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
 
       const requestOpts = getOpenAiRequestOptions(
         settings.ai,
-        updatedMessages
-          .slice(0, -1)
-          .filter(({ content }) => content.trim().length)
-          .filter(
-            ({ variant }, index, arr) =>
-              variant !== MESSAGE_VARIANT.ERROR &&
-              (arr[index + 1]
-                ? arr[index + 1].variant !== MESSAGE_VARIANT.ERROR
-                : true),
-          )
-          .map(({ content, role }) => ({ content, role })),
+        filterMessages(updatedMessages.slice(0, -1)).map(
+          ({ content, role }) => ({ content, role }),
+        ),
         newController.signal,
       );
 
@@ -239,10 +245,12 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
   }, [systemPrompt]);
 
   useEffect(() => {
+    const filteredMessages = filterMessages(messages);
     setTokens(
-      messages
-        .filter(({ variant }) => variant !== MESSAGE_VARIANT.ERROR)
-        .reduce((acc, { content }) => acc + encode(content).length, 0),
+      filteredMessages.reduce(
+        (acc, { content }) => acc + encode(content).length,
+        0,
+      ),
     );
   }, [messages]);
 
