@@ -4,13 +4,14 @@ import { useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 
 import { ReactComponent as PaperPlaneIcon } from "../../assets/svg/paper-plane.svg";
+import { ReactComponent as StopIcon } from "../../assets/svg/stop.svg";
 import { Textarea } from "../../components/common/Textarea";
 import { MessagesList } from "../../components/messages/MessagesList";
 import { SnippetsList } from "../../components/snippets/SnippetsList";
 import { useChatContext } from "../../providers/ChatProvider";
 import { useSettingsContext } from "../../providers/SettingsProvider";
 import { useSnippetsContext } from "../../providers/SnippetsProvider";
-import { MODELS } from "../../utils/constants";
+import { LOADING_ASSISTANT_MESSAGE, MODELS } from "../../utils/constants";
 import { onPromise } from "../../utils/functions";
 import { ROLE } from "../../utils/types";
 import { messageSchema } from "../../utils/validation/schema";
@@ -25,8 +26,14 @@ export const HomeView = () => {
   const { settings } = useSettingsContext();
   const { snippets, activeSnippet, deactivateSnippet, activateSnippet } =
     useSnippetsContext();
-  const { messages, resetMessages, tokens, submitPrompt, isLoading } =
-    useChatContext();
+  const {
+    messages,
+    resetMessages,
+    tokens,
+    submitPrompt,
+    isLoading,
+    abortResponse,
+  } = useChatContext();
 
   const maxTokens =
     MODELS.find(({ value }) => value === settings.ai.model)?.tokenLimit ?? 0;
@@ -70,8 +77,19 @@ export const HomeView = () => {
         )}
       />
 
+      <div className="w-full flex justify-center items-center shadow-200 relative bg-transparent h-[23px]">
+        {isLoading ? (
+          <button
+            onClick={() => abortResponse()}
+            className="flex justify-center items-center gap-2 absolute bottom-2 text-sm left-50% bg-gray-400 hover:border-gray-300 transition-colors border-2 border-gray-200 uppercase py-1.5 px-4 rounded-lg"
+          >
+            <StopIcon className="grow shrink-0 w-3 fill-gray-300" /> Stop
+          </button>
+        ) : null}
+      </div>
+
       <form
-        className="relative shadow-200"
+        className="relative "
         onSubmit={onPromise(handleSubmit(onPromptSubmit))}
       >
         <Textarea
@@ -94,6 +112,7 @@ export const HomeView = () => {
         <button onClick={() => resetMessages()} className="hover:underline">
           Clear conversation
         </button>
+
         <span className={twMerge(tokens > maxTokens && "text-red-100")}>
           Tokens: {tokens} / {maxTokens}
         </span>

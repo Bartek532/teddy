@@ -54,7 +54,7 @@ export const getChatCompletion = async (
 
   const reader = response.body.getReader();
 
-  while (true) {
+  while (!requestOpts.signal?.aborted) {
     const { done, value } = await reader.read();
 
     if (done) {

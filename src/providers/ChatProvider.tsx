@@ -83,9 +83,8 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
   };
 
   const resetMessages = () => {
-    if (!isLoading) {
-      _setMessages((prev) => prev.filter(({ role }) => role === ROLE.SYSTEM));
-    }
+    abortResponse();
+    _setMessages((prev) => prev.filter(({ role }) => role === ROLE.SYSTEM));
   };
 
   const setMessages = (newMessages: ChatMessageParams[]) => {
@@ -265,7 +264,7 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
       setSystemPrompt,
       submitPrompt,
     }),
-    [tokens, messages, isLoading, submitPrompt],
+    [tokens, messages, isLoading, submitPrompt, controller],
   );
 
   return <ChatContextProvider value={value}>{children}</ChatContextProvider>;
