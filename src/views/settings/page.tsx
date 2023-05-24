@@ -16,14 +16,13 @@ export const SettingsView = () => {
   const { settings, updateSettings } = useSettingsContext();
   const { register, control, getValues } = useForm({
     defaultValues: {
-      model: settings.model,
-      apiKey: settings.apiKey,
+      ai: settings.ai,
       actionsUrl: settings.actionsUrl,
     },
   });
 
   const values = useWatch({
-    name: ["model", "apiKey", "actionsUrl"],
+    name: ["ai.model", "ai.apiKey", "actionsUrl"],
     control,
   });
 
@@ -63,7 +62,7 @@ export const SettingsView = () => {
         className="flex flex-col justify-start gap-5 mt-1.5"
         onSubmit={(e) => e.preventDefault()}
       >
-        <Input {...register("apiKey")}>
+        <Input {...register("ai.apiKey")}>
           <span className="text-sm block mb-1.5">
             API key, you could receive it from your{" "}
             <a
@@ -91,7 +90,7 @@ export const SettingsView = () => {
             {MODELS.map((model) => (
               <Radio
                 value={model.value}
-                {...register("model")}
+                {...register("ai.model")}
                 key={model.id}
                 disabled={!model.isAvailable}
               >

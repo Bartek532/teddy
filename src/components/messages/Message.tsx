@@ -29,7 +29,12 @@ export const Message = memo<MessageProps>(({ message }) => {
       >
         <p
           className="content"
-          dangerouslySetInnerHTML={{ __html: marked.parse(message.content) }}
+          dangerouslySetInnerHTML={{
+            __html: marked.parse(message.content, {
+              headerIds: false,
+              mangle: false,
+            }),
+          }}
         ></p>
       </div>
     </li>

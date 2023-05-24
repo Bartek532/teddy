@@ -35,7 +35,11 @@ export async function fetcher<S>(
     if (response.ok) {
       return response;
     }
-    throw new ResponseError(response.statusText, response.status);
+
+    throw new ResponseError(
+      response.statusText || "Something went wrong during fetching!",
+      response.status,
+    );
   } catch (err) {
     if (err instanceof ResponseError) {
       throw err;

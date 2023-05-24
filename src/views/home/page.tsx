@@ -1,14 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 
 import { ReactComponent as PaperPlaneIcon } from "../../assets/svg/paper-plane.svg";
 import { Textarea } from "../../components/common/Textarea";
 import { MessagesList } from "../../components/messages/MessagesList";
 import { SnippetsList } from "../../components/snippets/SnippetsList";
-import { useChatCompletion } from "../../hooks/useChatCompletion";
+import { useChatContext } from "../../providers/ChatProvider";
 import { useSettingsContext } from "../../providers/SettingsProvider";
 import { useSnippetsContext } from "../../providers/SnippetsProvider";
 import { MODELS } from "../../utils/constants";
@@ -26,14 +25,15 @@ export const HomeView = () => {
   const { settings } = useSettingsContext();
   const { snippets, activeSnippet, deactivateSnippet, activateSnippet } =
     useSnippetsContext();
-  const { messages, resetMessages, tokens, submitPrompt } = useChatCompletion();
+  const { messages, resetMessages, tokens, submitPrompt, isLoading } =
+    useChatContext();
 
   const maxTokens =
-    MODELS.find(({ value }) => value === settings.model)?.tokenLimit ?? 0;
+    MODELS.find(({ value }) => value === settings.ai.model)?.tokenLimit ?? 0;
 
   const onPromptSubmit = ({ prompt }: SubmitPromptInput) => {
     reset();
-    return submitPrompt(settings, [
+    return submitPrompt([
       {
         content: prompt,
         role: ROLE.USER,
@@ -42,10 +42,10 @@ export const HomeView = () => {
   };
 
   useEffect(() => {
-    if (!messages.at(-1)?.meta.loading) {
+    if (!isLoading) {
       setFocus("prompt");
     }
-  }, [messages.at(-1)?.meta.loading]);
+  }, [isLoading]);
 
   const handleTextareaKeyDown = (
     e: React.KeyboardEvent<HTMLTextAreaElement>,
@@ -79,22 +79,19 @@ export const HomeView = () => {
           placeholder="Ask me anything..."
           onKeyDown={handleTextareaKeyDown}
           {...register("prompt")}
-          disabled={messages.at(-1)?.meta.loading ?? false}
+          disabled={isLoading}
         />
 
         <button
           className="absolute bottom-6 right-6 disabled:opacity-50"
-          disabled={messages.at(-1)?.meta.loading ?? false}
+          disabled={isLoading}
         >
           <PaperPlaneIcon className="w-4 fill-black-100" />
         </button>
       </form>
 
       <div className="text-sm px-3.5 flex justify-between mb-3 mt-1">
-        <button
-          onClick={() => toast.success("Successfully addedd hsdfg shfg !")}
-          className="hover:underline"
-        >
+        <button onClick={() => resetMessages()} className="hover:underline">
           Clear conversation
         </button>
         <span className={twMerge(tokens > maxTokens && "text-red-100")}>

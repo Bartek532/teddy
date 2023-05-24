@@ -7,3 +7,13 @@ export function onPromise<T>(promise: (event: SyntheticEvent) => Promise<T>) {
     });
   };
 }
+
+export const updateLastItem =
+  <T>(msgFn: (message: T) => T) =>
+  (currentMessages: T[]) =>
+    currentMessages.map((msg, i) => {
+      if (currentMessages.length - 1 === i) {
+        return msgFn(msg);
+      }
+      return msg;
+    });

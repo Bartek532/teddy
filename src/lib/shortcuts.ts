@@ -36,7 +36,7 @@ export const registerShortcut = async ({
       return;
     }
 
-    const options = getOpenAiRequestOptions(settings, [
+    const options = getOpenAiRequestOptions(settings.ai, [
       { role: ROLE.SYSTEM, content: prompt },
       { role: ROLE.USER, content: clipboardText },
     ]);

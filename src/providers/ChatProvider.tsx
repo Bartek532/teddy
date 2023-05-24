@@ -1,29 +1,31 @@
 import { encode } from "gpt-tokenizer";
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { createSafeContext } from "../lib/context";
+import { getChatCompletion, getOpenAiRequestOptions } from "../lib/openai";
 import {
-  getOpenAiRequestOptions,
-  getChatCompletion,
-  getPromptIntention,
-  getEmbedding,
-} from "../lib/openai";
-import { LOADING_ASSISTANT_MESSAGE, SYSTEM_PROMPT } from "../utils/constants";
-import { fetcher } from "../utils/fetcher";
-import { INTENTION, MESSAGE_VARIANT, ROLE } from "../utils/types";
+  LOADING_ASSISTANT_MESSAGE,
+  MILLISECONDS_PER_SECOND,
+  SYSTEM_PROMPT,
+} from "../utils/constants";
+import { updateLastItem } from "../utils/functions";
+import { MESSAGE_VARIANT, ROLE } from "../utils/types";
 
-import type {
-  ChatMessage,
-  ChatMessageParams,
-  OpenAIChatMessage,
-  OpenAIStreamingParams,
-} from "../utils/types";
+import { useSettingsContext } from "./SettingsProvider";
 
-const MILLISECONDS_PER_SECOND = 1000;
+import type { ChatMessage, ChatMessageParams } from "../utils/types";
+import type { ReactNode } from "react";
 
-const officialOpenAIParams = ({
-  content,
-  role,
-}: ChatMessage): OpenAIChatMessage => ({ content, role });
+interface ChatContextValue {
+  readonly tokens: number;
+  readonly messages: ChatMessage[];
+  readonly isLoading: boolean;
+  readonly abortResponse: () => void;
+  readonly resetMessages: () => void;
+  readonly setMessages: (newMessages: ChatMessageParams[]) => void;
+  readonly setSystemMessage: (message: string) => void;
+  readonly submitPrompt: (messages: ChatMessageParams[]) => void;
+}
 
 const createChatMessage = ({
   content,
@@ -43,18 +45,11 @@ const createChatMessage = ({
   },
 });
 
-const updateLastItem =
-  <T>(msgFn: (message: T) => T) =>
-  (currentMessages: T[]) =>
-    currentMessages.map((msg, i) => {
-      if (currentMessages.length - 1 === i) {
-        return msgFn(msg);
-      }
-      return msg;
-    });
+const [useChatContext, ChatContextProvider] =
+  createSafeContext<ChatContextValue>();
 
-export const useChatCompletion = () => {
-  const [tokens, setTokens] = useState(0);
+const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
+  const { settings } = useSettingsContext();
   const [messages, _setMessages] = useState<ChatMessage[]>([
     createChatMessage({
       role: ROLE.SYSTEM,
@@ -62,14 +57,9 @@ export const useChatCompletion = () => {
       content: SYSTEM_PROMPT,
     }),
   ]);
-  const [loading, setLoading] = useState(false);
+  const [tokens, setTokens] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const [controller, setController] = useState<AbortController | null>(null);
-
-  useEffect(() => {
-    setTokens(
-      messages.reduce((acc, { content }) => acc + encode(content).length, 0),
-    );
-  }, [messages]);
 
   const abortResponse = () => {
     if (controller) {
@@ -79,13 +69,13 @@ export const useChatCompletion = () => {
   };
 
   const resetMessages = () => {
-    if (!loading) {
+    if (!isLoading) {
       _setMessages((prev) => prev.filter(({ role }) => role === ROLE.SYSTEM));
     }
   };
 
   const setMessages = (newMessages: ChatMessageParams[]) => {
-    if (!loading) {
+    if (!isLoading) {
       _setMessages(newMessages.map(createChatMessage));
     }
   };
@@ -142,36 +132,21 @@ export const useChatCompletion = () => {
     );
   };
 
-  const updateSystemMessage = (message: string) => {
-    _setMessages((prev) => {
-      const xd = prev.map((msg) =>
-        msg.role === ROLE.SYSTEM
-          ? { ...msg, content: msg.content + message }
-          : msg,
-      );
-
-      return xd;
-    });
-  };
-
-  const resetSystemMessage = () => {
+  const setSystemMessage = (message: string) => {
     _setMessages((prev) =>
       prev.map((msg) =>
-        msg.role === ROLE.SYSTEM ? { ...msg, content: SYSTEM_PROMPT } : msg,
+        msg.role === ROLE.SYSTEM ? { ...msg, content: message } : msg,
       ),
     );
   };
 
-  const submitPrompt = React.useCallback(
-    async (
-      apiParams: OpenAIStreamingParams,
-      newMessages: ChatMessageParams[],
-    ) => {
+  const submitPrompt = useCallback(
+    async (newMessages: ChatMessageParams[]) => {
       if (messages[messages.length - 1]?.meta?.loading) {
         return;
       }
 
-      setLoading(true);
+      setIsLoading(true);
 
       const updatedMessages: ChatMessage[] = [
         ...messages,
@@ -187,11 +162,10 @@ export const useChatCompletion = () => {
       _setMessages(updatedMessages);
 
       const newController = new AbortController();
-      const signal = newController.signal;
       setController(newController);
 
       const requestOpts = getOpenAiRequestOptions(
-        apiParams,
+        settings.ai,
         updatedMessages
           .filter((m, i) => updatedMessages.length - 1 !== i)
           .filter(({ content }) => content.trim().length > 0)
@@ -202,12 +176,12 @@ export const useChatCompletion = () => {
                 ? arr[index + 1].variant !== MESSAGE_VARIANT.ERROR
                 : true),
           )
-          .map(officialOpenAIParams),
-        signal,
+          .map(({ content, role }) => ({ content, role })),
+        newController.signal,
       );
 
       try {
-        //await getChatCompletion(requestOpts, handleNewData, closeStream);
+        await getChatCompletion(requestOpts, handleNewData, closeStream);
         //   const intention = await getPromptIntention(
         //     apiParams,
         //     newMessages[0].content,
@@ -225,7 +199,7 @@ export const useChatCompletion = () => {
         //   }
       } catch (err) {
         console.error(err);
-        if (signal.aborted) {
+        if (newController.signal.aborted) {
           handleNewData({
             content: "Request aborted, please try again.",
             role: ROLE.ASSISTANT,
@@ -249,21 +223,33 @@ export const useChatCompletion = () => {
         }
       } finally {
         setController(null);
-        setLoading(false);
+        setIsLoading(false);
       }
     },
     [messages],
   );
 
-  return {
-    messages,
-    loading,
-    submitPrompt,
-    abortResponse,
-    resetMessages,
-    setMessages,
-    updateSystemMessage,
-    resetSystemMessage,
-    tokens,
-  };
+  useEffect(() => {
+    setTokens(
+      messages.reduce((acc, { content }) => acc + encode(content).length, 0),
+    );
+  }, [messages]);
+
+  const value = useMemo(
+    () => ({
+      isLoading,
+      tokens,
+      messages,
+      setMessages,
+      abortResponse,
+      resetMessages,
+      setSystemMessage,
+      submitPrompt,
+    }),
+    [tokens, messages, isLoading, submitPrompt],
+  );
+
+  return <ChatContextProvider value={value}>{children}</ChatContextProvider>;
 };
+
+export { useChatContext, ChatProvider };

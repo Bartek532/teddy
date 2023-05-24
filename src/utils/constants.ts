@@ -2,6 +2,8 @@ import { AI_MODEL } from "./types";
 
 import type { Settings } from "./types";
 
+export const MILLISECONDS_PER_SECOND = 1000;
+
 export const CHAT_COMPLETIONS_URL =
   "https://api.openai.com/v1/chat/completions";
 
@@ -15,10 +17,12 @@ export const INTENTION_PROMPT =
   "Describe my intention from message below. Focus on the beginning of it. Always return only name of the category and nothing more. categories: action|query|memory Example: Write a newsletter. - actionSave a note - actionAre you B.E.A.R.? - query Remember that Alexa is a dog. - memory I need to finish something important for tomorrow. Add it to my list - action. Answer should be one word with the name of the category and nothing more. ###message\n";
 
 export const DEFAULT_SETTINGS: Settings = {
-  model: AI_MODEL.GPT_3_5,
-  apiKey: "",
-  max_tokens: 1500,
-  temperature: 0.8,
+  ai: {
+    model: AI_MODEL.GPT_3_5,
+    apiKey: "",
+    max_tokens: 1500,
+    temperature: 0.8,
+  },
   actionsUrl: "",
 };
 

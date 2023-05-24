@@ -1,11 +1,12 @@
 import { isRegistered } from "@tauri-apps/api/globalShortcut";
 import { useEffect, useMemo, useState } from "react";
 
-import { useChatCompletion } from "../hooks/useChatCompletion";
 import { createSafeContext } from "../lib/context";
 import { registerShortcut, unregisterShortcut } from "../lib/shortcuts";
 import { add, get, load, remove, sync, update } from "../lib/snippets";
+import { SYSTEM_PROMPT } from "../utils/constants";
 
+import { useChatContext } from "./ChatProvider";
 import { useSettingsContext } from "./SettingsProvider";
 
 import type { Snippet } from "../utils/types";
@@ -35,7 +36,7 @@ const [useSnippetsContext, SnippetsContextProvider] =
 
 const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
   const { settings } = useSettingsContext();
-  const { resetSystemMessage, updateSystemMessage } = useChatCompletion();
+  const { setSystemMessage } = useChatContext();
   const [snippets, setSnippets] = useState<Snippet[]>([]);
   const [activeSnippet, setActiveSnippet] = useState<Snippet | null>(null);
 
@@ -133,9 +134,9 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
 
   useEffect(() => {
     if (activeSnippet) {
-      updateSystemMessage(activeSnippet.prompt);
+      setSystemMessage(activeSnippet.prompt);
     } else {
-      resetSystemMessage();
+      setSystemMessage(SYSTEM_PROMPT);
     }
   }, [activeSnippet]);
 
