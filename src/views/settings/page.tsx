@@ -109,7 +109,7 @@ export const SettingsView = () => {
           <Textarea
             {...register("systemPrompt")}
             className="text-sm"
-            rows={4}
+            rows={6}
           />
         </div>
 
