@@ -1,6 +1,6 @@
 import { AI_MODEL } from "./types";
 
-import type { Settings } from "./types";
+import type { Settings, Snippet } from "./types";
 
 export const MILLISECONDS_PER_SECOND = 1000;
 
@@ -15,21 +15,6 @@ export const SYSTEM_PROMPT =
 
 export const INTENTION_PROMPT =
   "Describe my intention from message below. Focus on the beginning of it. Always return only name of the category and nothing more. categories: action|query|memory Example: Write a newsletter. - actionSave a note - actionAre you B.E.A.R.? - query Remember that Alexa is a dog. - memory I need to finish something important for tomorrow. Add it to my list - action. Answer should be one word with the name of the category and nothing more. ###message\n";
-
-export const DEFAULT_SETTINGS: Settings = {
-  ai: {
-    model: AI_MODEL.GPT_3_5,
-    apiKey: "",
-    max_tokens: 1500,
-    temperature: 0.8,
-  },
-  actionsUrl: "",
-};
-
-export const DEFAULT_STATE = {
-  settings: DEFAULT_SETTINGS,
-  snippets: [],
-};
 
 export const SETTINGS_ROUTES = [
   {
@@ -90,3 +75,83 @@ export const MODELS = [
     tokenLimit: 8192,
   },
 ] as const;
+
+const DEFAULT_SETTINGS: Settings = {
+  ai: {
+    model: AI_MODEL.GPT_3_5,
+    apiKey: "",
+    max_tokens: 1500,
+    temperature: 0.8,
+  },
+  actionsUrl: "",
+};
+
+const DEFAULT_SNIPPETS: Snippet[] = [
+  {
+    id: crypto.randomUUID(),
+    title: "Translate",
+    icon: "BsTranslate",
+    prompt:
+      "Translate user's message to provided language or to English if language is not provided. If source message is in Polish than translate it to English. Return only translated message without any comments or notes.",
+    color: "#fcd53b",
+    enabled: true,
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Fix typos",
+    icon: "RxText",
+    prompt:
+      "Act as a Senior Copywriter. Your role is to fix all typos and grammar in user's message. Your response should be concise and user-friendly.  Return only fixed message without any comments or notes.",
+    color: "#fcd53b",
+    enabled: true,
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Explain step-by-step",
+    icon: "TbBrandWechat",
+    prompt: "Explain",
+    color: "#fcd53b",
+    enabled: true,
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Critique",
+    icon: "AiOutlineFire",
+    prompt:
+      "Now act as if you were a rocket scientist investigating provided solution to a problem. Your job is to find all flaws and faulty in logic in a given approach and provide me with the simplest way to achieve the results. Let’s work this out in a step by step way to be sure we have all the errors. ",
+    color: "#fcd53b",
+    enabled: true,
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Summarize",
+    icon: "MdOutlineSummarize",
+    prompt:
+      "Summarize the provided content. Your response should as concise as possible.",
+    color: "#fcd53b",
+    enabled: true,
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Fix code",
+    icon: "BiBug",
+    prompt:
+      "Act as a Senior Software Engineer. Fix all bugs in provided code. Follow best practices about writing code such as naming variables, comments, etc. Return only fixed code without any comments or notes.",
+    color: "#fcd53b",
+    enabled: true,
+  },
+  {
+    id: crypto.randomUUID(),
+    title: "Autocomplete",
+    icon: "VscWand",
+    prompt:
+      "Autocomplete user's message. Try to do your best with prediction what should go next in provided sentence. Return only completed message without any comments or notes.",
+    color: "#fcd53b",
+    enabled: true,
+  },
+];
+
+export const DEFAULT_STATE = {
+  settings: DEFAULT_SETTINGS,
+  snippets: DEFAULT_SNIPPETS,
+};

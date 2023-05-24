@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createSafeContext } from "../lib/context";
 import { registerShortcut, unregisterShortcut } from "../lib/shortcuts";
 import { add, get, load, remove, sync, update } from "../lib/snippets";
-import { SYSTEM_PROMPT } from "../utils/constants";
+import { DEFAULT_STATE, SYSTEM_PROMPT } from "../utils/constants";
 
 import { useChatContext } from "./ChatProvider";
 import { useSettingsContext } from "./SettingsProvider";
@@ -37,7 +37,7 @@ const [useSnippetsContext, SnippetsContextProvider] =
 const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
   const { settings } = useSettingsContext();
   const { setSystemMessage } = useChatContext();
-  const [snippets, setSnippets] = useState<Snippet[]>([]);
+  const [snippets, setSnippets] = useState<Snippet[]>(DEFAULT_STATE.snippets);
   const [activeSnippet, setActiveSnippet] = useState<Snippet | null>(null);
 
   const addSnippet = (snippet: Omit<Snippet, "id" | "enabled">) => {

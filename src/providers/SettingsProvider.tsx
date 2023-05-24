@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { createSafeContext } from "../lib/context";
 import { getValidatedState, saveState } from "../lib/store";
-import { DEFAULT_SETTINGS } from "../utils/constants";
+import { DEFAULT_STATE } from "../utils/constants";
 
 import type { Settings } from "../utils/types";
 import type { ReactNode } from "react";
@@ -22,7 +22,7 @@ const syncSettings = debounce(async (settings: Settings) => {
 }, 1000);
 
 const SettingsProvider = ({ children }: { readonly children: ReactNode }) => {
-  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+  const [settings, setSettings] = useState<Settings>(DEFAULT_STATE.settings);
 
   const updateSettings = (settings: Partial<Settings>) => {
     setSettings((prev) => ({ ...prev, ...settings }));
