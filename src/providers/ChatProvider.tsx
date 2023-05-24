@@ -172,6 +172,7 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
         newController.signal,
       );
 
+      const beforeTimestamp = Date.now();
       try {
         await getChatCompletion(requestOpts, handleNewData, closeStream);
         //   const intention = await getPromptIntention(
@@ -213,6 +214,7 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
             });
           }
         }
+        closeStream(beforeTimestamp);
       } finally {
         setController(null);
         setIsLoading(false);
