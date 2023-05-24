@@ -6,7 +6,6 @@ import { getChatCompletion, getOpenAiRequestOptions } from "../lib/openai";
 import {
   LOADING_ASSISTANT_MESSAGE,
   MILLISECONDS_PER_SECOND,
-  SYSTEM_PROMPT,
 } from "../utils/constants";
 import { updateLastItem } from "../utils/functions";
 import { MESSAGE_VARIANT, ROLE } from "../utils/types";
@@ -23,7 +22,7 @@ interface ChatContextValue {
   readonly abortResponse: () => void;
   readonly resetMessages: () => void;
   readonly setMessages: (newMessages: ChatMessageParams[]) => void;
-  readonly setSystemMessage: (message: string) => void;
+  readonly setSystemPrompt: (message: string) => void;
   readonly submitPrompt: (messages: ChatMessageParams[]) => void;
 }
 
@@ -50,11 +49,12 @@ const [useChatContext, ChatContextProvider] =
 
 const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
   const { settings } = useSettingsContext();
+  const [systemPrompt, setSystemPrompt] = useState(settings.systemPrompt);
   const [messages, _setMessages] = useState<ChatMessage[]>([
     createChatMessage({
       role: ROLE.SYSTEM,
       variant: MESSAGE_VARIANT.DEFAULT,
-      content: SYSTEM_PROMPT,
+      content: systemPrompt,
     }),
   ]);
   const [tokens, setTokens] = useState(0);
@@ -132,14 +132,6 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
     );
   };
 
-  const setSystemMessage = (message: string) => {
-    _setMessages((prev) =>
-      prev.map((msg) =>
-        msg.role === ROLE.SYSTEM ? { ...msg, content: message } : msg,
-      ),
-    );
-  };
-
   const submitPrompt = useCallback(
     async (newMessages: ChatMessageParams[]) => {
       if (messages[messages.length - 1]?.meta?.loading) {
@@ -167,8 +159,8 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
       const requestOpts = getOpenAiRequestOptions(
         settings.ai,
         updatedMessages
-          .filter((m, i) => updatedMessages.length - 1 !== i)
-          .filter(({ content }) => content.trim().length > 0)
+          .slice(0, -1)
+          .filter(({ content }) => content.trim().length)
           .filter(
             ({ variant }, index, arr) =>
               variant !== MESSAGE_VARIANT.ERROR &&
@@ -230,8 +222,25 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
   );
 
   useEffect(() => {
+    setSystemPrompt(settings.systemPrompt);
+  }, [settings.systemPrompt]);
+
+  useEffect(() => {
+    _setMessages((prev) => [
+      createChatMessage({
+        role: ROLE.SYSTEM,
+        variant: MESSAGE_VARIANT.DEFAULT,
+        content: systemPrompt,
+      }),
+      ...prev.filter(({ role }) => role !== ROLE.SYSTEM),
+    ]);
+  }, [systemPrompt]);
+
+  useEffect(() => {
     setTokens(
-      messages.reduce((acc, { content }) => acc + encode(content).length, 0),
+      messages
+        .filter(({ variant }) => variant !== MESSAGE_VARIANT.ERROR)
+        .reduce((acc, { content }) => acc + encode(content).length, 0),
     );
   }, [messages]);
 
@@ -243,7 +252,7 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
       setMessages,
       abortResponse,
       resetMessages,
-      setSystemMessage,
+      setSystemPrompt,
       submitPrompt,
     }),
     [tokens, messages, isLoading, submitPrompt],

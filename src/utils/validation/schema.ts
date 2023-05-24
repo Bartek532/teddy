@@ -9,6 +9,7 @@ export const settingsSchema = z.object({
     max_tokens: z.number(),
     temperature: z.number(),
   }),
+  systemPrompt: z.string(),
   actionsUrl: z.string().url(),
 });
 

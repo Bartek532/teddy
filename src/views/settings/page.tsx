@@ -7,6 +7,7 @@ import { useForm, useWatch } from "react-hook-form";
 
 import { Input } from "../../components/common/Input";
 import { Radio } from "../../components/common/Radio";
+import { Textarea } from "../../components/common/Textarea";
 import { useSettingsContext } from "../../providers/SettingsProvider";
 import { MODELS } from "../../utils/constants";
 import { onPromise } from "../../utils/functions";
@@ -17,12 +18,13 @@ export const SettingsView = () => {
   const { register, control, getValues } = useForm({
     defaultValues: {
       ai: settings.ai,
+      systemPrompt: settings.systemPrompt,
       actionsUrl: settings.actionsUrl,
     },
   });
 
   const values = useWatch({
-    name: ["ai.model", "ai.apiKey", "actionsUrl"],
+    name: ["ai.model", "ai.apiKey", "systemPrompt", "actionsUrl"],
     control,
   });
 
@@ -98,6 +100,17 @@ export const SettingsView = () => {
               </Radio>
             ))}
           </div>
+        </div>
+
+        <div>
+          <span className="text-sm block mb-1.5">
+            System prompt - customize your assistant!
+          </span>
+          <Textarea
+            {...register("systemPrompt")}
+            className="text-sm"
+            rows={4}
+          />
         </div>
 
         <Input {...register("actionsUrl")}>

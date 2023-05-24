@@ -10,8 +10,6 @@ export const CHAT_COMPLETIONS_URL =
 export const EMBEDDING_URL = "https://api.openai.com/v1/embeddings";
 
 export const LOADING_ASSISTANT_MESSAGE = "I'm thinking...";
-export const SYSTEM_PROMPT =
-  "You're a superanimal, helpful assistant called B.E.A.R..";
 
 export const INTENTION_PROMPT =
   "Describe my intention from message below. Focus on the beginning of it. Always return only name of the category and nothing more. categories: action|query|memory Example: Write a newsletter. - actionSave a note - actionAre you B.E.A.R.? - query Remember that Alexa is a dog. - memory I need to finish something important for tomorrow. Add it to my list - action. Answer should be one word with the name of the category and nothing more. ###message\n";
@@ -76,6 +74,9 @@ export const MODELS = [
   },
 ] as const;
 
+const DEFAULT_SYSTEM_PROMPT =
+  "You're a superanimal, helpful assistant called B.E.A.R..";
+
 const DEFAULT_SETTINGS: Settings = {
   ai: {
     model: AI_MODEL.GPT_3_5,
@@ -83,6 +84,7 @@ const DEFAULT_SETTINGS: Settings = {
     max_tokens: 1500,
     temperature: 0.8,
   },
+  systemPrompt: DEFAULT_SYSTEM_PROMPT,
   actionsUrl: "",
 };
 
