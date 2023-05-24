@@ -9,13 +9,13 @@ import { Input } from "../../components/common/Input";
 import { Radio } from "../../components/common/Radio";
 import { Textarea } from "../../components/common/Textarea";
 import { useSettingsContext } from "../../providers/SettingsProvider";
-import { MODELS } from "../../utils/constants";
+import { DEFAULT_STATE, MODELS } from "../../utils/constants";
 import { onPromise } from "../../utils/functions";
 
 export const SettingsView = () => {
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
   const { settings, updateSettings } = useSettingsContext();
-  const { register, control, getValues } = useForm({
+  const { register, control, getValues, setValue } = useForm({
     defaultValues: {
       ai: settings.ai,
       systemPrompt: settings.systemPrompt,
@@ -103,9 +103,19 @@ export const SettingsView = () => {
         </div>
 
         <div>
-          <span className="text-sm block mb-1.5">
-            System prompt - customize your assistant!
-          </span>
+          <div className="flex justify-between">
+            <span className="text-sm block mb-1.5">
+              System prompt - customize your assistant! ✨
+            </span>
+            <button
+              className="text-sm hover:underline"
+              onClick={() =>
+                setValue("systemPrompt", DEFAULT_STATE.settings.systemPrompt)
+              }
+            >
+              Reset
+            </button>
+          </div>
           <Textarea
             {...register("systemPrompt")}
             className="text-sm"

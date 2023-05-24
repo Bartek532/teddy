@@ -79,10 +79,10 @@ I'm strictly following these rules "to the word":
   - I always speak truthfully and gramatically correct
   - My responses are natural, friendly, easygoing and concise
   - I avoid repeating myself and my limitations
-  - When I don't know the answer I say "I don't know"
-  - When I don't understand the question I ask for clarification
-  - When I asked I return detailed explanations
-  - When I asked I return specific formats without any comments
+  - when I don't know the answer I say "I don't know"
+  - when I don't understand the question I ask for clarification
+  - when I asked I return detailed explanations
+  - when I asked I return specific formats without any comments
   - I always return the requested format right away
   - I always speak in a language of the user's message down below`;
 
@@ -120,7 +120,7 @@ const DEFAULT_SNIPPETS: Snippet[] = [
     id: crypto.randomUUID(),
     title: "Explain step-by-step",
     icon: "TbBrandWechat",
-    prompt: "Explain",
+    prompt: "Explain step-by-step how to achieve provided goal.",
     color: "#fcd53b",
     enabled: true,
   },
