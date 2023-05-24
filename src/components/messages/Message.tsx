@@ -3,6 +3,7 @@ import { memo } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { MESSAGE_VARIANT, ROLE } from "../../utils/types";
+import { Copy } from "../common/Copy";
 
 import type { ChatMessage } from "../../utils/types";
 
@@ -14,13 +15,13 @@ export const Message = memo<MessageProps>(({ message }) => {
   return (
     <li
       className={twMerge(
-        "flex first:pt-4",
+        "group flex first:pt-4",
         message.role === ROLE.USER && "justify-end",
       )}
     >
       <div
         className={twMerge(
-          "bg-white-100 rounded-2xl p-3 px-5 pt-1 max-w-[80%] mb-1 rounded-br-none",
+          "relative bg-white-100 rounded-2xl p-3 px-5 pt-1 max-w-[80%] mb-1 rounded-br-none",
           message.role === ROLE.ASSISTANT &&
             "bg-gray-100 rounded-br-2xl rounded-bl-none",
           message.variant === MESSAGE_VARIANT.ERROR &&
@@ -36,6 +37,12 @@ export const Message = memo<MessageProps>(({ message }) => {
             }),
           }}
         ></p>
+        {message.role === ROLE.ASSISTANT &&
+        message.variant !== MESSAGE_VARIANT.ERROR ? (
+          <div className="absolute top-3 -right-7 group-hover:block hidden">
+            <Copy text={message.content} />
+          </div>
+        ) : null}
       </div>
     </li>
   );
