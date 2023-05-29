@@ -7,7 +7,7 @@ import type { State } from "../utils/types";
 
 const store = new Store(".store.dat");
 
-export const saveState = async (value: Partial<State>) => {
+export const saveState = async (value: State) => {
   try {
     await store.set("state", value);
     await store.save();
@@ -25,6 +25,7 @@ export const getValidatedState = async () => {
     return state;
   }
 
+  console.error("State is invalid. Resetting to default state.");
   await store.set("state", DEFAULT_STATE);
 
   return DEFAULT_STATE;

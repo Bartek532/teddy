@@ -10,7 +10,7 @@ export const settingsSchema = z.object({
     temperature: z.number(),
   }),
   systemPrompt: z.string(),
-  actionsUrl: z.string().url(),
+  actionsUrl: z.string(),
 });
 
 export const createSnippetSchema = z.object({
