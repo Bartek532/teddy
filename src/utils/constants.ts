@@ -102,7 +102,11 @@ const DEFAULT_SNIPPETS: Snippet[] = [
     id: crypto.randomUUID(),
     title: "Translate",
     icon: "BsTranslate",
-    prompt: `Translate user's message to provided language or to English if language is not provided. If source message is in English than translate it to Polish. Return only translated message without any comments or notes.`,
+    prompt: `Translate user's message as shown in examples. If source language is English then translate to Polish. Otherwise, translate every other language to English.
+    Return only translated message without any comments or notes. \n\n\n Examples:
+    Question: What is your name? \n Answer: Jak masz na imię? \n
+    Question: Jak się masz? \n Answer: How are you? \n
+    Question: Quelle heure est-il? \n Answer: What time is it?`,
     color: "#fcd53b",
     enabled: true,
   },
