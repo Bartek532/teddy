@@ -45,7 +45,11 @@ export const registerShortcut = async ({
 
     await writeText(content);
 
-    sendNotification({ title: `🎉 ${title}`, body: content });
+    sendNotification({
+      title: `B.E.A.R.`,
+      body: content,
+      icon: "icons/128x128.png",
+    });
   });
 };
 

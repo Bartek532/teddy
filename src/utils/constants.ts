@@ -102,14 +102,13 @@ const DEFAULT_SNIPPETS: Snippet[] = [
     id: crypto.randomUUID(),
     title: "Translate",
     icon: "BsTranslate",
-    prompt:
-      "Translate user's message to provided language or to English if language is not provided. If source message is in Polish than translate it to English. Return only translated message without any comments or notes.",
+    prompt: `Translate user's message to provided language or to English if language is not provided. If source message is in English than translate it to Polish. Return only translated message without any comments or notes.`,
     color: "#fcd53b",
     enabled: true,
   },
   {
     id: crypto.randomUUID(),
-    title: "Fix typos",
+    title: "Fix grammar",
     icon: "RxText",
     prompt:
       "Act as a Senior Copywriter. Your role is to fix all typos and grammar in user's message. Your response should be concise and user-friendly.  Return only fixed message without any comments or notes.",

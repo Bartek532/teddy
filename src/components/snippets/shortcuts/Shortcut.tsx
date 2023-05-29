@@ -33,7 +33,10 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
     debounce(async () => {
       setIsFinished(true);
       try {
-        await changeSnippetShortcut(snippet.id, shortcut.join("+"));
+        await changeSnippetShortcut(
+          snippet.id,
+          shortcut.join("+").replace("Meta", "CmdOrControl"),
+        );
         setIsError(false);
       } catch (err) {
         console.error(err);
@@ -68,12 +71,15 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
         return "Ctrl";
       case "Meta":
         return os === "Darwin" ? "⌘" : "🪟";
+      case "CmdOrControl":
+        return os === "Darwin" ? "⌘" : "Ctrl";
       default:
         return key;
     }
   };
 
   const handleKeyDownCapture = (e: KeyboardEvent<HTMLInputElement>) => {
+    console.log(e);
     if (isFinished) {
       setIsFinished(false);
       setShortcut([e.key]);
@@ -120,7 +126,8 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
         value={shortcut
           .map(replaceSpecialCharacters)
           .map(capitalize)
-          .join(" + ")}
+          .join(" + ")
+          .replace(/[⌘|🪟] \+ Alt \+ Ctrl \+ Shift/, "🚀")} // hyperkey
         readOnly
         isError={isError}
         disabled={!snippet.enabled}
