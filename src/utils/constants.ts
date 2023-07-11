@@ -63,7 +63,7 @@ export const MODELS = [
     value: AI_MODEL.GPT_3_5,
     label: "GPT-3.5 Turbo",
     isAvailable: true,
-    tokenLimit: 4096,
+    tokenLimit: 16_384,
   },
   {
     id: AI_MODEL.GPT_4,
@@ -94,7 +94,6 @@ const DEFAULT_SETTINGS: Settings = {
     temperature: 0.8,
   },
   systemPrompt: DEFAULT_SYSTEM_PROMPT,
-  actionsUrl: "",
 };
 
 const DEFAULT_SNIPPETS: Snippet[] = [
@@ -103,10 +102,10 @@ const DEFAULT_SNIPPETS: Snippet[] = [
     title: "Translate",
     icon: "BsTranslate",
     prompt: `Translate user's message as shown in examples. If source language is English then translate to Polish. Otherwise, translate every other language to English.
-    Return only translated message without any comments or notes. \n\n\n Examples:
-    Question: What is your name? \n Answer: Jak masz na imię? \n
-    Question: Jak się masz? \n Answer: How are you? \n
-    Question: Quelle heure est-il? \n Answer: What time is it?`,
+Return only translated message without any comments or notes. \n\n\n Examples:
+Question: What is your name? \n Answer: Jak masz na imię? \n
+Question: Jak się masz? \n Answer: How are you? \n
+Question: Quelle heure est-il? \n Answer: What time is it?`,
     color: "#fcd53b",
     enabled: true,
   },
@@ -115,7 +114,7 @@ const DEFAULT_SNIPPETS: Snippet[] = [
     title: "Fix grammar",
     icon: "RxText",
     prompt:
-      "Act as a Senior Copywriter. Your role is to fix all typos and grammar in user's message. Your response should be concise and user-friendly.  Return only fixed message without any comments or notes.",
+      "Act as a Senior Copywriter. Your role is to fix all typos and grammar in user's message. Your response should be concise and user-friendly. Return only fixed message without any comments or notes.",
     color: "#fcd53b",
     enabled: true,
   },

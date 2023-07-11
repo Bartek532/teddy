@@ -11,8 +11,8 @@ import { SnippetsList } from "../../components/snippets/SnippetsList";
 import { useChatContext } from "../../providers/ChatProvider";
 import { useSettingsContext } from "../../providers/SettingsProvider";
 import { useSnippetsContext } from "../../providers/SnippetsProvider";
-import { LOADING_ASSISTANT_MESSAGE, MODELS } from "../../utils/constants";
-import { onPromise } from "../../utils/functions";
+import { MODELS } from "../../utils/constants";
+import { formatNumberWithCommas, onPromise } from "../../utils/functions";
 import { ROLE } from "../../utils/types";
 import { messageSchema } from "../../utils/validation/schema";
 
@@ -114,7 +114,8 @@ export const HomeView = () => {
         </button>
 
         <span className={twMerge(tokens > maxTokens && "text-red-100")}>
-          Tokens: {tokens} / {maxTokens}
+          Tokens: {formatNumberWithCommas(tokens)} /{" "}
+          {formatNumberWithCommas(maxTokens)}
         </span>
       </div>
     </main>

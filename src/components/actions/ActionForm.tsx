@@ -4,6 +4,7 @@ import { memo } from "react";
 import { useForm } from "react-hook-form";
 
 import { ReactComponent as BinIcon } from "../../assets/svg/bin.svg";
+import { onPromise } from "../../utils/functions";
 import { createActionSchema } from "../../utils/validation/schema";
 import { Input } from "../common/Input";
 import { Textarea } from "../common/Textarea";
@@ -31,8 +32,7 @@ export const ActionForm = memo<ActionFormProps>(
     return (
       <form
         className="flex flex-col justify-start gap-4"
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onPromise(handleSubmit(onSubmit))}
       >
         <div>
           <Input {...register("name")}>

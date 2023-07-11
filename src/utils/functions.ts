@@ -18,6 +18,10 @@ export const updateLastItem =
       return msg;
     });
 
+export const formatNumberWithCommas = (number: number) => {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 export const copyToClipboard = async (text: string) => {
   if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
     await navigator.clipboard.writeText(text);
