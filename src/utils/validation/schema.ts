@@ -54,4 +54,5 @@ export const messageSchema = z.object({
 export const stateSchema = z.object({
   settings: settingsSchema,
   snippets: z.array(snippetSchema),
+  actions: z.array(actionSchema),
 });

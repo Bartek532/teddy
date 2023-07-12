@@ -1,6 +1,6 @@
 import { AI_MODEL } from "./types";
 
-import type { Settings, Snippet } from "./types";
+import type { Action, Settings, Snippet } from "./types";
 
 export const MILLISECONDS_PER_SECOND = 1000;
 
@@ -164,7 +164,10 @@ Question: Quelle heure est-il? \n Answer: What time is it?`,
   },
 ];
 
+const DEFAULT_ACTIONS: Action[] = [];
+
 export const DEFAULT_STATE = {
   settings: DEFAULT_SETTINGS,
   snippets: DEFAULT_SNIPPETS,
+  actions: DEFAULT_ACTIONS,
 };

@@ -3,7 +3,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "import"],
+  "plugins": ["@typescript-eslint", "import", "unused-imports"],
   "extends": [
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
@@ -18,7 +18,7 @@
     },
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".ts"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"],
         "moduleDirectory": ["node_modules", "./"]
       },
       "typescript": {
@@ -27,6 +27,7 @@
     }
   },
   "rules": {
+    "arrow-body-style": ["warn", "as-needed"],
     "react/react-in-jsx-scope": "off",
     "react/jsx-uses-react": "off",
     "@typescript-eslint/consistent-type-imports": "warn",
@@ -50,6 +51,14 @@
         "warnOnUnassignedImports": true
       }
     ],
+    "sort-imports": [
+      "warn",
+      {
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false,
+        "allowSeparatedGroups": true
+      }
+    ],
     "@typescript-eslint/naming-convention": [
       "error",
       {
@@ -63,6 +72,14 @@
     ],
     "curly": "error",
     "react/prop-types": "off",
-    "allowComputed": 0
+    "allowComputed": 0,
+    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ]
   }
 }

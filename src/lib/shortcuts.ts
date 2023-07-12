@@ -13,12 +13,10 @@ import { getOpenAiRequestOptions, getChatCompletion } from "./openai";
 import type { Settings } from "../utils/types";
 
 export const registerShortcut = async ({
-  title,
   shortcut,
   settings,
   prompt,
 }: {
-  title: string;
   shortcut: string;
   settings: Settings;
   prompt: string;

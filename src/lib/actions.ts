@@ -1,91 +1,37 @@
-import { fetcher } from "../utils/fetcher";
-import { isAction } from "../utils/validation/validator";
+import { getValidatedState, saveState } from "./store";
 
-import type { Action, CreateActionInput } from "../utils/types";
+import type { Action } from "../utils/types";
 
-export const loadActions = async ({ url }: { url: string }) => {
-  const response = await fetcher(url, { method: "GET" });
+export const add = (actions: Action[], action: Omit<Action, "id">) => [
+  ...actions,
+  { ...action, id: crypto.randomUUID() },
+];
 
-  const actions: unknown = await response.json();
+export const remove = (actions: Action[], id: string) =>
+  actions.filter((a) => a.id !== id);
 
-  const filteredActions = Array.isArray(actions)
-    ? actions.filter(isAction)
-    : [];
+export const get = (actions: Action[], id: string) =>
+  actions.find((a) => a.id === id);
 
-  return filteredActions;
-};
+export const update = (actions: Action[], id: string, data: Partial<Action>) =>
+  actions.map((a) => {
+    if (a.id === id) {
+      return { ...a, ...data };
+    }
 
-export const getAction = async ({ url, id }: { url: string; id: string }) => {
-  const response = await fetcher(url, { method: "GET", body: { id } });
-
-  const action: unknown = await response.json();
-
-  if (isAction(action)) {
-    return action;
-  }
-
-  return null;
-};
-
-export const addAction = async ({
-  url,
-  action,
-}: {
-  url: string;
-  action: CreateActionInput;
-}) => {
-  const response = await fetcher(url, { method: "POST", body: { ...action } });
-
-  const newAction: unknown = await response.json();
-
-  if (isAction(newAction)) {
-    return newAction;
-  }
-
-  return null;
-};
-
-export const deleteAction = async ({
-  url,
-  id,
-}: {
-  url: string;
-  id: string;
-}) => {
-  const response = await fetcher(url, { method: "DELETE", body: { id } });
-
-  const deletedAction: unknown = await response.json();
-
-  if (
-    typeof deletedAction === "object" &&
-    deletedAction &&
-    "id" in deletedAction
-  ) {
-    return deletedAction;
-  }
-
-  return null;
-};
-
-export const updateAction = async ({
-  url,
-  id,
-  data,
-}: {
-  url: string;
-  id: string;
-  data: Partial<Action>;
-}) => {
-  const response = await fetcher(url, {
-    method: "POST",
-    body: { ...data, id },
+    return a;
   });
 
-  const editedAction: unknown = await response.json();
-
-  if (isAction(editedAction)) {
-    return editedAction;
+export const load = async () => {
+  try {
+    const { actions } = await getValidatedState();
+    return actions;
+  } catch (err) {
+    console.error(err);
   }
+};
 
-  return null;
+export const sync = async (actions: Action[]) => {
+  const prev = await getValidatedState();
+  await saveState({ ...prev, actions });
 };
