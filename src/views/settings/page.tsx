@@ -19,12 +19,11 @@ export const SettingsView = () => {
     defaultValues: {
       ai: settings.ai,
       systemPrompt: settings.systemPrompt,
-      actionsUrl: settings.actionsUrl,
     },
   });
 
   const values = useWatch({
-    name: ["ai.model", "ai.apiKey", "systemPrompt", "actionsUrl"],
+    name: ["ai.model", "ai.apiKey", "systemPrompt"],
     control,
   });
 
@@ -119,23 +118,9 @@ export const SettingsView = () => {
           <Textarea
             {...register("systemPrompt")}
             className="text-sm"
-            rows={6}
+            rows={8}
           />
         </div>
-
-        <Input {...register("actionsUrl")}>
-          <span className="text-sm block mb-1.5">
-            Actions webhook url (from{" "}
-            <a
-              href="https://make.com"
-              className="text-blue-200"
-              rel="noreferrer"
-            >
-              make.com
-            </a>
-            )
-          </span>
-        </Input>
       </form>
     </main>
   );

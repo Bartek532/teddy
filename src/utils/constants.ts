@@ -1,6 +1,6 @@
 import { AI_MODEL } from "./types";
 
-import type { Settings, Snippet, Action } from "./types";
+import type { Action, Settings, Snippet } from "./types";
 
 export const MILLISECONDS_PER_SECOND = 1000;
 
@@ -94,7 +94,6 @@ const DEFAULT_SETTINGS: Settings = {
     temperature: 0.8,
   },
   systemPrompt: DEFAULT_SYSTEM_PROMPT,
-  actionsUrl: "",
 };
 
 const DEFAULT_SNIPPETS: Snippet[] = [
