@@ -7,12 +7,7 @@ export const MILLISECONDS_PER_SECOND = 1000;
 export const CHAT_COMPLETIONS_URL =
   "https://api.openai.com/v1/chat/completions";
 
-export const EMBEDDING_URL = "https://api.openai.com/v1/embeddings";
-
 export const LOADING_ASSISTANT_MESSAGE = "I'm thinking...";
-
-export const INTENTION_PROMPT =
-  "Describe my intention from message below. Focus on the beginning of it. Always return only name of the category and nothing more. categories: action|query|memory Example: Write a newsletter. - actionSave a note - actionAre you B.E.A.R.? - query Remember that Alexa is a dog. - memory I need to finish something important for tomorrow. Add it to my list - action. Answer should be one word with the name of the category and nothing more. ###message\n";
 
 export const SETTINGS_ROUTES = [
   {
@@ -69,7 +64,7 @@ export const MODELS = [
     id: AI_MODEL.GPT_4,
     value: AI_MODEL.GPT_4,
     label: "GPT-4",
-    isAvailable: false,
+    isAvailable: true,
     tokenLimit: 8192,
   },
 ] as const;

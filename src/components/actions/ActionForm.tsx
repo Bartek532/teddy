@@ -83,7 +83,22 @@ export const ActionForm = memo<ActionFormProps>(
         </div>
 
         <div>
-          <Textarea {...register("prompt")} className="text-sm" rows={3}>
+          <Textarea {...register("description")} className="text-sm" rows={3}>
+            <span className="text-sm block mb-1.5">
+              Description (will be used during searching)
+            </span>
+          </Textarea>
+          <ErrorMessage
+            name="description"
+            errors={errors}
+            render={({ message }) => (
+              <p className="text-red-100 text-xs pl-1 -mt-1">{message}</p>
+            )}
+          />
+        </div>
+
+        <div>
+          <Textarea {...register("prompt")} className="text-sm" rows={4}>
             <span className="text-sm block mb-1.5">Prompt</span>
           </Textarea>
           <ErrorMessage

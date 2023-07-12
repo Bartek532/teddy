@@ -13,11 +13,11 @@ type AppProvidersProps = Readonly<{
 export const AppProviders = ({ children }: AppProvidersProps) => (
   <ThemeProvider>
     <SettingsProvider>
-      <ChatProvider>
-        <ActionsProvider>
+      <ActionsProvider>
+        <ChatProvider>
           <SnippetsProvider>{children}</SnippetsProvider>
-        </ActionsProvider>
-      </ChatProvider>
+        </ChatProvider>
+      </ActionsProvider>
     </SettingsProvider>
   </ThemeProvider>
 );

@@ -8,7 +8,7 @@ import { sendNotification } from "@tauri-apps/api/notification";
 
 import { ROLE } from "../utils/types";
 
-import { getOpenAiRequestOptions, getChatCompletion } from "./openai";
+import { getOpenAiRequestOptions, getChatCompletion } from "./ai/openai";
 
 import type { Settings } from "../utils/types";
 

@@ -1,18 +1,25 @@
-import { CHAT_COMPLETIONS_URL, INTENTION_PROMPT } from "../utils/constants";
-import { fetcher } from "../utils/fetcher";
-import { INTENTION, ROLE } from "../utils/types";
+import { CHAT_COMPLETIONS_URL } from "../../utils/constants";
+import { fetcher } from "../../utils/fetcher";
+import { ROLE } from "../../utils/types";
 
 import type {
   FetchRequestOptions,
   OpenAIChatMessage,
   OpenAIStreamingParams,
   OpenAIChatCompletionChunk,
-} from "../utils/types";
+  MESSAGE_VARIANT,
+} from "../../utils/types";
+
+export type IncomingChunk = {
+  content: string;
+  role: ROLE;
+  variant?: MESSAGE_VARIANT;
+};
 
 const textDecoder = new TextDecoder("utf-8");
 
 export const getOpenAiRequestOptions = (
-  { apiKey, model, ...restOfApiParams }: OpenAIStreamingParams,
+  { apiKey, ...restOfApiParams }: OpenAIStreamingParams,
   messages: OpenAIChatMessage[],
   signal?: AbortSignal,
 ): FetchRequestOptions => ({
@@ -22,7 +29,6 @@ export const getOpenAiRequestOptions = (
   },
   method: "POST",
   body: {
-    model,
     ...restOfApiParams,
     messages,
     stream: true,
@@ -32,13 +38,7 @@ export const getOpenAiRequestOptions = (
 
 export const getChatCompletion = async (
   requestOpts: FetchRequestOptions,
-  onIncomingChunk?: ({
-    content,
-    role,
-  }: {
-    content: string;
-    role: ROLE;
-  }) => void,
+  onIncomingChunk?: ({ content, role }: IncomingChunk) => void,
   onCloseStream?: (beforeTimestamp: number) => void,
 ) => {
   const beforeTimestamp = Date.now();
@@ -85,24 +85,4 @@ export const getChatCompletion = async (
   onCloseStream?.(beforeTimestamp);
 
   return { content, role } as OpenAIChatMessage;
-};
-
-export const getIntention = async (
-  params: OpenAIStreamingParams,
-  prompt: string,
-): Promise<INTENTION> => {
-  const options = getOpenAiRequestOptions(params, [
-    {
-      content: INTENTION_PROMPT + prompt,
-      role: ROLE.USER,
-    },
-  ]);
-
-  const { content } = await getChatCompletion(options);
-
-  if (Object.values<string>(INTENTION).includes(content)) {
-    return content as INTENTION;
-  }
-
-  return INTENTION.QUERY;
 };

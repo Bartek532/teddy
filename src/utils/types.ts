@@ -91,6 +91,9 @@ export interface OpenAIStreamingParams {
 export interface FetchRequestOptions {
   headers: Record<string, string>;
   method: "POST";
-  body: object;
+  body: Omit<OpenAIStreamingParams, "apiKey"> & {
+    messages: OpenAIChatMessage[];
+    stream: boolean;
+  };
   signal?: AbortSignal;
 }

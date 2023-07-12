@@ -35,12 +35,14 @@ export const actionSchema = z.object({
   icon: z.string(),
   prompt: z.string(),
   url: z.string().url(),
+  description: z.string(),
 });
 
 export const createActionSchema = z.object({
   name: z.string().nonempty("Title cannot be empty."),
   icon: z.string().nonempty("Icon cannot be empty."),
   prompt: z.string().nonempty("Prompt cannot be empty."),
+  description: z.string().nonempty("Description cannot be empty."),
   url: z
     .string()
     .nonempty("Url cannot be empty.")
