@@ -4,6 +4,7 @@ import { memo } from "react";
 import { useForm } from "react-hook-form";
 
 import { ReactComponent as BinIcon } from "../../assets/svg/bin.svg";
+import { onPromise } from "../../utils/functions";
 import { createActionSchema } from "../../utils/validation/schema";
 import { Input } from "../common/Input";
 import { Textarea } from "../common/Textarea";
@@ -11,8 +12,8 @@ import { Textarea } from "../common/Textarea";
 import type { Action, CreateActionInput } from "../../utils/types";
 
 interface ActionFormProps {
-  readonly onSubmit: (data: CreateActionInput) => Promise<void>;
-  readonly onDelete?: (id: string) => Promise<void>;
+  readonly onSubmit: (data: CreateActionInput) => void;
+  readonly onDelete?: (id: string) => void;
   readonly defaultValues?: Action;
   readonly type?: "add" | "edit";
 }
@@ -31,8 +32,7 @@ export const ActionForm = memo<ActionFormProps>(
     return (
       <form
         className="flex flex-col justify-start gap-4"
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={onPromise(handleSubmit(onSubmit))}
       >
         <div>
           <Input {...register("name")}>
@@ -99,7 +99,6 @@ export const ActionForm = memo<ActionFormProps>(
           {type === "edit" && (
             <button
               type="button"
-              // eslint-disable-next-line @typescript-eslint/no-misused-promises
               onClick={() => defaultValues?.id && onDelete?.(defaultValues.id)}
               className="rounded-2xl border-2 p-2.5 text-white-200 bg-red-100 w-full flex gap-3 justify-center items-center"
             >

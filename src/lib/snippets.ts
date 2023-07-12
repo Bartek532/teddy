@@ -12,27 +12,24 @@ export const add = (
   return [...snippets, { ...snippet, id, enabled: true }];
 };
 
-export const remove = (snippets: Snippet[], id: string) => {
-  return snippets.filter((s) => s.id !== id);
-};
+export const remove = (snippets: Snippet[], id: string) =>
+  snippets.filter((s) => s.id !== id);
 
-export const get = (snippets: Snippet[], id: string) => {
-  return snippets.find((s) => s.id === id);
-};
+export const get = (snippets: Snippet[], id: string) =>
+  snippets.find((s) => s.id === id);
 
 export const update = (
   snippets: Snippet[],
   id: string,
   data: Partial<Snippet>,
-) => {
-  return snippets.map((s) => {
+) =>
+  snippets.map((s) => {
     if (s.id === id) {
       return { ...s, ...data };
     }
 
     return s;
   });
-};
 
 export const load = async () => {
   try {
@@ -41,9 +38,8 @@ export const load = async () => {
     await Promise.all(
       snippets
         .filter((s): s is Snippet & { shortcut: string } => !!s.shortcut)
-        .map(({ shortcut, prompt, title }) =>
+        .map(({ shortcut, prompt }) =>
           registerShortcut({
-            title,
             shortcut,
             prompt,
             settings,

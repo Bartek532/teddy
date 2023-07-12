@@ -1,6 +1,6 @@
 import { AI_MODEL } from "./types";
 
-import type { Settings, Snippet } from "./types";
+import type { Settings, Snippet, Action } from "./types";
 
 export const MILLISECONDS_PER_SECOND = 1000;
 
@@ -165,7 +165,10 @@ const DEFAULT_SNIPPETS: Snippet[] = [
   },
 ];
 
+const DEFAULT_ACTIONS: Action[] = [];
+
 export const DEFAULT_STATE = {
   settings: DEFAULT_SETTINGS,
   snippets: DEFAULT_SNIPPETS,
+  actions: DEFAULT_ACTIONS,
 };

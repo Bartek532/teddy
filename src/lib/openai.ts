@@ -87,7 +87,7 @@ export const getChatCompletion = async (
   return { content, role } as OpenAIChatMessage;
 };
 
-export const getPromptIntention = async (
+export const getIntention = async (
   params: OpenAIStreamingParams,
   prompt: string,
 ): Promise<INTENTION> => {
@@ -99,8 +99,6 @@ export const getPromptIntention = async (
   ]);
 
   const { content } = await getChatCompletion(options);
-
-  console.log(content);
 
   if (Object.values<string>(INTENTION).includes(content)) {
     return content as INTENTION;

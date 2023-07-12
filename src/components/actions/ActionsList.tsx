@@ -8,14 +8,12 @@ interface ActionsListProps {
   readonly actions: ActionType[];
 }
 
-export const ActionsList = memo<ActionsListProps>(({ actions }) => {
-  return (
-    <ul className="w-full flex flex-col gap-2">
-      {actions.map((action) => {
-        return <Action key={action.id} action={action} />;
-      })}
-    </ul>
-  );
-});
+export const ActionsList = memo<ActionsListProps>(({ actions }) => (
+  <ul className="w-full flex flex-col gap-2">
+    {actions.map((action) => (
+      <Action key={action.id} action={action} />
+    ))}
+  </ul>
+));
 
 ActionsList.displayName = "ActionsList";

@@ -1,39 +1,20 @@
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 
 import { ActionForm } from "../../../components/actions/ActionForm";
-import { addAction } from "../../../lib/actions";
-import { useSettingsContext } from "../../../providers/SettingsProvider";
+import { useActionsContext } from "../../../providers/ActionsProvider";
 
 import type { CreateActionInput } from "../../../utils/types";
 
 export const AddActionView = () => {
   const navigate = useNavigate();
   const { reset } = useForm<CreateActionInput>();
-  const {
-    settings: { actionsUrl },
-  } = useSettingsContext();
-  const createActionMutation = useMutation("createAction", addAction, {
-    onSuccess: () => {
-      reset();
-      return navigate(-1);
-    },
-  });
+  const { addAction } = useActionsContext();
 
-  const createAction = async (action: CreateActionInput) => {
-    await toast.promise(
-      createActionMutation.mutateAsync({
-        url: actionsUrl,
-        action,
-      }),
-      {
-        loading: "Learning new action...",
-        success: "Successfully learnt new action!",
-        error: (err: Error) => err.message,
-      },
-    );
+  const createAction = (data: CreateActionInput) => {
+    addAction(data);
+    reset();
+    return navigate(-1);
   };
 
   return (
