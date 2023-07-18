@@ -208,7 +208,7 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
       createChatMessage({
         role: ROLE.SYSTEM,
         variant: MESSAGE_VARIANT.DEFAULT,
-        content: settings.systemPrompt,
+        content: systemPrompt,
       }),
       ...prev.filter(({ role }) => role !== ROLE.SYSTEM),
     ]);
