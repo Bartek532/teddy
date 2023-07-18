@@ -1,14 +1,10 @@
 import { readText, writeText } from "@tauri-apps/api/clipboard";
-import {
-  isRegistered,
-  register,
-  unregister,
-} from "@tauri-apps/api/globalShortcut";
+import { isRegistered, register, unregister } from "@tauri-apps/api/globalShortcut";
 import { sendNotification } from "@tauri-apps/api/notification";
 
 import { ROLE } from "../utils/types";
 
-import { getOpenAiRequestOptions, getChatCompletion } from "./ai/openai";
+import { getChatCompletion, getOpenAiRequestOptions } from "./ai/openai";
 
 import type { Settings } from "../utils/types";
 

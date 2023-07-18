@@ -7,11 +7,9 @@ export const add = (actions: Action[], action: Omit<Action, "id">) => [
   { ...action, id: crypto.randomUUID() },
 ];
 
-export const remove = (actions: Action[], id: string) =>
-  actions.filter((a) => a.id !== id);
+export const remove = (actions: Action[], id: string) => actions.filter((a) => a.id !== id);
 
-export const get = (actions: Action[], id: string) =>
-  actions.find((a) => a.id === id);
+export const get = (actions: Action[], id: string) => actions.find((a) => a.id === id);
 
 export const update = (actions: Action[], id: string, data: Partial<Action>) =>
   actions.map((a) => {

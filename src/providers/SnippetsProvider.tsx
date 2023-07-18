@@ -20,19 +20,12 @@ interface SnippetsContextValue {
   readonly addSnippet: (snippet: Omit<Snippet, "id" | "enabled">) => void;
   readonly removeSnippet: (snippetId: string) => void;
   readonly getSnippet: (snippetId: string) => Snippet | null;
-  readonly editSnippet: (
-    snippetId: string,
-    data: Partial<Omit<Snippet, "id">>,
-  ) => void;
-  readonly changeSnippetShortcut: (
-    snippetId: string,
-    shortcut: string,
-  ) => Promise<void>;
+  readonly editSnippet: (snippetId: string, data: Partial<Omit<Snippet, "id">>) => void;
+  readonly changeSnippetShortcut: (snippetId: string, shortcut: string) => Promise<void>;
   readonly toggleSnippet: (snippetId: string) => Promise<void> | null;
 }
 
-const [useSnippetsContext, SnippetsContextProvider] =
-  createSafeContext<SnippetsContextValue>();
+const [useSnippetsContext, SnippetsContextProvider] = createSafeContext<SnippetsContextValue>();
 
 const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
   const { settings } = useSettingsContext();
@@ -48,14 +41,9 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
     setSnippets((prev) => remove(prev, snippetId));
   };
 
-  const getSnippet = (snippetId: string) => {
-    return get(snippets, snippetId) ?? null;
-  };
+  const getSnippet = (snippetId: string) => get(snippets, snippetId) ?? null;
 
-  const editSnippet = (
-    snippetId: string,
-    data: Partial<Omit<Snippet, "id">>,
-  ) => {
+  const editSnippet = (snippetId: string, data: Partial<Omit<Snippet, "id">>) => {
     setSnippets((prev) => update(prev, snippetId, data));
   };
 
@@ -101,9 +89,7 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
       return null;
     }
 
-    setSnippets((prev) =>
-      update(prev, snippetId, { enabled: !snippet.enabled }),
-    );
+    setSnippets((prev) => update(prev, snippetId, { enabled: !snippet.enabled }));
 
     const shortcut = snippet.shortcut;
 
@@ -156,9 +142,7 @@ const SnippetsProvider = ({ children }: { readonly children: ReactNode }) => {
     [snippets, activeSnippet, activateSnippet, getSnippet, deactivateSnippet],
   );
 
-  return (
-    <SnippetsContextProvider value={value}>{children}</SnippetsContextProvider>
-  );
+  return <SnippetsContextProvider value={value}>{children}</SnippetsContextProvider>;
 };
 
 export { useSnippetsContext, SnippetsProvider };

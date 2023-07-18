@@ -11,12 +11,7 @@ export const Header = () => {
   return (
     <header className="flex w-full justify-between items-center py-5 px-7 h-20">
       <Link to="/" className="flex gap-3 items-center justify-start">
-        <img
-          src="/logo.png"
-          alt="bear's head but it's half robotic"
-          width="44"
-          height="44"
-        />
+        <img src="/logo.png" alt="bear's head but it's half robotic" width="44" height="44" />
         <div className="flex flex-col pt-0.5">
           <span className="text-sm opacity-50">AI Assistant</span>
           <h1 className="leading-tight">B.E.A.R.</h1>
@@ -24,11 +19,7 @@ export const Header = () => {
       </Link>
 
       <nav className="flex gap-5 items-center">
-        <button
-          onClick={() =>
-            changeTheme(theme === THEME.LIGHT ? THEME.DARK : THEME.LIGHT)
-          }
-        >
+        <button onClick={() => changeTheme(theme === THEME.LIGHT ? THEME.DARK : THEME.LIGHT)}>
           {theme === THEME.LIGHT ? (
             <SunIcon className="w-6 fill-black-100" />
           ) : (

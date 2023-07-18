@@ -19,24 +19,15 @@ import { messageSchema } from "../../utils/validation/schema";
 import type { SubmitPromptInput } from "../../utils/types";
 
 export const HomeView = () => {
-  const { register, handleSubmit, reset, setFocus } =
-    useForm<SubmitPromptInput>({
-      resolver: zodResolver(messageSchema),
-    });
+  const { register, handleSubmit, reset, setFocus } = useForm<SubmitPromptInput>({
+    resolver: zodResolver(messageSchema),
+  });
   const { settings } = useSettingsContext();
-  const { snippets, activeSnippet, deactivateSnippet, activateSnippet } =
-    useSnippetsContext();
-  const {
-    messages,
-    resetMessages,
-    tokens,
-    submitPrompt,
-    isLoading,
-    abortResponse,
-  } = useChatContext();
+  const { snippets, activeSnippet, deactivateSnippet, activateSnippet } = useSnippetsContext();
+  const { messages, resetMessages, tokens, submitPrompt, isLoading, abortResponse } =
+    useChatContext();
 
-  const maxTokens =
-    MODELS.find(({ value }) => value === settings.ai.model)?.tokenLimit ?? 0;
+  const maxTokens = MODELS.find(({ value }) => value === settings.ai.model)?.tokenLimit ?? 0;
 
   const onPromptSubmit = ({ prompt }: SubmitPromptInput) => {
     reset();
@@ -54,9 +45,7 @@ export const HomeView = () => {
     }
   }, [isLoading]);
 
-  const handleTextareaKeyDown = (
-    e: React.KeyboardEvent<HTMLTextAreaElement>,
-  ) => {
+  const handleTextareaKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       void handleSubmit(onPromptSubmit)();
@@ -72,9 +61,7 @@ export const HomeView = () => {
         onDeactivate={deactivateSnippet}
       />
       <MessagesList
-        messages={messages.filter(
-          ({ content, role }) => content && role !== ROLE.SYSTEM,
-        )}
+        messages={messages.filter(({ content, role }) => content && role !== ROLE.SYSTEM)}
       />
 
       <div className="w-full flex justify-center items-center shadow-200 relative bg-transparent h-[23px]">
@@ -88,10 +75,7 @@ export const HomeView = () => {
         ) : null}
       </div>
 
-      <form
-        className="relative "
-        onSubmit={onPromise(handleSubmit(onPromptSubmit))}
-      >
+      <form className="relative " onSubmit={onPromise(handleSubmit(onPromptSubmit))}>
         <Textarea
           className="pr-12"
           placeholder="Ask me anything..."
@@ -100,10 +84,7 @@ export const HomeView = () => {
           disabled={isLoading}
         />
 
-        <button
-          className="absolute bottom-6 right-6 disabled:opacity-50"
-          disabled={isLoading}
-        >
+        <button className="absolute bottom-6 right-6 disabled:opacity-50" disabled={isLoading}>
           <PaperPlaneIcon className="w-4 fill-black-100" />
         </button>
       </form>
@@ -114,8 +95,7 @@ export const HomeView = () => {
         </button>
 
         <span className={twMerge(tokens > maxTokens && "text-red-100")}>
-          Tokens: {formatNumberWithCommas(tokens)} /{" "}
-          {formatNumberWithCommas(maxTokens)}
+          Tokens: {formatNumberWithCommas(tokens)} / {formatNumberWithCommas(maxTokens)}
         </span>
       </div>
     </main>

@@ -4,17 +4,17 @@ import { ROLE } from "../../utils/types";
 
 import type {
   FetchRequestOptions,
+  MESSAGE_VARIANT,
+  OpenAIChatCompletionChunk,
   OpenAIChatMessage,
   OpenAIStreamingParams,
-  OpenAIChatCompletionChunk,
-  MESSAGE_VARIANT,
 } from "../../utils/types";
 
-export type IncomingChunk = {
+export interface IncomingChunk {
   content: string;
   role: ROLE;
   variant?: MESSAGE_VARIANT;
-};
+}
 
 const textDecoder = new TextDecoder("utf-8");
 
@@ -69,10 +69,7 @@ export const getChatCompletion = async (
       .map((line) => JSON.parse(line) as OpenAIChatCompletionChunk);
 
     for (const chunk of chunks) {
-      const contentChunk = (chunk.choices[0].delta.content ?? "").replace(
-        /^`\s*/,
-        "`",
-      );
+      const contentChunk = (chunk.choices[0].delta.content ?? "").replace(/^`\s*/, "`");
       const roleChunk: ROLE = chunk.choices[0].delta.role ?? ROLE.ASSISTANT;
 
       content = `${content}${contentChunk}`;

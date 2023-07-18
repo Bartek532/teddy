@@ -1,11 +1,8 @@
 import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
-export const Radio = forwardRef<
-  HTMLInputElement,
-  JSX.IntrinsicElements["input"]
->(({ children, ...props }, ref) => {
-  return (
+export const Radio = forwardRef<HTMLInputElement, JSX.IntrinsicElements["input"]>(
+  ({ children, ...props }, ref) => (
     <label className="w-full">
       <input
         ref={ref}
@@ -23,7 +20,7 @@ export const Radio = forwardRef<
         {children}
       </div>
     </label>
-  );
-});
+  ),
+);
 
 Radio.displayName = "Radio";

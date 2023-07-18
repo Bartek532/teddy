@@ -4,8 +4,7 @@ import type { Action, Settings, Snippet } from "./types";
 
 export const MILLISECONDS_PER_SECOND = 1000;
 
-export const CHAT_COMPLETIONS_URL =
-  "https://api.openai.com/v1/chat/completions";
+export const CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
 
 export const LOADING_ASSISTANT_MESSAGE = "I'm thinking...";
 
@@ -134,8 +133,7 @@ Question: Quelle heure est-il? \n Answer: What time is it?`,
     id: crypto.randomUUID(),
     title: "Summarize",
     icon: "MdOutlineSummarize",
-    prompt:
-      "Summarize the provided content. Your response should as concise as possible.",
+    prompt: "Summarize the provided content. Your response should as concise as possible.",
     color: "#fcd53b",
     enabled: true,
   },

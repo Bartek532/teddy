@@ -1,7 +1,4 @@
-import {
-  isPermissionGranted,
-  requestPermission,
-} from "@tauri-apps/api/notification";
+import { isPermissionGranted, requestPermission } from "@tauri-apps/api/notification";
 import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 
@@ -45,9 +42,7 @@ export const SettingsView = () => {
       <div className="flex pt-1.5 mb-1.5 justify-between items-center">
         <span className="text-sm block ">Notifications</span>
         <div className="flex items-center justify-center gap-5">
-          <span className="text-sm">
-            {isNotificationEnabled ? "✅ Enabled" : "❌ Disabled"}
-          </span>
+          <span className="text-sm">{isNotificationEnabled ? "✅ Enabled" : "❌ Disabled"}</span>
           {isNotificationEnabled ? null : (
             <button
               className="text-sm rounded-2xl bg-gray-100 p-2 px-6"
@@ -108,18 +103,12 @@ export const SettingsView = () => {
             </span>
             <button
               className="text-sm hover:underline"
-              onClick={() =>
-                setValue("systemPrompt", DEFAULT_STATE.settings.systemPrompt)
-              }
+              onClick={() => setValue("systemPrompt", DEFAULT_STATE.settings.systemPrompt)}
             >
               Reset
             </button>
           </div>
-          <Textarea
-            {...register("systemPrompt")}
-            className="text-sm"
-            rows={8}
-          />
+          <Textarea {...register("systemPrompt")} className="text-sm" rows={8} />
         </div>
       </form>
     </main>

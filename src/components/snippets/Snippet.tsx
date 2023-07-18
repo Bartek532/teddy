@@ -38,12 +38,9 @@ export const Snippet = memo<SnippetProps>(
           )}
           style={{
             borderColor: snippet.color,
-            backgroundColor:
-              isHovering || isActive ? snippet.color : "transparent",
+            backgroundColor: isHovering || isActive ? snippet.color : "transparent",
           }}
-          onClick={() =>
-            isActive ? onDeactivate(snippet.id) : onActivate(snippet.id)
-          }
+          onClick={() => (isActive ? onDeactivate(snippet.id) : onActivate(snippet.id))}
         >
           <Icon name={snippet.icon} props={iconProps} />
           <span className="truncate max-w-[85%] text-sm">{snippet.title}</span>

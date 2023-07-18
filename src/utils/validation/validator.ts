@@ -1,9 +1,4 @@
-import {
-  actionSchema,
-  settingsSchema,
-  snippetSchema,
-  stateSchema,
-} from "./schema";
+import { actionSchema, settingsSchema, snippetSchema, stateSchema } from "./schema";
 
 import type { Action, Settings, Snippet, State } from "./types";
 

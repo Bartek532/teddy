@@ -18,6 +18,22 @@ interface ShortcutProps {
   readonly snippet: Snippet;
 }
 
+const replaceHyperKey = (shortcut: string[]) => {
+  const macHyperKey = ["⌘", "Alt", "Ctrl", "Shift"];
+  const winHyperKey = ["🪟", "Alt", "Ctrl", "Shift"];
+
+  const isMacHyperKey = macHyperKey.every((key) => shortcut.includes(key));
+  const isWinHyperKey = winHyperKey.every((key) => shortcut.includes(key));
+
+  const shortcutWithoutHyperKey = shortcut.filter(
+    (key) => !macHyperKey.includes(key) && !winHyperKey.includes(key),
+  );
+
+  return isMacHyperKey || isWinHyperKey
+    ? ["🚀", ...shortcutWithoutHyperKey]
+    : shortcutWithoutHyperKey;
+};
+
 export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
   const [os, setOs] = useState<OsType>();
   const [isFinished, setIsFinished] = useState(!!snippet.shortcut);
@@ -33,10 +49,7 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
     debounce(async () => {
       setIsFinished(true);
       try {
-        await changeSnippetShortcut(
-          snippet.id,
-          shortcut.join("+").replace("Meta", "CmdOrControl"),
-        );
+        await changeSnippetShortcut(snippet.id, shortcut.join("+").replace("Meta", "CmdOrControl"));
         setIsError(false);
       } catch (err) {
         console.error(err);
@@ -84,9 +97,7 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
       setIsFinished(false);
       setShortcut([e.key]);
     } else {
-      return setShortcut((prev) =>
-        prev.includes(e.key) ? prev : [...prev, e.key],
-      );
+      return setShortcut((prev) => (prev.includes(e.key) ? prev : [...prev, e.key]));
     }
   };
 
@@ -123,11 +134,7 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
         className="h-full text-center"
         onKeyDownCapture={handleKeyDownCapture}
         onKeyUp={onPromise(async () => debouncedKeyUp())}
-        value={shortcut
-          .map(replaceSpecialCharacters)
-          .map(capitalize)
-          .join(" + ")
-          .replace(/[⌘|🪟] \+ Alt \+ Ctrl \+ Shift/, "🚀")} // hyperkey
+        value={replaceHyperKey(shortcut.map(replaceSpecialCharacters).map(capitalize)).join(" + ")}
         readOnly
         isError={isError}
         disabled={!snippet.enabled}

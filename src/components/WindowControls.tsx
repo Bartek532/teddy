@@ -1,9 +1,4 @@
-import {
-  appWindow,
-  currentMonitor,
-  LogicalPosition,
-  LogicalSize,
-} from "@tauri-apps/api/window";
+import { LogicalPosition, LogicalSize, appWindow, currentMonitor } from "@tauri-apps/api/window";
 import { useState } from "react";
 
 import { ReactComponent as CrossIcon } from "../assets/svg/cross.svg";
@@ -23,9 +18,7 @@ export const WindowControls = () => {
     const factor = await appWindow.scaleFactor();
 
     try {
-      await appWindow.setSize(
-        new LogicalSize(650, monitor?.size.height ?? 850),
-      );
+      await appWindow.setSize(new LogicalSize(650, monitor?.size.height ?? 850));
 
       await appWindow.setPosition(
         new LogicalPosition(
@@ -56,10 +49,7 @@ export const WindowControls = () => {
   const handleHideWindow = () => appWindow.minimize();
 
   return (
-    <div
-      data-tauri-drag-region
-      className="w-full pt-5 px-7 cursor-grab bg-background-100"
-    >
+    <div data-tauri-drag-region className="w-full pt-5 px-7 cursor-grab bg-background-100">
       <div
         className="flex w-fit gap-2"
         onMouseEnter={() => setIsHovered(true)}
@@ -75,15 +65,11 @@ export const WindowControls = () => {
           className="w-3.5 h-3.5 bg-yellow-100 dark:bg-transparent border border-yellow-100 rounded-full flex justify-center items-center"
           onClick={onPromise(handleHideWindow)}
         >
-          {isHovered && (
-            <LineIcon className="w-2 dark:stroke-yellow-100 stroke-black-100" />
-          )}
+          {isHovered && <LineIcon className="w-2 dark:stroke-yellow-100 stroke-black-100" />}
         </button>
         <button
           className="w-3.5 h-3.5 bg-green-100 dark:bg-transparent border border-green-100 rounded-full flex justify-center items-center"
-          onClick={onPromise(() =>
-            isMaximized ? handleMinimizeWindow() : handleMaximizeWindow(),
-          )}
+          onClick={onPromise(() => (isMaximized ? handleMinimizeWindow() : handleMaximizeWindow()))}
         >
           {isHovered &&
             (isMaximized ? (

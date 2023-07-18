@@ -1,16 +1,14 @@
 import { fetcher } from "../../../../utils/fetcher";
-import {
-  Action,
-  FetchRequestOptions,
-  MESSAGE_VARIANT,
-  OpenAIStreamingParams,
-  ROLE,
-} from "../../../../utils/types";
-import { IncomingChunk, getChatCompletion, getOpenAiRequestOptions } from "../../openai";
+import { MESSAGE_VARIANT, ROLE } from "../../../../utils/types";
+import { getChatCompletion } from "../../openai";
+
 import { ACTION_PROMPT } from "./constants";
 
-const getActionPrompt = (actions: Action[], prompt: string) => {
-  return ACTION_PROMPT.replace("{{message}}", prompt).replace(
+import type { Action, FetchRequestOptions } from "../../../../utils/types";
+import type { IncomingChunk } from "../../openai";
+
+const getActionPrompt = (actions: Action[], prompt: string) =>
+  ACTION_PROMPT.replace("{{message}}", prompt).replace(
     "{{actions}}",
     actions
       .map(
@@ -21,7 +19,6 @@ const getActionPrompt = (actions: Action[], prompt: string) => {
       )
       .join("\n##N"),
   );
-};
 
 const findAction = async (options: FetchRequestOptions, actions: Action[]) => {
   const actionPrompt = getActionPrompt(actions, options.body.messages.at(-1)?.content ?? "");

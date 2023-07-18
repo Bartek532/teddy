@@ -43,10 +43,7 @@ export const createActionSchema = z.object({
   icon: z.string().nonempty("Icon cannot be empty."),
   prompt: z.string().nonempty("Prompt cannot be empty."),
   description: z.string().nonempty("Description cannot be empty."),
-  url: z
-    .string()
-    .nonempty("Url cannot be empty.")
-    .url("Url must be a valid url."),
+  url: z.string().nonempty("Url cannot be empty.").url("Url must be a valid url."),
 });
 
 export const messageSchema = z.object({

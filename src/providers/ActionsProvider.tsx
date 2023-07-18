@@ -12,14 +12,10 @@ interface ActionsContextValue {
   readonly addAction: (action: Omit<Action, "id">) => void;
   readonly removeAction: (actionId: string) => void;
   readonly getAction: (actionId: string) => Action | null;
-  readonly editAction: (
-    actionId: string,
-    data: Partial<Omit<Action, "id">>,
-  ) => void;
+  readonly editAction: (actionId: string, data: Partial<Omit<Action, "id">>) => void;
 }
 
-const [useActionsContext, ActionsContextProvider] =
-  createSafeContext<ActionsContextValue>();
+const [useActionsContext, ActionsContextProvider] = createSafeContext<ActionsContextValue>();
 
 const ActionsProvider = ({ children }: { readonly children: ReactNode }) => {
   const [actions, setActions] = useState<Action[]>(DEFAULT_STATE.actions);
@@ -65,9 +61,7 @@ const ActionsProvider = ({ children }: { readonly children: ReactNode }) => {
     [actions, addAction, removeAction, getAction, editAction],
   );
 
-  return (
-    <ActionsContextProvider value={value}>{children}</ActionsContextProvider>
-  );
+  return <ActionsContextProvider value={value}>{children}</ActionsContextProvider>;
 };
 
 export { useActionsContext, ActionsProvider };

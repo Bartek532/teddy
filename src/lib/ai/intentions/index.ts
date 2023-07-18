@@ -1,20 +1,14 @@
-import {
-  Action,
-  FetchRequestOptions,
-  INTENTION,
-  OpenAIStreamingParams,
-  ROLE,
-} from "../../../utils/types";
-import {
-  IncomingChunk,
-  getChatCompletion,
-  getOpenAiRequestOptions,
-} from "../openai";
+import { INTENTION, ROLE } from "../../../utils/types";
+import { getChatCompletion, getOpenAiRequestOptions } from "../openai";
+
 import { actionIntention } from "./action";
 import { INTENTION_PROMPT } from "./constants";
 import { queryIntention } from "./query";
 
-type IntentionStrategy = {
+import type { Action, FetchRequestOptions, OpenAIStreamingParams } from "../../../utils/types";
+import type { IncomingChunk } from "../openai";
+
+interface IntentionStrategy {
   getResponse: ({
     options,
     handler,
@@ -23,10 +17,10 @@ type IntentionStrategy = {
   }: {
     options: FetchRequestOptions;
     handler: (chunk: IncomingChunk) => void;
+    actions: Action[];
     closeStream?: (beforeTimestamp: number) => void;
-    actions?: Action[];
   }) => Promise<void>;
-};
+}
 
 export const intentions: Record<INTENTION, IntentionStrategy> = {
   [INTENTION.QUERY]: queryIntention,
@@ -34,10 +28,7 @@ export const intentions: Record<INTENTION, IntentionStrategy> = {
   [INTENTION.MEMORY]: queryIntention,
 };
 
-export const getIntention = async (
-  params: OpenAIStreamingParams,
-  prompt: string,
-) => {
+export const getIntention = async (params: OpenAIStreamingParams, prompt: string) => {
   const options = getOpenAiRequestOptions(params, [
     {
       content: INTENTION_PROMPT + prompt,

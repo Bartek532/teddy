@@ -10,8 +10,7 @@ interface ThemeContextValue {
   changeTheme: (theme: THEME) => void;
 }
 
-const [useThemeContext, ThemeContextProvider] =
-  createSafeContext<ThemeContextValue>();
+const [useThemeContext, ThemeContextProvider] = createSafeContext<ThemeContextValue>();
 
 const getCurrentTheme = (): THEME => {
   const localStorageTheme = window.localStorage.getItem("theme");
@@ -20,9 +19,7 @@ const getCurrentTheme = (): THEME => {
     return localStorageTheme;
   }
 
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? THEME.DARK
-    : THEME.LIGHT;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? THEME.DARK : THEME.LIGHT;
 };
 
 const ThemeProvider = ({ children }: { readonly children: ReactNode }) => {

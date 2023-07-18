@@ -1,18 +1,19 @@
 import { encode } from "gpt-tokenizer";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { getIntention, intentions } from "../lib/ai/intentions";
+import { getOpenAiRequestOptions } from "../lib/ai/openai";
 import { createSafeContext } from "../lib/context";
-import { IncomingChunk, getOpenAiRequestOptions } from "../lib/ai/openai";
 import { LOADING_ASSISTANT_MESSAGE, MILLISECONDS_PER_SECOND } from "../utils/constants";
 import { updateLastItem } from "../utils/functions";
 import { MESSAGE_VARIANT, ROLE } from "../utils/types";
 
+import { useActionsContext } from "./ActionsProvider";
 import { useSettingsContext } from "./SettingsProvider";
 
+import type { IncomingChunk } from "../lib/ai/openai";
 import type { ChatMessage, ChatMessageParams } from "../utils/types";
 import type { ReactNode } from "react";
-import { useActionsContext } from "./ActionsProvider";
-import { getIntention, intentions } from "../lib/ai/intentions";
 
 interface ChatContextValue {
   readonly tokens: number;

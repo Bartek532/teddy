@@ -41,9 +41,7 @@ export const SnippetForm = memo<SnippetFormProps>(
           <ErrorMessage
             name="title"
             errors={errors}
-            render={({ message }) => (
-              <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>
-            )}
+            render={({ message }) => <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>}
           />
         </div>
 
@@ -51,10 +49,7 @@ export const SnippetForm = memo<SnippetFormProps>(
           <Input {...register("icon")}>
             <span className="text-sm block mb-1.5">
               Icon, choose anything from{" "}
-              <a
-                href="https://react-icons.github.io/react-icons/"
-                className="text-blue-200"
-              >
+              <a href="https://react-icons.github.io/react-icons/" className="text-blue-200">
                 react-icons
               </a>
             </span>
@@ -62,9 +57,7 @@ export const SnippetForm = memo<SnippetFormProps>(
           <ErrorMessage
             name="icon"
             errors={errors}
-            render={({ message }) => (
-              <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>
-            )}
+            render={({ message }) => <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>}
           />
         </div>
 
@@ -76,9 +69,7 @@ export const SnippetForm = memo<SnippetFormProps>(
           <ErrorMessage
             name="color"
             errors={errors}
-            render={({ message }) => (
-              <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>
-            )}
+            render={({ message }) => <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>}
           />
         </div>
 
@@ -89,9 +80,7 @@ export const SnippetForm = memo<SnippetFormProps>(
           <ErrorMessage
             name="prompt"
             errors={errors}
-            render={({ message }) => (
-              <p className="text-red-100 text-xs pl-1 -mt-1">{message}</p>
-            )}
+            render={({ message }) => <p className="text-red-100 text-xs pl-1 -mt-1">{message}</p>}
           />
         </div>
 

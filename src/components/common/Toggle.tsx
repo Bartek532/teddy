@@ -1,10 +1,7 @@
 import { forwardRef } from "react";
 
-export const Toggle = forwardRef<
-  HTMLInputElement,
-  JSX.IntrinsicElements["input"]
->(({ ...props }, ref) => {
-  return (
+export const Toggle = forwardRef<HTMLInputElement, JSX.IntrinsicElements["input"]>(
+  ({ ...props }, ref) => (
     <label className="relative h-5 w-9">
       <input
         ref={ref}
@@ -15,7 +12,7 @@ export const Toggle = forwardRef<
 
       <span className="peer-checked:bg-yellow-100 border border-gray-200 peer-checked:before:translate-x-4 transition-colors before:transition-transform absolute cursor-pointer inset-0 bg-gray-100 rounded-xl before:absolute before:h-4 before:w-4 before:left-[1px] before:top-[1px] before:bg-white-200 before:rounded-full"></span>
     </label>
-  );
-});
+  ),
+);
 
 Toggle.displayName = "Toggle";

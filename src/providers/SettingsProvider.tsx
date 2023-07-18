@@ -13,8 +13,7 @@ interface SettingsContextValue {
   readonly updateSettings: (settings: Partial<Settings>) => void;
 }
 
-const [useSettingsContext, SettingsContextProvider] =
-  createSafeContext<SettingsContextValue>();
+const [useSettingsContext, SettingsContextProvider] = createSafeContext<SettingsContextValue>();
 
 const syncSettings = debounce(async (settings: Settings) => {
   const prev = await getValidatedState();
@@ -50,9 +49,7 @@ const SettingsProvider = ({ children }: { readonly children: ReactNode }) => {
     [settings, updateSettings],
   );
 
-  return (
-    <SettingsContextProvider value={value}>{children}</SettingsContextProvider>
-  );
+  return <SettingsContextProvider value={value}>{children}</SettingsContextProvider>;
 };
 
 export { useSettingsContext, SettingsProvider };

@@ -1,11 +1,8 @@
 import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
-export const Textarea = forwardRef<
-  HTMLTextAreaElement,
-  JSX.IntrinsicElements["textarea"]
->(({ children, ...props }, ref) => {
-  return (
+export const Textarea = forwardRef<HTMLTextAreaElement, JSX.IntrinsicElements["textarea"]>(
+  ({ children, ...props }, ref) => (
     <label>
       {children}
       <textarea
@@ -17,7 +14,7 @@ export const Textarea = forwardRef<
         )}
       ></textarea>
     </label>
-  );
-});
+  ),
+);
 
 Textarea.displayName = "Textarea";
