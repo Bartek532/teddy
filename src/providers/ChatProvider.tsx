@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { getIntention, intentions } from "../lib/ai/intentions";
 import { getOpenAiRequestOptions } from "../lib/ai/openai";
 import { createSafeContext } from "../lib/context";
-import { LOADING_ASSISTANT_MESSAGE, MILLISECONDS_PER_SECOND } from "../utils/constants";
+import { LOADING_ASSISTANT_MESSAGE, MILISECONDS_PER_SECOND } from "../utils/constants";
 import { updateLastItem } from "../utils/functions";
 import { MESSAGE_VARIANT, ROLE } from "../utils/types";
 
@@ -113,7 +113,7 @@ const ChatProvider = ({ children }: { readonly children: ReactNode }) => {
 
   const closeStream = (beforeTimestamp: number) => {
     const afterTimestamp = Date.now();
-    const diffInSeconds = (afterTimestamp - beforeTimestamp) / MILLISECONDS_PER_SECOND;
+    const diffInSeconds = (afterTimestamp - beforeTimestamp) / MILISECONDS_PER_SECOND;
     const formattedDiff = diffInSeconds.toFixed(2) + " sec.";
 
     _setMessages(

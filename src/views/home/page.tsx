@@ -8,9 +8,9 @@ import { ReactComponent as StopIcon } from "../../assets/svg/stop.svg";
 import { Textarea } from "../../components/common/Textarea";
 import { MessagesList } from "../../components/messages/MessagesList";
 import { SnippetsList } from "../../components/snippets/SnippetsList";
-import { useChatContext } from "../../providers/ChatProvider";
-import { useSettingsContext } from "../../providers/SettingsProvider";
-import { useSnippetsContext } from "../../providers/SnippetsProvider";
+import { abortResponse, resetMessages, submitPrompt, useChat } from "../../stores/chat.store";
+import { useSettings } from "../../stores/settings.store";
+import { useSnippets } from "../../stores/snippets.store";
 import { MODELS } from "../../utils/constants";
 import { formatNumberWithCommas, onPromise } from "../../utils/functions";
 import { ROLE } from "../../utils/types";
@@ -19,13 +19,13 @@ import { messageSchema } from "../../utils/validation/schema";
 import type { SubmitPromptInput } from "../../utils/types";
 
 export const HomeView = () => {
+  const settings = useSettings(({ settings }) => settings);
   const { register, handleSubmit, reset, setFocus } = useForm<SubmitPromptInput>({
     resolver: zodResolver(messageSchema),
   });
-  const { settings } = useSettingsContext();
-  const { snippets, activeSnippet, deactivateSnippet, activateSnippet } = useSnippetsContext();
-  const { messages, resetMessages, tokens, submitPrompt, isLoading, abortResponse } =
-    useChatContext();
+
+  const { snippets, activeSnippet, deactivateSnippet, activateSnippet } = useSnippets();
+  const { messages, tokens, isLoading } = useChat();
 
   const maxTokens = MODELS.find(({ value }) => value === settings.ai.model)?.tokenLimit ?? 0;
 

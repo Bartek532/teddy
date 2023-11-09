@@ -2,7 +2,7 @@ import { AI_MODEL } from "./types";
 
 import type { Action, Settings, Snippet } from "./types";
 
-export const MILLISECONDS_PER_SECOND = 1000;
+export const MILISECONDS_PER_SECOND = 1000;
 
 export const CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions";
 

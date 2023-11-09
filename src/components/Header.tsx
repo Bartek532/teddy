@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import { ReactComponent as MoonIcon } from "../assets/svg/moon.svg";
 import { ReactComponent as SettingsIcon } from "../assets/svg/settings.svg";
 import { ReactComponent as SunIcon } from "../assets/svg/sun.svg";
-import { useThemeContext } from "../providers/ThemeProvider";
+import { useTheme } from "../stores/theme.store";
 import { THEME } from "../utils/types";
 
 export const Header = () => {
-  const { theme, changeTheme } = useThemeContext();
+  const { theme, changeTheme } = useTheme();
   return (
     <header className="flex w-full justify-between items-center py-5 px-7 h-20">
       <Link to="/" className="flex gap-3 items-center justify-start">
