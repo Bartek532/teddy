@@ -10,7 +10,7 @@ import { MessagesList } from "../../components/messages/MessagesList";
 import { SnippetsList } from "../../components/snippets/SnippetsList";
 import { abortResponse, resetMessages, submitPrompt, useChat } from "../../stores/chat.store";
 import { useSettings } from "../../stores/settings.store";
-import { useSnippets } from "../../stores/snippets.store";
+import { activateSnippet, deactivateSnippet, useSnippets } from "../../stores/snippets.store";
 import { MODELS } from "../../utils/constants";
 import { formatNumberWithCommas, onPromise } from "../../utils/functions";
 import { ROLE } from "../../utils/types";
@@ -24,7 +24,9 @@ export const HomeView = () => {
     resolver: zodResolver(messageSchema),
   });
 
-  const { snippets, activeSnippet, deactivateSnippet, activateSnippet } = useSnippets();
+  const { snippets, activeSnippet } = useSnippets();
+
+  console.log(snippets);
   const { messages, tokens, isLoading } = useChat();
 
   const maxTokens = MODELS.find(({ value }) => value === settings.ai.model)?.tokenLimit ?? 0;

@@ -5,13 +5,13 @@ import { useForm, useWatch } from "react-hook-form";
 import { Input } from "../../components/common/Input";
 import { Radio } from "../../components/common/Radio";
 import { Textarea } from "../../components/common/Textarea";
-import { useSettings } from "../../stores/settings.store";
+import { updateSettings, useSettings } from "../../stores/settings.store";
 import { DEFAULT_STATE, MODELS } from "../../utils/constants";
 import { onPromise } from "../../utils/functions";
 
 export const SettingsView = () => {
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
-  const { settings, updateSettings } = useSettings();
+  const settings = useSettings(({ settings }) => settings);
   const { register, control, getValues, setValue } = useForm({
     defaultValues: {
       ai: settings.ai,

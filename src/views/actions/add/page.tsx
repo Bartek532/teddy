@@ -2,14 +2,13 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { ActionForm } from "../../../components/actions/ActionForm";
-import { useActionsContext } from "../../../providers/ActionsProvider";
+import { addAction } from "../../../stores/actions.store";
 
 import type { CreateActionInput } from "../../../utils/types";
 
 export const AddActionView = () => {
   const navigate = useNavigate();
   const { reset } = useForm<CreateActionInput>();
-  const { addAction } = useActionsContext();
 
   const createAction = (data: CreateActionInput) => {
     addAction(data);

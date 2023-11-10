@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { SnippetForm } from "../../../components/snippets/SnippetForm";
-import { useSnippets } from "../../../stores/snippets.store";
+import { editSnippet, getSnippet, removeSnippet } from "../../../stores/snippets.store";
 
 import type { CreateSnippetInput } from "../../../utils/types";
 
@@ -10,13 +10,6 @@ export const EditSnippetView = () => {
   const { reset } = useForm<CreateSnippetInput>();
   const params = useParams();
   const navigate = useNavigate();
-  const { getSnippet, editSnippet, removeSnippet } = useSnippets(
-    ({ getSnippet, editSnippet, removeSnippet }) => ({
-      getSnippet,
-      editSnippet,
-      removeSnippet,
-    }),
-  );
 
   if (!params.id) {
     return null;

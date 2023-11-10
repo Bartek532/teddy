@@ -47,10 +47,7 @@ const filterMessages = (messages: ChatMessage[]) =>
 
 const useChat = create(
   subscribeWithSelector<ChatStore>((_, get) => ({
-    tokens: filterMessages(get().messages).reduce(
-      (acc, { content }) => acc + encode(content).length,
-      0,
-    ),
+    tokens: 0,
     messages: [
       createChatMessage({
         role: ROLE.SYSTEM,
@@ -62,6 +59,20 @@ const useChat = create(
     isLoading: false,
   })),
 );
+
+const setSystemPrompt = (systemPrompt: string) => {
+  useChat.setState((prev) => ({
+    ...prev,
+    messages: [
+      createChatMessage({
+        role: ROLE.SYSTEM,
+        variant: MESSAGE_VARIANT.DEFAULT,
+        content: systemPrompt,
+      }),
+      ...prev.messages.slice(1),
+    ],
+  }));
+};
 
 const closeStream = (beforeTimestamp: number) => {
   const afterTimestamp = Date.now();
@@ -209,4 +220,5 @@ export {
   useChat,
   createChatMessage,
   filterMessages,
+  setSystemPrompt,
 };

@@ -1,84 +1,95 @@
 import { isRegistered } from "@tauri-apps/api/globalShortcut";
 import { create } from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
 
 import { registerShortcut, unregisterShortcut } from "../lib/shortcuts";
 import { add, get, load, remove, sync, update } from "../lib/snippets";
 import { DEFAULT_STATE } from "../utils/constants";
 
+import { setSystemPrompt } from "./chat.store";
 import { useSettings } from "./settings.store";
 
 import type { Snippet } from "../utils/types";
 
 interface SnippetsStore {
   readonly activeSnippet: Snippet | null;
-  readonly activateSnippet: (snippetId: string) => void;
-  readonly deactivateSnippet: (snippetId: string) => void;
   readonly snippets: Snippet[];
-  readonly addSnippet: (snippet: Omit<Snippet, "id" | "enabled">) => void;
-  readonly removeSnippet: (snippetId: string) => void;
-  readonly getSnippet: (snippetId: string) => Snippet | null;
-  readonly editSnippet: (snippetId: string, data: Partial<Omit<Snippet, "id">>) => void;
-  readonly changeSnippetShortcut: (snippetId: string, shortcut: string) => Promise<void>;
-  readonly toggleSnippet: (snippetId: string) => Promise<void> | null;
 }
 
-export const useSnippets = create<SnippetsStore>((set, getState) => ({
-  snippets: DEFAULT_STATE.snippets,
-  activeSnippet: null,
-  activateSnippet: (snippetId) => set({ activeSnippet: getState().getSnippet(snippetId) }),
-  deactivateSnippet: () => set({ activeSnippet: null }),
-  addSnippet: (snippet) => set(({ snippets }) => ({ snippets: add(snippets, snippet) })),
-  removeSnippet: (snippetId) => set(({ snippets }) => ({ snippets: remove(snippets, snippetId) })),
-  getSnippet: (snippetId) => get(getState().snippets, snippetId) ?? null,
-  editSnippet: (snippetId, data) =>
-    set(({ snippets }) => ({ snippets: update(snippets, snippetId, data) })),
-  changeSnippetShortcut: async (snippetId, shortcut) => {
-    const snippet = getState().getSnippet(snippetId);
-    if (!snippet) {
-      return Promise.resolve();
-    }
-    if (snippet.shortcut) {
-      const prevShortcut = snippet.shortcut;
-      const isShortcutRegistered = await isRegistered(prevShortcut);
+const useSnippets = create(
+  subscribeWithSelector<SnippetsStore>(() => ({
+    snippets: DEFAULT_STATE.snippets,
+    activeSnippet: null,
+  })),
+);
 
-      isShortcutRegistered && (await unregisterShortcut(prevShortcut));
-      await registerShortcut({ settings: useSettings.getState().settings, ...snippet, shortcut });
+const getSnippet = (snippetId: string) => get(useSnippets.getState().snippets, snippetId) ?? null;
 
-      return set(({ snippets }) => ({
-        snippets: update(snippets, snippetId, { shortcut }),
-      }));
-    }
-  },
-  toggleSnippet: (snippetId) => {
-    const snippet = getState().getSnippet(snippetId);
-    if (!snippet) {
-      return null;
-    }
-    set(({ snippets }) => ({
-      snippets: update(snippets, snippetId, { enabled: !snippet.enabled }),
-    }));
+const activateSnippet = (snippetId: string) =>
+  useSnippets.setState({ activeSnippet: getSnippet(snippetId) });
 
-    const shortcut = snippet.shortcut;
+const deactivateSnippet = () => useSnippets.setState({ activeSnippet: null });
 
-    if (!shortcut) {
-      return null;
-    }
+const addSnippet = (snippet: Omit<Snippet, "id" | "enabled">) =>
+  useSnippets.setState(({ snippets }) => ({ snippets: add(snippets, snippet) }));
 
-    return snippet.enabled
-      ? unregisterShortcut(shortcut)
-      : registerShortcut({ settings: useSettings.getState().settings, ...snippet, shortcut });
-  },
-}));
+const removeSnippet = (snippetId: string) =>
+  useSnippets.setState(({ snippets }) => ({ snippets: remove(snippets, snippetId) }));
 
-useSnippets.subscribe(({ snippets, activeSnippet }) => {
-  if (activeSnippet) {
-    // setSystemPrompt(activeSnippet.prompt);
-  } else {
-    // setSystemPrompt(settings.systemPrompt);
+const editSnippet = (snippetId: string, data: Partial<Omit<Snippet, "id">>) =>
+  useSnippets.setState(({ snippets }) => ({ snippets: update(snippets, snippetId, data) }));
+
+const changeSnippetShortcut = async (snippetId: string, shortcut: string) => {
+  const snippet = getSnippet(snippetId);
+  if (!snippet) {
+    return Promise.resolve();
+  }
+  if (snippet.shortcut) {
+    const prevShortcut = snippet.shortcut;
+    const isShortcutRegistered = await isRegistered(prevShortcut);
+
+    isShortcutRegistered && (await unregisterShortcut(prevShortcut));
+    await registerShortcut({ settings: useSettings.getState().settings, ...snippet, shortcut });
+
+    return editSnippet(snippetId, { shortcut });
+  }
+};
+
+const toggleSnippet = (snippetId: string) => {
+  const snippet = getSnippet(snippetId);
+  if (!snippet) {
+    return null;
+  }
+  useSnippets.setState(({ snippets }) => ({
+    snippets: update(snippets, snippetId, { enabled: !snippet.enabled }),
+  }));
+
+  const shortcut = snippet.shortcut;
+
+  if (!shortcut) {
+    return null;
   }
 
-  void sync(snippets);
-});
+  return snippet.enabled
+    ? unregisterShortcut(shortcut)
+    : registerShortcut({ settings: useSettings.getState().settings, ...snippet, shortcut });
+};
+
+useSnippets.subscribe(
+  ({ activeSnippet }) => activeSnippet,
+  (activeSnippet) => {
+    if (activeSnippet) {
+      setSystemPrompt(activeSnippet.prompt);
+    } else {
+      setSystemPrompt(useSettings.getState().settings.systemPrompt);
+    }
+  },
+);
+
+useSnippets.subscribe(
+  ({ snippets }) => snippets,
+  (snippets) => void sync(snippets),
+);
 
 const loadSnippets = async () => {
   const snippets = await load();
@@ -86,3 +97,15 @@ const loadSnippets = async () => {
 };
 
 void loadSnippets();
+
+export {
+  useSnippets,
+  getSnippet,
+  activateSnippet,
+  deactivateSnippet,
+  addSnippet,
+  removeSnippet,
+  editSnippet,
+  changeSnippetShortcut,
+  toggleSnippet,
+};

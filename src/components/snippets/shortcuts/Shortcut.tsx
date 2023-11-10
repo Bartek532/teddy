@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 
-import { useSnippets } from "../../../stores/snippets.store";
+import { changeSnippetShortcut, toggleSnippet } from "../../../stores/snippets.store";
 import { onPromise } from "../../../utils/functions";
 import { Icon } from "../../common/Icon";
 import { Input } from "../../common/Input";
@@ -42,9 +42,6 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
     snippet.shortcut?.split("+").filter(Boolean).length
       ? snippet.shortcut.trim().split("+").filter(Boolean)
       : [],
-  );
-  const { changeSnippetShortcut, toggleSnippet } = useSnippets(
-    ({ changeSnippetShortcut, toggleSnippet }) => ({ changeSnippetShortcut, toggleSnippet }),
   );
 
   const debouncedKeyUp = useCallback(

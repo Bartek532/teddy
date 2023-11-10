@@ -1,5 +1,6 @@
 import { debounce } from "lodash";
 import { create } from "zustand";
+import { subscribeWithSelector } from "zustand/middleware";
 
 import { getValidatedState, saveState } from "../lib/store";
 import { DEFAULT_STATE } from "../utils/constants";
@@ -8,7 +9,6 @@ import type { Settings } from "../utils/types";
 
 interface SettingsStore {
   readonly settings: Settings;
-  readonly updateSettings: (settings: Partial<Settings>) => void;
 }
 
 const syncSettings = debounce(async (settings: Settings) => {
@@ -16,12 +16,21 @@ const syncSettings = debounce(async (settings: Settings) => {
   await saveState({ ...prev, settings });
 }, 1000);
 
-export const useSettings = create<SettingsStore>((set) => ({
-  settings: DEFAULT_STATE.settings,
-  updateSettings: (settings) => set((state) => ({ settings: { ...state.settings, ...settings } })),
-}));
+const useSettings = create(
+  subscribeWithSelector<SettingsStore>(() => ({
+    settings: DEFAULT_STATE.settings,
+  })),
+);
 
-useSettings.subscribe(({ settings }) => void syncSettings(settings));
+const updateSettings = (settings: Partial<Settings>) =>
+  useSettings.setState((state) => ({
+    settings: { ...state.settings, ...settings },
+  }));
+
+useSettings.subscribe(
+  ({ settings }) => settings,
+  (settings) => void syncSettings(settings),
+);
 
 const loadSettings = async () => {
   const { settings } = await getValidatedState();
@@ -29,3 +38,5 @@ const loadSettings = async () => {
 };
 
 void loadSettings();
+
+export { useSettings, updateSettings };

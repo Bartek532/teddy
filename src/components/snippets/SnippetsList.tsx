@@ -12,23 +12,21 @@ interface SnippetsListProps {
 }
 
 export const SnippetsList = memo<SnippetsListProps>(
-  ({ snippets, active, onActivate, onDeactivate }) => {
-    return (
-      <section className="shadow-300 z-10">
-        <ul className="grid grid-cols-[repeat(auto-fit,minmax(105px,1fr))] justify-center pr-1.5 items-center w-full flex-wrap gap-3 max-h-[82px] overflow-y-scroll">
-          {snippets.map((snippet) => (
-            <Snippet
-              key={snippet.id}
-              snippet={snippet}
-              isActive={active?.id === snippet.id}
-              onActivate={onActivate}
-              onDeactivate={onDeactivate}
-            />
-          ))}
-        </ul>
-      </section>
-    );
-  },
+  ({ snippets, active, onActivate, onDeactivate }) => (
+    <section className="shadow-300 z-10">
+      <ul className="grid grid-cols-[repeat(auto-fit,minmax(105px,1fr))] justify-center pr-1.5 items-center w-full flex-wrap gap-3 max-h-[82px] overflow-y-scroll">
+        {snippets.map((snippet) => (
+          <Snippet
+            key={snippet.id}
+            snippet={snippet}
+            isActive={active?.id === snippet.id}
+            onActivate={onActivate}
+            onDeactivate={onDeactivate}
+          />
+        ))}
+      </ul>
+    </section>
+  ),
 );
 
 SnippetsList.displayName = "SnippetsList";

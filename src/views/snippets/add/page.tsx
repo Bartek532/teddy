@@ -2,12 +2,11 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { SnippetForm } from "../../../components/snippets/SnippetForm";
-import { useSnippets } from "../../../stores/snippets.store";
+import { addSnippet } from "../../../stores/snippets.store";
 
 import type { CreateSnippetInput } from "../../../utils/types";
 
 export const AddSnippetView = () => {
-  const { addSnippet } = useSnippets(({ addSnippet }) => ({ addSnippet }));
   const navigate = useNavigate();
   const { reset } = useForm<CreateSnippetInput>();
 

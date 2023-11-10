@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { ActionForm } from "../../../components/actions/ActionForm";
-import { useActionsContext } from "../../../providers/ActionsProvider";
+import { editAction, getAction, removeAction } from "../../../stores/actions.store";
 
 import type { CreateActionInput } from "../../../utils/types";
 
@@ -10,7 +10,6 @@ export const EditActionView = () => {
   const { reset } = useForm<CreateActionInput>();
   const params = useParams();
   const navigate = useNavigate();
-  const { getAction, editAction, removeAction } = useActionsContext();
 
   if (!params.id) {
     return null;
