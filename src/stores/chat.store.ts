@@ -46,8 +46,8 @@ const filterMessages = (messages: ChatMessage[]) =>
     );
 
 const useChat = create(
-  subscribeWithSelector<ChatStore>((_, get) => ({
-    tokens: 0,
+  subscribeWithSelector<ChatStore>(() => ({
+    tokens: encode(useSettings.getState().settings.systemPrompt).length,
     messages: [
       createChatMessage({
         role: ROLE.SYSTEM,

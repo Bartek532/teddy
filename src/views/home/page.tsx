@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { marked } from "marked";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
@@ -25,9 +26,25 @@ export const HomeView = () => {
   });
 
   const { snippets, activeSnippet } = useSnippets();
-
-  console.log(snippets);
   const { messages, tokens, isLoading } = useChat();
+
+  console.log(messages.map(({ content }) => content));
+
+  console.log(marked.parse("```js const xd = 2; \n console.log(xd); \n```"));
+  console.log(
+    marked.parse(
+      "here is the body of arguments \n```\n\nclass User\n  def say_my_name\n  puts 'my name'\n  end\nend\n```",
+    ),
+  );
+
+  console.log(
+    marked.parse(
+      `\`\`\`python
+    my_list = [4, 2, 6, 1, 3]
+    print(bubble_sort(my_list))\n\`\`\`
+    This will output the sorted list: \`[1, 2, 3, 4, 6]\`.`,
+    ),
+  );
 
   const maxTokens = MODELS.find(({ value }) => value === settings.ai.model)?.tokenLimit ?? 0;
 
@@ -62,6 +79,7 @@ export const HomeView = () => {
         onActivate={activateSnippet}
         onDeactivate={deactivateSnippet}
       />
+      {/* {JSON.stringify(messages.map(({ content }) => content))} */}
       <MessagesList
         messages={messages.filter(({ content, role }) => content && role !== ROLE.SYSTEM)}
       />

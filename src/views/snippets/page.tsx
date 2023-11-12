@@ -5,7 +5,7 @@ import { ShortcutsList } from "../../components/snippets/shortcuts/ShortcutsList
 import { useSnippets } from "../../stores/snippets.store";
 
 export const SnippetsView = () => {
-  const { snippets } = useSnippets(({ snippets }) => ({ snippets }));
+  const snippets = useSnippets(({ snippets }) => snippets);
 
   return (
     <main className="px-7 flex flex-col justify-start gap-4 h-full grow">

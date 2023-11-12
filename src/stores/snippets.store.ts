@@ -93,7 +93,10 @@ useSnippets.subscribe(
 
 const loadSnippets = async () => {
   const snippets = await load();
-  useSnippets.setState({ snippets });
+
+  if (snippets) {
+    useSnippets.setState((prev) => ({ ...prev, snippets }));
+  }
 };
 
 void loadSnippets();

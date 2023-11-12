@@ -5,6 +5,8 @@ import { subscribeWithSelector } from "zustand/middleware";
 import { getValidatedState, saveState } from "../lib/store";
 import { DEFAULT_STATE } from "../utils/constants";
 
+import { setSystemPrompt } from "./chat.store";
+
 import type { Settings } from "../utils/types";
 
 interface SettingsStore {
@@ -32,9 +34,14 @@ useSettings.subscribe(
   (settings) => void syncSettings(settings),
 );
 
+useSettings.subscribe(
+  ({ settings }) => settings.systemPrompt,
+  (prompt) => setSystemPrompt(prompt),
+);
+
 const loadSettings = async () => {
   const { settings } = await getValidatedState();
-  useSettings.setState({ settings });
+  updateSettings(settings);
 };
 
 void loadSettings();
