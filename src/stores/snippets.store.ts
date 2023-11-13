@@ -41,18 +41,24 @@ const editSnippet = (snippetId: string, data: Partial<Omit<Snippet, "id">>) =>
 
 const changeSnippetShortcut = async (snippetId: string, shortcut: string) => {
   const snippet = getSnippet(snippetId);
+
   if (!snippet) {
     return Promise.resolve();
   }
+
   if (snippet.shortcut) {
     const prevShortcut = snippet.shortcut;
     const isShortcutRegistered = await isRegistered(prevShortcut);
-
     isShortcutRegistered && (await unregisterShortcut(prevShortcut));
-    await registerShortcut({ settings: useSettings.getState().settings, ...snippet, shortcut });
-
-    return editSnippet(snippetId, { shortcut });
   }
+
+  await registerShortcut({
+    settings: useSettings.getState().settings,
+    prompt: snippet.prompt,
+    shortcut,
+  });
+
+  return editSnippet(snippetId, { shortcut });
 };
 
 const toggleSnippet = (snippetId: string) => {

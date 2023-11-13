@@ -29,9 +29,7 @@ const replaceHyperKey = (shortcut: string[]) => {
     (key) => !macHyperKey.includes(key) && !winHyperKey.includes(key),
   );
 
-  return isMacHyperKey || isWinHyperKey
-    ? ["🚀", ...shortcutWithoutHyperKey]
-    : shortcutWithoutHyperKey;
+  return isMacHyperKey || isWinHyperKey ? ["🚀", ...shortcutWithoutHyperKey] : shortcut;
 };
 
 export const Shortcut = memo<ShortcutProps>(({ snippet }) => {

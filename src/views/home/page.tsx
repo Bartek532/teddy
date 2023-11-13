@@ -59,7 +59,6 @@ export const HomeView = () => {
         onActivate={activateSnippet}
         onDeactivate={deactivateSnippet}
       />
-      {/* {JSON.stringify(messages.map(({ content }) => content))} */}
       <MessagesList
         messages={messages.filter(({ content, role }) => content && role !== ROLE.SYSTEM)}
       />
