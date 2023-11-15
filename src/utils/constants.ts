@@ -57,7 +57,7 @@ export const MODELS = [
     value: AI_MODEL.GPT_3_5,
     label: "GPT-3.5 Turbo",
     isAvailable: true,
-    tokenLimit: 16_384,
+    tokenLimit: 16_385,
   },
   {
     id: AI_MODEL.GPT_4,
