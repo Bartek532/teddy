@@ -1,5 +1,7 @@
-import { FetchRequestOptions } from "../../../../utils/types";
-import { IncomingChunk, getChatCompletion } from "../../openai";
+import { getChatCompletion } from "../../openai";
+
+import type { FetchRequestOptions } from "../../../../utils/types";
+import type { IncomingChunk } from "../../openai";
 
 const getResponse = async ({
   options,
