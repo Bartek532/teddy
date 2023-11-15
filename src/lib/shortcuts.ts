@@ -40,7 +40,7 @@ export const registerShortcut = async ({
     await writeText(content);
 
     sendNotification({
-      title: `B.E.A.R.`,
+      title: `Teddy`,
       body: content,
       icon: "icons/128x128.png",
     });

@@ -14,7 +14,7 @@ export const Header = () => {
         <img src="/logo.png" alt="bear's head but it's half robotic" width="44" height="44" />
         <div className="flex flex-col pt-0.5">
           <span className="text-sm opacity-50">AI Assistant</span>
-          <h1 className="leading-tight">B.E.A.R.</h1>
+          <h1 className="leading-tight">Teddy</h1>
         </div>
       </Link>
 

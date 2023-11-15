@@ -7,8 +7,8 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "Bear AI",
-    "version": "0.1.0"
+    "productName": "Teddy",
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -52,7 +52,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "me.zagrodzki.bear",
+      "identifier": "me.zagrodzki.teddy",
       "targets": "all"
     },
     "security": {
@@ -66,7 +66,7 @@
         "decorations": false,
         "fullscreen": false,
         "resizable": true,
-        "title": "B.E.A.R.",
+        "title": "Teddy",
         "width": 650,
         "height": 850
       }

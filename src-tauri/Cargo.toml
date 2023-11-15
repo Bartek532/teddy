@@ -1,11 +1,11 @@
 [package]
-name = "bear-ai"
-version = "0.1.0"
+name = "teddy"
+version = "1.0.0"
 description = "Your AI Assistant"
 authors = ["you"]
 license = ""
 repository = ""
-default-run = "bear-ai"
+default-run = "teddy"
 edition = "2021"
 rust-version = "1.60"
 
