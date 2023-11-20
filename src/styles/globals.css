@@ -76,3 +76,35 @@ body,
 .content *:not(pre) > code {
   @apply py-1 px-2 mx-0.5 bg-syntax-background rounded-sm;
 }
+
+.EmojiPickerReact {
+  --epr-picker-border-color: var(--gray-100) !important;
+  --epr-emoji-size: 25px !important;
+  --epr-category-label-padding: 0 17px !important;
+  --epr-header-padding: 11px 12px 2px !important;
+  --epr-bg-color: var(--bg-100) !important;
+  --epr-category-label-bg-color: var(--bg-100) !important;
+  --epr-search-input-bg-color: var(--gray-400) !important;
+  --epr-search-border-color: var(--gray-300) !important;
+  --epr-active-skin-tone-indicator-border-color: var(--yellow-100) !important;
+  --epr-emoji-hover-color: var(--gray-500) !important;
+  --epr-focus-bg-color: var(--gray-500) !important;
+  --epr-active-skin-hover-color: var(--gray-200) !important;
+  --epr-category-icon-active-color: transparent !important;
+  --epr-emoji-variations-indictator-z-index: -1 !important;
+
+  box-shadow: var(--shadow-default);
+}
+
+.EmojiPickerReact * {
+  @apply font-sans text-black-100 !important;
+}
+
+.EmojiPickerReact .epr-preview,
+.EmojiPickerReact .epr-emoji-variation-picker {
+  display: none !important;
+}
+
+.EmojiPickerReact .epr-search-container input.epr-search {
+  transition: none !important;
+}

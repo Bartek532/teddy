@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { SnippetForm } from "../../../components/snippets/SnippetForm";
 import { addSnippet } from "../../../stores/snippets.store";
+import { DEFAULT_SNIPPET_ICON } from "../../../utils/constants";
 
 import type { CreateSnippetInput } from "../../../utils/types";
 
@@ -18,7 +19,7 @@ export const AddSnippetView = () => {
 
   return (
     <main className="px-7 flex flex-col justify-start gap-4 h-full grow">
-      <SnippetForm onSubmit={createSnippet} />
+      <SnippetForm onSubmit={createSnippet} defaultValues={{ icon: DEFAULT_SNIPPET_ICON }} />
     </main>
   );
 };

@@ -1,8 +1,6 @@
 import { memo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { Icon } from "../common/Icon";
-
 import type { Snippet as SnippetType } from "../../utils/types";
 
 interface SnippetProps {
@@ -11,10 +9,6 @@ interface SnippetProps {
   readonly onDeactivate: (snippetId: string) => void;
   readonly isActive?: boolean;
 }
-
-const iconProps = {
-  size: 22,
-};
 
 export const Snippet = memo<SnippetProps>(
   ({ snippet, isActive = false, onActivate, onDeactivate }) => {
@@ -42,7 +36,7 @@ export const Snippet = memo<SnippetProps>(
           }}
           onClick={() => (isActive ? onDeactivate(snippet.id) : onActivate(snippet.id))}
         >
-          <Icon name={snippet.icon} props={iconProps} />
+          {snippet.icon}
           <span className="truncate max-w-[85%] text-sm">{snippet.title}</span>
         </button>
       </li>
