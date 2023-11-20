@@ -103,7 +103,6 @@ Return only translated message without any comments or notes. \n\n\n Examples:
 Question: What is your name? \n Answer: Jak masz na imię? \n
 Question: Jak się masz? \n Answer: How are you? \n
 Question: Quelle heure est-il? \n Answer: What time is it?`,
-    color: "#fcd53b",
     enabled: true,
   },
   {
@@ -112,7 +111,6 @@ Question: Quelle heure est-il? \n Answer: What time is it?`,
     icon: "📜",
     prompt:
       "Act as a Senior Copywriter. Your role is to fix all typos and grammar in user's message. Your response should be concise and user-friendly. Return only fixed message without any comments or notes.",
-    color: "#fcd53b",
     enabled: true,
   },
   {
@@ -120,7 +118,6 @@ Question: Quelle heure est-il? \n Answer: What time is it?`,
     title: "Explain step-by-step",
     icon: "💬",
     prompt: "Explain step-by-step how to achieve provided goal.",
-    color: "#fcd53b",
     enabled: true,
   },
   {
@@ -129,7 +126,6 @@ Question: Quelle heure est-il? \n Answer: What time is it?`,
     icon: "🔥",
     prompt:
       "Now act as if you were a rocket scientist investigating provided solution to a problem. Your job is to find all flaws and faulty in logic in a given approach and provide me with the simplest way to achieve the results. Let’s work this out in a step by step way to be sure we have all the errors. ",
-    color: "#fcd53b",
     enabled: true,
   },
   {
@@ -137,7 +133,6 @@ Question: Quelle heure est-il? \n Answer: What time is it?`,
     title: "Summarize",
     icon: "🖋️",
     prompt: "Summarize the provided content. Your response should as concise as possible.",
-    color: "#fcd53b",
     enabled: true,
   },
   {
@@ -146,7 +141,6 @@ Question: Quelle heure est-il? \n Answer: What time is it?`,
     icon: "💿",
     prompt:
       "Act as a Senior Software Engineer. Fix all bugs in provided code. Follow best practices about writing code such as naming variables, comments, etc. Return only fixed code without any comments or notes.",
-    color: "#fcd53b",
     enabled: true,
   },
   {
@@ -155,7 +149,6 @@ Question: Quelle heure est-il? \n Answer: What time is it?`,
     icon: "🔮",
     prompt:
       "Autocomplete user's message. Try to do your best with prediction what should go next in provided sentence. Return only completed message without any comments or notes.",
-    color: "#fcd53b",
     enabled: true,
   },
 ];

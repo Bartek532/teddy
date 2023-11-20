@@ -60,18 +60,6 @@ export const SnippetForm = memo<SnippetFormProps>(
         </div>
 
         <div>
-          <Input {...register("color")}>
-            <span className="text-sm block mb-1.5">Color</span>
-          </Input>
-
-          <ErrorMessage
-            name="color"
-            errors={errors}
-            render={({ message }) => <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>}
-          />
-        </div>
-
-        <div>
           <Textarea {...register("prompt")} className="text-sm" rows={4}>
             <span className="text-sm block mb-1.5">Prompt</span>
           </Textarea>
