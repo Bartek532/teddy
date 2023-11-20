@@ -8,6 +8,9 @@ export const CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
 
 export const LOADING_ASSISTANT_MESSAGE = "I'm thinking...";
 
+export const DEFAULT_SNIPPET_ICON = "🪄";
+export const DEFAULT_ACTION_ICON = "☎️";
+
 export const SETTINGS_ROUTES = [
   {
     route: "/settings",
@@ -71,7 +74,7 @@ export const MODELS = [
 const DEFAULT_SYSTEM_PROMPT = `I'm a Teddy - superanimal, helpful assistant.
 I'm strictly following these rules "to the word":
   - I always speak truthfully and gramatically correct
-  - My responses are natural, friendly, easygoing and concise
+  - my responses are natural, friendly, easygoing and concise
   - I avoid repeating myself and my limitations
   - when I don't know the answer I say "I don't know"
   - when I don't understand the question I ask for clarification
@@ -94,65 +97,58 @@ const DEFAULT_SNIPPETS: Snippet[] = [
   {
     id: crypto.randomUUID(),
     title: "Translate",
-    icon: "BsTranslate",
+    icon: "🌍",
     prompt: `Translate user's message as shown in examples. If source language is English then translate to Polish. Otherwise, translate every other language to English.
 Return only translated message without any comments or notes. \n\n\n Examples:
 Question: What is your name? \n Answer: Jak masz na imię? \n
 Question: Jak się masz? \n Answer: How are you? \n
 Question: Quelle heure est-il? \n Answer: What time is it?`,
-    color: "#fcd53b",
     enabled: true,
   },
   {
     id: crypto.randomUUID(),
     title: "Fix grammar",
-    icon: "RxText",
+    icon: "📜",
     prompt:
       "Act as a Senior Copywriter. Your role is to fix all typos and grammar in user's message. Your response should be concise and user-friendly. Return only fixed message without any comments or notes.",
-    color: "#fcd53b",
     enabled: true,
   },
   {
     id: crypto.randomUUID(),
     title: "Explain step-by-step",
-    icon: "TbBrandWechat",
+    icon: "💬",
     prompt: "Explain step-by-step how to achieve provided goal.",
-    color: "#fcd53b",
     enabled: true,
   },
   {
     id: crypto.randomUUID(),
     title: "Critique",
-    icon: "AiOutlineFire",
+    icon: "🔥",
     prompt:
       "Now act as if you were a rocket scientist investigating provided solution to a problem. Your job is to find all flaws and faulty in logic in a given approach and provide me with the simplest way to achieve the results. Let’s work this out in a step by step way to be sure we have all the errors. ",
-    color: "#fcd53b",
     enabled: true,
   },
   {
     id: crypto.randomUUID(),
     title: "Summarize",
-    icon: "MdOutlineSummarize",
+    icon: "🖋️",
     prompt: "Summarize the provided content. Your response should as concise as possible.",
-    color: "#fcd53b",
     enabled: true,
   },
   {
     id: crypto.randomUUID(),
     title: "Fix code",
-    icon: "BiBug",
+    icon: "💿",
     prompt:
       "Act as a Senior Software Engineer. Fix all bugs in provided code. Follow best practices about writing code such as naming variables, comments, etc. Return only fixed code without any comments or notes.",
-    color: "#fcd53b",
     enabled: true,
   },
   {
     id: crypto.randomUUID(),
     title: "Autocomplete",
-    icon: "VscWand",
+    icon: "🔮",
     prompt:
       "Autocomplete user's message. Try to do your best with prediction what should go next in provided sentence. Return only completed message without any comments or notes.",
-    color: "#fcd53b",
     enabled: true,
   },
 ];

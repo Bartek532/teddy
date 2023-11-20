@@ -6,7 +6,6 @@ import { twMerge } from "tailwind-merge";
 
 import { changeSnippetShortcut, toggleSnippet } from "../../../stores/snippets.store";
 import { onPromise } from "../../../utils/functions";
-import { Icon } from "../../common/Icon";
 import { Input } from "../../common/Input";
 import { Toggle } from "../../common/Toggle";
 
@@ -109,19 +108,13 @@ export const Shortcut = memo<ShortcutProps>(({ snippet }) => {
       <Link
         to={`/snippets/edit/${snippet.id}`}
         className={twMerge(
-          "group flex w-full justify-center items-center border-2 border-solid rounded-2xl p-2.5 gap-3.5 overflow-hidden transition-opacity",
+          "group flex w-full text-sm justify-center items-center border-2 border-solid border-yellow-100 rounded-2xl p-2.5 gap-3.5 overflow-hidden transition-opacity",
           !snippet.enabled && "opacity-40 cursor-default",
         )}
-        style={{
-          borderColor: snippet.color,
-        }}
       >
-        <Icon name={snippet.icon} />
+        {snippet.icon}
         <span
-          className={twMerge(
-            "truncate text-sm max-w-[70%] ",
-            snippet.enabled && "group-hover:underline",
-          )}
+          className={twMerge("truncate  max-w-[70%] ", snippet.enabled && "group-hover:underline")}
         >
           {snippet.title}
         </span>

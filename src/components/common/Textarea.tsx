@@ -9,7 +9,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, JSX.IntrinsicElements["t
         ref={ref}
         {...props}
         className={twMerge(
-          "rounded-2xl resize-none h-auto pl-5 py-3 pr-12 bg-gray-400 w-full outline-none border-gray-100 border focus:border-gray-300 placeholder-gray-300 disabled:opacity-70 disabled:border-gray-100",
+          "rounded-2xl resize-none h-auto pl-5 py-3 pr-12 bg-gray-400 w-full outline-none border-gray-100 border placeholder-gray-300 focus:border-gray-300 disabled:opacity-70 disabled:border-gray-100",
           props.className,
         )}
       ></textarea>

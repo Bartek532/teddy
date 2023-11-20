@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { ReactComponent as BinIcon } from "../../assets/svg/bin.svg";
 import { createSnippetSchema } from "../../utils/validation/schema";
+import { EmojiPicker } from "../common/EmojiPicker";
 import { Input } from "../common/Input";
 import { Textarea } from "../common/Textarea";
 
@@ -13,7 +14,7 @@ import type { CreateSnippetInput, Snippet } from "../../utils/types";
 interface SnippetFormProps {
   readonly onSubmit: (data: CreateSnippetInput) => void;
   readonly onDelete?: (id: string) => void;
-  readonly defaultValues?: Snippet;
+  readonly defaultValues?: Partial<Snippet>;
   readonly type?: "add" | "edit";
 }
 
@@ -23,6 +24,7 @@ export const SnippetForm = memo<SnippetFormProps>(
       register,
       handleSubmit,
       formState: { errors },
+      control,
     } = useForm<CreateSnippetInput>({
       resolver: zodResolver(createSnippetSchema),
       defaultValues,
@@ -34,47 +36,31 @@ export const SnippetForm = memo<SnippetFormProps>(
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div>
-          <Input {...register("title")}>
-            <span className="text-sm block mb-1.5">Title</span>
-          </Input>
-          <ErrorMessage
-            name="title"
-            errors={errors}
-            render={({ message }) => <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>}
-          />
+        <div className="flex gap-5">
+          <div>
+            <span className="text-sm block mb-1.5">Icon</span>
+            <EmojiPicker name="icon" control={control} />
+            <ErrorMessage
+              name="icon"
+              errors={errors}
+              render={({ message }) => <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>}
+            />
+          </div>
+
+          <div className="flex-1">
+            <Input {...register("title")}>
+              <span className="text-sm block mb-1.5">Title</span>
+            </Input>
+            <ErrorMessage
+              name="title"
+              errors={errors}
+              render={({ message }) => <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>}
+            />
+          </div>
         </div>
 
         <div>
-          <Input {...register("icon")}>
-            <span className="text-sm block mb-1.5">
-              Icon, choose anything from{" "}
-              <a href="https://react-icons.github.io/react-icons/" className="text-blue-200">
-                react-icons
-              </a>
-            </span>
-          </Input>
-          <ErrorMessage
-            name="icon"
-            errors={errors}
-            render={({ message }) => <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>}
-          />
-        </div>
-
-        <div>
-          <Input {...register("color")}>
-            <span className="text-sm block mb-1.5">Color</span>
-          </Input>
-
-          <ErrorMessage
-            name="color"
-            errors={errors}
-            render={({ message }) => <p className="text-red-100 text-xs pl-1 mt-1">{message}</p>}
-          />
-        </div>
-
-        <div>
-          <Textarea {...register("prompt")} className="text-sm" rows={3}>
+          <Textarea {...register("prompt")} className="text-sm" rows={4}>
             <span className="text-sm block mb-1.5">Prompt</span>
           </Textarea>
           <ErrorMessage
