@@ -72,7 +72,7 @@ export const SnippetForm = memo<SnippetFormProps>(
         </div>
 
         <div>
-          <Textarea {...register("prompt")} className="text-sm" rows={3}>
+          <Textarea {...register("prompt")} className="text-sm" rows={4}>
             <span className="text-sm block mb-1.5">Prompt</span>
           </Textarea>
           <ErrorMessage

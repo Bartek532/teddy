@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { ActionForm } from "../../../components/actions/ActionForm";
 import { addAction } from "../../../stores/actions.store";
+import { DEFAULT_ACTION_ICON } from "../../../utils/constants";
 
 import type { CreateActionInput } from "../../../utils/types";
 
@@ -18,7 +19,7 @@ export const AddActionView = () => {
 
   return (
     <main className="px-7 flex flex-col justify-start gap-4 h-full grow">
-      <ActionForm onSubmit={createAction} />
+      <ActionForm onSubmit={createAction} defaultValues={{ icon: DEFAULT_ACTION_ICON }} />
     </main>
   );
 };
